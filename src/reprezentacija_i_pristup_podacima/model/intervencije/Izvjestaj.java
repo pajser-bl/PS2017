@@ -1,16 +1,15 @@
 package reprezentacija_i_pristup_podacima.model.intervencije;
 
-import java.util.Date;
-
+import java.time.LocalDateTime;
 import reprezentacija_i_pristup_podacima.model.korisnici.Supervizor;
 
 public class Izvjestaj {
 	private Supervizor supervizor;
-	private Date vrijeme_pravljenja;
+	private LocalDateTime vrijeme_pravljenja;
 	private Intervencija intervencija;
 	private String napomena;
-	private Date vrijeme_zatvaranja;
-	public Izvjestaj(Supervizor supervizor, Date vrijeme_zatvaranja, Intervencija intervencija, String napomena) {
+	private LocalDateTime vrijeme_zatvaranja;
+	public Izvjestaj(Supervizor supervizor, LocalDateTime vrijeme_zatvaranja, Intervencija intervencija, String napomena) {
 		super();
 		this.supervizor = supervizor;
 		this.vrijeme_zatvaranja = vrijeme_zatvaranja;
@@ -23,10 +22,10 @@ public class Izvjestaj {
 	public void setSupervizor(Supervizor supervizor) {
 		this.supervizor = supervizor;
 	}
-	public Date getVrijeme_pravljenja() {
+	public LocalDateTime getVrijeme_pravljenja() {
 		return vrijeme_pravljenja;
 	}
-	public void setVrijeme_pravljenja(Date vrijeme_pravljenja) {
+	public void setVrijeme_pravljenja(LocalDateTime vrijeme_pravljenja) {
 		this.vrijeme_pravljenja = vrijeme_pravljenja;
 	}
 	public Intervencija getIntervencija() {
@@ -41,10 +40,10 @@ public class Izvjestaj {
 	public void setNapomena(String napomena) {
 		this.napomena = napomena;
 	}
-	public Date getVrijeme_zatvaranja() {
+	public LocalDateTime getVrijeme_zatvaranja() {
 		return vrijeme_zatvaranja;
 	}
-	public void setVrijeme_zatvaranja(Date vrijeme_zatvaranja) {
+	public void setVrijeme_zatvaranja(LocalDateTime vrijeme_zatvaranja) {
 		this.vrijeme_zatvaranja = vrijeme_zatvaranja;
 	}
 	

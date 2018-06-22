@@ -1,20 +1,19 @@
 package reprezentacija_i_pristup_podacima.model.korisnici.sesije;
 
-import java.util.Date;
-
+import java.time.LocalDateTime;
 import reprezentacija_i_pristup_podacima.model.korisnici.Operater;
 
 public class OperaterSesija {
 	private Operater operater;
 	private String tekst;
-	private Date pocetak_sesije;
-	private Date kraj_sesije;
+	private LocalDateTime pocetak_sesije;
+	private LocalDateTime kraj_sesije;
 
 	public OperaterSesija(Operater operater) {
 		super();
 		this.setOperater(operater);
 	}
-	
+
 	public String getTekst() {
 		return tekst;
 	}
@@ -31,19 +30,19 @@ public class OperaterSesija {
 		this.operater = operater;
 	}
 
-	public Date getPocetak_sesije() {
+	public LocalDateTime getPocetak_sesije() {
 		return pocetak_sesije;
 	}
 
-	public void setPocetak_sesije(Date pocetak_sesije) {
+	public void setPocetak_sesije(LocalDateTime pocetak_sesije) {
 		this.pocetak_sesije = pocetak_sesije;
 	}
 
-	public Date getKraj_sesije() {
+	public LocalDateTime getKraj_sesije() {
 		return kraj_sesije;
 	}
 
-	public void setKraj_sesije(Date kraj_sesije) {
+	public void setKraj_sesije(LocalDateTime kraj_sesije) {
 		this.kraj_sesije = kraj_sesije;
 	}
 

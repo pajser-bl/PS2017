@@ -1,5 +1,6 @@
 package reprezentacija_i_pristup_podacima.model.intervencije;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import reprezentacija_i_pristup_podacima.model.klijent.Klijent;
@@ -18,7 +19,7 @@ public class Intervencija {
 	
 	
 	private String napomena;
-	private Date vrijeme_zatvaranja;
+	private LocalDateTime vrijeme_zatvaranja;
 	private Operater operater_zatvorio;
 	public Intervencija(Date vrijeme_otvaranja, int id_intervencija, Operater operater_otvorio, Klijent klijent,
 			Koordinate koordinate_intervencije) {
@@ -78,10 +79,10 @@ public class Intervencija {
 	public void setNapomena(String napomena) {
 		this.napomena = napomena;
 	}
-	public Date getVrijeme_zatvaranja() {
+	public LocalDateTime getVrijeme_zatvaranja() {
 		return vrijeme_zatvaranja;
 	}
-	public void setVrijeme_zatvaranja(Date vrijeme_zatvaranja) {
+	public void setVrijeme_zatvaranja(LocalDateTime vrijeme_zatvaranja) {
 		this.vrijeme_zatvaranja = vrijeme_zatvaranja;
 	}
 	public Operater getOperater_zatvorio() {

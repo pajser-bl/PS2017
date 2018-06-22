@@ -1,30 +1,28 @@
 package reprezentacija_i_pristup_podacima.model.intervencije;
 
-import java.util.Date;
-
+import java.time.LocalDateTime;
 import reprezentacija_i_pristup_podacima.model.korisnici.TerenskiRadnik;
 
 public class TerenskiIzvjestaj {
-	private Date vrijeme_slanja;
+	private LocalDateTime vrijeme_slanja;
 	private TerenskiRadnik terenski_radnik;
-	private Date vrijeme_prijema;
+	private LocalDateTime vrijeme_prijema;
 	private Intervencija intervencija;
 	private VrstaUsluge vrsta_usluge;
 	private String opis;
-	
 
-	public TerenskiIzvjestaj(TerenskiRadnik terenski_radnik, Date vrijeme_prijema, Intervencija intervencija) {
+	public TerenskiIzvjestaj(TerenskiRadnik terenski_radnik, LocalDateTime vrijeme_prijema, Intervencija intervencija) {
 		super();
 		this.terenski_radnik = terenski_radnik;
 		this.vrijeme_prijema = vrijeme_prijema;
 		this.intervencija = intervencija;
 	}
 
-	public Date getVrijeme_slanja() {
+	public LocalDateTime getVrijeme_slanja() {
 		return vrijeme_slanja;
 	}
 
-	public void setVrijeme_slanja(Date vrijeme_slanja) {
+	public void setVrijeme_slanja(LocalDateTime vrijeme_slanja) {
 		this.vrijeme_slanja = vrijeme_slanja;
 	}
 
@@ -36,11 +34,11 @@ public class TerenskiIzvjestaj {
 		this.terenski_radnik = terenski_radnik;
 	}
 
-	public Date getVrijeme_prijema() {
+	public LocalDateTime getVrijeme_prijema() {
 		return vrijeme_prijema;
 	}
 
-	public void setVrijeme_prijema(Date vrijeme_prijema) {
+	public void setVrijeme_prijema(LocalDateTime vrijeme_prijema) {
 		this.vrijeme_prijema = vrijeme_prijema;
 	}
 
@@ -78,6 +76,5 @@ public class TerenskiIzvjestaj {
 	public void setIntervencija(Intervencija intervencija) {
 		this.intervencija = intervencija;
 	}
-
 
 }
