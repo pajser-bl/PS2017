@@ -1,4 +1,4 @@
-package reprezentacija_i_pristup_podacima.model.vozilo;
+package reprezentacija_i_pristup_podacima.model.vozila;
 
 import java.time.LocalDateTime;
 
