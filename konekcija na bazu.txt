@@ -1,0 +1,22 @@
+package jdbcdemo;
+import java.sql.*;
+
+public class Driver {
+	public static void main(String[] args) {
+		
+		try {
+			
+			Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/pomoc_na_putu_baza", "root", "1dva3nevermore");
+			Statement myStmt = myConn.createStatement();
+			ResultSet myRs = myStmt.executeQuery("select * from klijent");
+			while(myRs.next()) {
+				System.out.println(myRs.getString("ID_Klijenta"));
+			}
+		
+	}
+		catch(Exception exc) {
+			exc.printStackTrace();
+		}
+
+}
+}
