@@ -1,5 +1,7 @@
 package user;
 
+import java.time.LocalDateTime;
+
 public class Event {
 	private LocalDateTime time; 
 	private User user;
