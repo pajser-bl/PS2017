@@ -1,0 +1,129 @@
+create schema road_help_database;
+
+CREATE TABLE user (
+    ID_user INT(11) NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    surname VARCHAR(50) NOT NULL,
+    date_of_birth DATE NOT NULL,
+    qualification VARCHAR(255),
+    PRIMARY KEY (ID_user)
+);
+CREATE TABLE credentials (
+    ID_credentials INT(11) NOT NULL,
+    ID_user INT(11) NOT NULL,
+    username VARCHAR(32) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    salt VARCHAR(255) NOT NULL,
+    PRIMARY KEY (ID_credentials),
+    CONSTRAINT FK_credentials_user FOREIGN KEY (ID_user)REFERENCES user (ID_user)
+);
+create table administrator(
+    ID_administrator int(11)not null auto_increment,
+    ID_user int(11) not null,
+    primary key(ID_administrator),
+    constraint FK_administrator_user foreign key(ID_user) references user(ID_user)
+);
+create table supervisor(
+    ID_supervisor int(11)not null auto_increment,
+    ID_user int(11) not null,
+    primary key(ID_supervisor),
+    constraint FK_supervisor_user foreign key(ID_user) references user(ID_user)
+);
+create table opearator(
+    ID_operator int(11)not null auto_increment,
+    ID_user int(11) not null,
+    primary key(ID_operator),
+    constraint FK_operator_user foreign key(ID_user) references user(ID_user)
+    );
+create table vehicle(
+    ID_vehicle int(11)not null auto_increment,
+    manufacturer varchar(25),
+    model varchar(25),
+    year date,
+    registration varchar(10)not null,
+    primary key(ID_vehicle)
+);
+create table roadside_technician(
+    ID_roadside_technician int(11)not null auto_increment,
+    ID_user int(11) not null,
+    ID_vehicle int(11),
+    driver_licence_number varchar(16) unique not null,
+    driver_licence_categories varchar(50) not null,
+    primary key(ID_roadside_technician),
+    constraint FK_roadside_technician_user foreign key(ID_user) references user(ID_user),
+    constraint FK_roadside_technician_vehicle foreign key(ID_vehicle) references vehicle(ID_vehicle)
+    );
+create table client(
+    ID_client int(11)not null auto_increment,
+    name varchar(50) not null,
+    surname varchar(50) not null,
+    phone_number varchar(50) not null,
+    primary key(ID_client)
+);
+create table subscription(
+    ID_subscription int(11)not null auto_increment,
+    ID_client int(11) not null,
+    start_date date not null,
+    end_date date not null,
+    primary key(ID_subscription),
+    constraint FK_subscription_client foreign key(ID_client)references client(ID_client)
+);
+create table intervention(
+    ID_intervention int(11) not null auto_increment,
+    ID_client int(11) not null,
+    ID_vehicle int(11)not null,
+    ID_user_opened int(11)not null,
+    ID_user_closed int(11),
+    opened_on datetime not null,
+    closed_on datetime,
+    remark tinytext,
+    closed boolean,
+    primary key(ID_intervention),
+    constraint FK_intervention_user_opened foreign key(ID_user_opened)references user(ID_user),
+    constraint FK_intervention_user_closed foreign key(ID_user_closed)references user(ID_user)
+);
+create table coordinate(
+	ID_coordinate int(11) not null,
+    ID_intervention int(11)not null,
+    latitude decimal(12,9)not null,
+    longitude decimal(12,9)not null,
+    primary key(ID_coordinate),
+    constraint FK_coordinate_intervention foreign key(ID_intervention) references intervention(ID_intervention)
+);
+create table session(
+	ID_session int(11)not null auto_increment,
+    ID_user int(11)not null,
+    start datetime not null,
+    end datetime not null,
+    primary key(ID_session),
+    constraint FK_session_user foreign key(ID_user) references user(ID_user)
+);
+create table event(
+	ID_event int(11)not null auto_increment,
+    ID_session int(11)not null,
+    time datetime not null,
+    action varchar(50)not null,
+    primary key(ID_event,ID_session),
+    constraint FK_event_session foreign key(ID_session)references session(ID_session)
+);
+create table road_report(
+	ID_road_report int(11)not null,
+    ID_user int(11)not null,
+    ID_intervention int(11)not null,
+    assistance varchar(25)not null,
+    time_of_assistance datetime not null,
+    remark tinytext,
+    primary key(ID_road_report),
+    constraint FK_road_report_user foreign key(ID_user)references user(ID_user),
+    constraint FK_road_report_intervention foreign key(ID_intervention) references intervention(ID_intervention)
+);
+create table report(
+	ID_report int(11)not null,
+    ID_user int(11)not null,
+    ID_intervention int(11)not null,
+    remark tinytext,
+    closed datetime not null,
+    primary key(ID_report),
+    constraint FK_report_user foreign key(ID_user)references user(ID_user),
+    constraint FK_report_intervention foreign key(ID_intervention)references intervention(ID_intervention)
+);
