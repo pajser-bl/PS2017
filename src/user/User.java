@@ -23,7 +23,7 @@ public class User {
 	}
 	
 	public void setQualifications(String qualifications) {
-		this.qualification = qualification;
+		this.qualification = qualifications;
 	}
 	
 	public String getQualification( ) {

@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import com.mysql.cj.jdbc.MysqlDataSource;
 
 public class DataSourceFactory {
 	private final static Logger LOGGER = Logger.getLogger(DataSourceFactory.class.getName());
@@ -21,10 +21,10 @@ public class DataSourceFactory {
 			props.load(in);
 			in.close();
 
-			String driver = props.getProperty("jdbc.driver");
-			if (driver != null) {
-				Class.forName(driver);
-			}
+//			String driver = props.getProperty("jdbc.driver");
+//			if (driver != null) {
+//				Class.forName(driver);
+//			}
 			String url = props.getProperty("jdbc.url");
 			String username = props.getProperty("jdbc.username");
 			String password = props.getProperty("jdbc.password");
@@ -35,7 +35,7 @@ public class DataSourceFactory {
 			msDS.setPassword(password);
 		
 			return msDS;
-		} catch (IOException | ClassNotFoundException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 			LOGGER.log(Level.WARNING,"MySQLDataSource exception",e);
 		}
