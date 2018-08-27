@@ -7,7 +7,7 @@ public class Vrijeme {
 	public static LocalDateTime trenutnoVrijeme() {
 		return LocalDateTime.now();
 	}
-
+//	adsadsadasdad?
 	public static String formatDatum(LocalDateTime localDateTime) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.YYYY");
 		return simpleDateFormat.format(localDateTime);
