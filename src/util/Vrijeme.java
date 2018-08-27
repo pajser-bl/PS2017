@@ -8,6 +8,7 @@ public class Vrijeme {
 		return LocalDateTime.now();
 	}
 //	adsadsadasdad?
+//	ASFDSADD
 	public static String formatDatum(LocalDateTime localDateTime) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.YYYY");
 		return simpleDateFormat.format(localDateTime);
