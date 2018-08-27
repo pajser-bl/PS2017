@@ -11,4 +11,5 @@ public interface CredentialsDAO {
 	public int update(Credentials credentials);
 	public int delete(int ID_credentials);
 	public boolean checkUniqueUserame(String username);
+	public Credentials select(String username);
 }

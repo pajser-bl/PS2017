@@ -37,9 +37,9 @@ create table opearator(
     );
 create table vehicle(
     ID_vehicle int(11)not null auto_increment,
-    manufacturer varchar(25),
-    model varchar(25),
-    year date,
+    manufacturer varchar(25) default null,
+    model varchar(25) default null,
+    year year default null,
     registration varchar(10)not null,
     primary key(ID_vehicle)
 );

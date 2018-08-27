@@ -21,8 +21,10 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 	private static final String SQL_UPDATE = "UPDATE credentials SET username=?, password=? ,salt=? WHERE ID_credentials=?";
 	private static final String SQL_DELETE = "DELETE FROM credentials WHERE ID_credentials=?";
 	
-	private final static Logger LOGGER = Logger.getLogger(DataSourceFactory.class.getName());
-
+	private static final String SQL_UNIQUE_USERNAME = "";
+	private static final String SQL_SELECT_FROM_USERNAME = "SELECT * FROM credentials WHERE username=?";
+	
+	
 	@Override
 	public Credentials select(int ID_credentials) {
 		Credentials returnValue = null;
@@ -39,7 +41,6 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 				returnValue = new Credentials(rs.getInt("ID_credentials"), rs.getInt("ID_user"),
 						rs.getString("username"), rs.getString("password"),rs.getString("salt"));
 		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
 			e.printStackTrace();
 		}finally {
 			try {rs.close();ps.close();	c.close();}catch(SQLException e) {}
@@ -61,11 +62,7 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 			while (rs.next())
 				returnValue.add(new Credentials(rs.getInt("ID_credentials"), rs.getInt("ID_user"),
 						rs.getString("username"), rs.getString("password"),rs.getString("salt")));
-			c.close();
-			ps.close();
-			rs.close();
 		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
 			e.printStackTrace();
 		}finally {
 			try {rs.close();ps.close();	c.close();}catch(SQLException e) {}
@@ -88,10 +85,7 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 			ps.setObject(4, credentials.getPassword());
 			ps.setObject(5, credentials.getSalt());
 			retVal = ps.executeUpdate();
-			c.close();
-			ps.close();
 		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
 			e.printStackTrace();
 		}finally {
 			try {ps.close();c.close();}catch(SQLException e) {}
@@ -113,10 +107,7 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 			ps.setObject(3, credentials.getSalt());
 			ps.setObject(4, credentials.getID_user());
 			retVal = ps.executeUpdate();
-			c.close();
-			ps.close();
 		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
 			e.printStackTrace();
 		}finally {
 			try {ps.close();c.close();}catch(SQLException e) {}
@@ -135,10 +126,7 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 			ps =c.prepareStatement(SQL_DELETE, Statement.NO_GENERATED_KEYS);
 			ps.setObject(1, ID_credentials);
 			retVal = ps.executeUpdate();
-			c.close();
-			ps.close();
 		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
 			e.printStackTrace();
 		}finally {
 			try {ps.close();c.close();}catch(SQLException e) {}
@@ -150,6 +138,12 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 	public boolean checkUniqueUserame(String username) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public Credentials select(String username) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
