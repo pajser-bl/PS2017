@@ -1,7 +1,8 @@
 package DAO;
 
 import java.util.List;
-import model.InterventionCoordinate;
+
+import coordinates.InterventionCoordinate;
 
 public interface InterventionCoordinateDAO{
     public InterventionCoordinate select(int ID_coordinate);

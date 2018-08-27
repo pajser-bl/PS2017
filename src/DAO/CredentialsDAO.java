@@ -2,7 +2,7 @@ package DAO;
 
 import java.util.List;
 
-import model.Credentials;
+import model.users.Credentials;
 
 public interface CredentialsDAO {
 	public Credentials select(int ID_credentials);

@@ -1,4 +1,4 @@
-package model;
+package coordinates;
 
 public class Coordinate {
 	private double latitude;

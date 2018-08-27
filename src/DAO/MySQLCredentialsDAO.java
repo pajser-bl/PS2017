@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import model.Credentials;
+import model.users.Credentials;
 import utility.DataSourceFactory;
 
 public class MySQLCredentialsDAO implements CredentialsDAO{

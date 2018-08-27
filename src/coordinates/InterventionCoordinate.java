@@ -1,4 +1,4 @@
-package model;
+package coordinates;
 
 public class InterventionCoordinate extends Coordinate {
 	private int ID_intervention;
