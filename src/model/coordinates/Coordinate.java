@@ -1,4 +1,4 @@
-package coordinates;
+package model.coordinates;
 
 public class Coordinate {
 	private double latitude;
