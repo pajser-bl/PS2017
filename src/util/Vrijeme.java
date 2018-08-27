@@ -1,4 +1,4 @@
-package aplikativna_logika.util;
+package util;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
