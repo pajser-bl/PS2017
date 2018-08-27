@@ -1,4 +1,4 @@
-package user;
+package model.users;
 
 public class Operater extends User{
 
