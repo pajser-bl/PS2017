@@ -7,6 +7,6 @@ public class RoadsideTechinician extends User {
 	}
 	private String licenceID;
 	private String categoryVehicle;
-	private enum state;
+	private String state;
 
 }

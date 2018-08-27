@@ -1,8 +1,8 @@
 package user;
-import java.time.localdatetime;
+import java.time.LocalDateTime;
 
 public class User {
-	private static int userID = null;
+	private static int userID;
 	private LocalDateTime employmentDate;
 	private String qualification;
 	
