@@ -4,8 +4,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
-import ostalo.TimeUtil;
-import ostalo.User;
+import utility.TimeUtility;
+
 
 public class Server {
 
@@ -15,7 +15,7 @@ public class Server {
 	public static int SERVER_CONNECTION_LIMIT;
 	public static int SERVER_CONNECTION_COUNTER;
 	public static boolean SERVER_ONLINE;
-	public static HashMap<User,Socket> onlineUsers;
+//	public static HashMap<User,Socket> onlineUsers;
 	public static MapHandler mapHandler;
 	
 	public static void main(String args[]) {
@@ -23,7 +23,7 @@ public class Server {
 		setUpServer();
 		try {
 			ServerSocket serverSocket=new ServerSocket(SERVER_PORT);
-			System.out.println("["+TimeUtil.getCurrentTime()+"]Server is online, awaiting incoming user connections");
+			System.out.println("["+TimeUtility.getLDTNow()+"]Server is online, awaiting incoming user connections");
 			while(SERVER_ONLINE&&serverLimitNotReached()) {
 				Socket socket=serverSocket.accept();
 				SERVER_CONNECTION_COUNTER++;
@@ -42,7 +42,7 @@ public class Server {
 		SERVER_CONNECTION_LIMIT=100;
 		SERVER_CONNECTION_COUNTER=0;
 		SERVER_ONLINE=true;
-		onlineUsers=new HashMap<>();
+//		onlineUsers=new HashMap<>();
 	}
 	public static boolean serverLimitNotReached() {
 		return SERVER_CONNECTION_COUNTER<SERVER_CONNECTION_LIMIT;

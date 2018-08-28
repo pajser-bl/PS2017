@@ -11,8 +11,7 @@ import javax.sql.DataSource;
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 public class DataSourceFactory {
-	private final static Logger LOGGER = Logger.getLogger(DataSourceFactory.class.getName());
-
+	
 	public static DataSource getMySQLDataSource() {
 		MysqlDataSource msDS=null;
 		try {
@@ -37,7 +36,6 @@ public class DataSourceFactory {
 			return msDS;
 		} catch (IOException e) {
 			e.printStackTrace();
-			LOGGER.log(Level.WARNING,"MySQLDataSource exception",e);
 		}
 		return msDS;
 	}
