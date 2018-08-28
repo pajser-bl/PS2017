@@ -26,7 +26,7 @@ public class ServerThread extends Thread {
 			boolean loginCheck = true;
 			if (loginCheck) {
 				System.out.println("[" + TimeUtility.getLDTNow() + "]User " + " joined.");
-				
+				//test
 				Object a=(String) in.readObject();
 				Gson g=new Gson();
 				
