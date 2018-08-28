@@ -21,9 +21,7 @@ public class Intervention {
 		ID_client = iD_client;
 		ID_vehicle = iD_vehicle;
 		ID_user_opened = iD_user_opened;
-		ID_user_closed = iD_user_closed;
 		this.opened_on = opened_on;
-		this.closed_on = closed_on;
 		this.closed = closed;
 		this.tinytext = tinytext;
 	}
