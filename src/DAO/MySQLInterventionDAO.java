@@ -14,12 +14,12 @@ import utility.TimeUtility;
 
 public class MySQLInterventionDAO implements InterventionDAO {
 
-	private static final String SQL_SELECT = "SELECT * FROM intervention WHERE ID_vehicle=?";
+	private static final String SQL_SELECT = "SELECT * FROM intervention WHERE ID_intervention=?";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM intervention";
 	private static final String SQL_INSERT = "INSERT INTO intervention (ID_intervention,ID_client,ID_vehicle,ID_user_opened,ID_user_closed,opened_on,closed_on,closed, remark) VALUES (null,?,?,?,?,?,?,?,?,?)";
-	private static final String SQL_UPDATE = "UPDATE intervention SET ID_client=?,ID_vehicle=?,ID_user_opened=?,ID_user_closed=?,opened_on=?,closed_on=?,closed=?,remark=? WHERE ID_vehicle=?";
+	private static final String SQL_UPDATE = "UPDATE intervention SET ID_client=?,ID_vehicle=?,ID_user_opened=?,ID_user_closed=?,opened_on=?,closed_on=?,closed=?,remark=? WHERE ID_intervention=?";
 	private static final String SQL_DELETE = "DELETE FROM intervention WHERE ID_intervention=?";
-	private static final String SQL_CLOSE = "UPDATE intervention SET ID_user_closed=?,closed_on=?,closed=?,remark=? WHERE ID_vehicle=?";
+	private static final String SQL_CLOSE = "UPDATE intervention SET ID_user_closed=?,closed_on=?,closed=?,remark=? WHERE ID_intervention=?";
 
 	@Override
 	public Intervention select(int ID_intervention) {
@@ -42,12 +42,7 @@ public class MySQLInterventionDAO implements InterventionDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			try {
-				rs.close();
-				ps.close();
-				c.close();
-			} catch (SQLException e) {
-			}
+			try {rs.close();ps.close();c.close();} catch (SQLException e) {}
 		}
 		return returnValue;
 	}
