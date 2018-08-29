@@ -1,5 +1,10 @@
+/*
+	Ideja, kod i nacin rada sa https://crackstation.net
+	Za hash-ovanje String password-a se koristi createHash(String password) koji daje hash koji stoji u bazi podataka.
+	Za provjeru kredencijala se provjerava dostavljeni password i odgovarajuci hash-ovan sa verifyPassword(String password, String correctHash)
+	U BAZI NIKAKO NE SMIJE DA STOJI CLEAR-TEXT SIFRA!!!
+*/
 package utility;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
@@ -8,7 +13,7 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
 public class HashHandler {
-
+	
 	public static final String PBKDF2_ALGORITHM = "PBKDF2WithHmacSHA1";
 	// These constants may be changed without breaking existing hashes.
 	public static final int SALT_BYTE_SIZE = 24;
