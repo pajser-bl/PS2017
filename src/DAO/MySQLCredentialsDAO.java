@@ -14,8 +14,8 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 
 	private static final String SQL_SELECT = "SELECT * FROM credentials WHERE ID_credentials=?";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM credentials";
-	private static final String SQL_INSERT = "INSERT INTO credentials (ID_credentials,ID_user, username, password, salt) VALUES (?,?, ?, ?, ?)";
-	private static final String SQL_UPDATE = "UPDATE credentials SET username=?, password=? ,salt=? WHERE ID_credentials=?";
+	private static final String SQL_INSERT = "INSERT INTO credentials (ID_credentials,ID_user, username, hash) VALUES (?,?,?,?)";
+	private static final String SQL_UPDATE = "UPDATE credentials SET username=?, hash=? WHERE ID_credentials=?";
 	private static final String SQL_DELETE = "DELETE FROM credentials WHERE ID_credentials=?";
 	
 	private static final String SQL_UNIQUE_USERNAME = "SELECT EXISTS(SELECT 1 FROM credentials WHERE username=? limit 1)AS is_unique;";
@@ -36,7 +36,7 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 			rs = ps.executeQuery();
 			while (rs.next())
 				returnValue = new Credentials(rs.getInt("ID_credentials"), rs.getInt("ID_user"),
-						rs.getString("username"), rs.getString("password"),rs.getString("salt"));
+						rs.getString("username"), rs.getString("hash"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -58,7 +58,7 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 			rs = ps.executeQuery();
 			while (rs.next())
 				returnValue.add(new Credentials(rs.getInt("ID_credentials"), rs.getInt("ID_user"),
-						rs.getString("username"), rs.getString("password"),rs.getString("salt")));
+						rs.getString("username"), rs.getString("hash")));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -76,11 +76,10 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-			ps.setObject(1, credentials.getID_user());
+			ps.setObject(1, credentials.getID_credentials());//ID_user=ID_credentials
 			ps.setObject(2, credentials.getID_user());
 			ps.setObject(3, credentials.getUsername());
-			ps.setObject(4, credentials.getPassword());
-			ps.setObject(5, credentials.getSalt());
+			ps.setObject(4, credentials.getHash());
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -100,8 +99,7 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_UPDATE, Statement.NO_GENERATED_KEYS);
 			ps.setObject(1, credentials.getUsername());
-			ps.setObject(2, credentials.getPassword());
-			ps.setObject(3, credentials.getSalt());
+			ps.setObject(2, credentials.getHash());
 			ps.setObject(4, credentials.getID_user());
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
@@ -167,7 +165,7 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 			rs = ps.executeQuery();
 			while (rs.next())
 				returnValue = new Credentials(rs.getInt("ID_credentials"), rs.getInt("ID_user"),
-						rs.getString("username"), rs.getString("password"),rs.getString("salt"));
+						rs.getString("username"), rs.getString("hash"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
