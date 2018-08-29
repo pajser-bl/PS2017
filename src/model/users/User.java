@@ -2,7 +2,7 @@ package model.users;
 import java.time.LocalDateTime;
 
 public class User {
-	private static int userID;
+	private  int userID;
 	private LocalDateTime employmentDate;
 	private String qualification;
 	

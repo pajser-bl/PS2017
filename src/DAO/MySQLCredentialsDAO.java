@@ -7,9 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import model.users.Credentials;
 import utility.DataSourceFactory;
 
@@ -21,8 +18,8 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 	private static final String SQL_UPDATE = "UPDATE credentials SET username=?, password=? ,salt=? WHERE ID_credentials=?";
 	private static final String SQL_DELETE = "DELETE FROM credentials WHERE ID_credentials=?";
 	
-	private static final String SQL_UNIQUE_USERNAME = "";
-	private static final String SQL_SELECT_FROM_USERNAME = "SELECT * FROM credentials WHERE username=?";
+	private static final String SQL_UNIQUE_USERNAME = "SELECT EXISTS(SELECT 1 FROM credentials WHERE username=? limit 1)AS is_unique;";
+	private static final String SQL_SELECT_BY_USERNAME = "SELECT * FROM credentials WHERE username=?";
 	
 	
 	@Override
@@ -136,14 +133,47 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 
 	@Override
 	public boolean checkUniqueUserame(String username) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean returnValue = false;
+
+		Connection c = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			c = DataSourceFactory.getMySQLDataSource().getConnection();
+			ps = c.prepareStatement(SQL_UNIQUE_USERNAME);
+			ps.setString(1,username);
+			rs = ps.executeQuery();
+			returnValue=rs.getInt("is_unique")!=0;
+			return returnValue;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {rs.close();ps.close();	c.close();}catch(SQLException e) {}
+		}
+		return returnValue;
 	}
 
 	@Override
 	public Credentials select(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		Credentials returnValue = null;
+
+		Connection c = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			c = DataSourceFactory.getMySQLDataSource().getConnection();
+			ps = c.prepareStatement(SQL_SELECT_BY_USERNAME);
+			ps.setString(1,username);
+			rs = ps.executeQuery();
+			while (rs.next())
+				returnValue = new Credentials(rs.getInt("ID_credentials"), rs.getInt("ID_user"),
+						rs.getString("username"), rs.getString("password"),rs.getString("salt"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {rs.close();ps.close();	c.close();}catch(SQLException e) {}
+		}
+		return returnValue;
 	}
 
 }

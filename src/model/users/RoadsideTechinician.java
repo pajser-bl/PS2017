@@ -5,8 +5,6 @@ public class RoadsideTechinician extends User {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	private String licenceID;
-	private String categoryVehicle;
-	private String state;
+	
 
 }
