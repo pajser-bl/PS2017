@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import model.interventions.Intervention;
@@ -18,6 +19,7 @@ public class MySQLInterventionDAO implements InterventionDAO {
 	private static final String SQL_INSERT = "INSERT INTO intervention (ID_intervention,ID_client,ID_vehicle,ID_user_opened,ID_user_closed,opened_on,closed_on,closed, remark) VALUES (null,?,?,?,?,?,?,?,?,?)";
 	private static final String SQL_UPDATE = "UPDATE intervention SET ID_client=?,ID_vehicle=?,ID_user_opened=?,ID_user_closed=?,opened_on=?,closed_on=?,closed=?,remark=? WHERE ID_vehicle=?";
 	private static final String SQL_DELETE = "DELETE FROM intervention WHERE ID_intervention=?";
+	private static final String SQL_CLOSE = "UPDATE intervention SET ID_user_closed=?,closed_on=?,closed=?,remark=? WHERE ID_vehicle=?";
 
 	@Override
 	public Intervention select(int ID_intervention) {
@@ -143,6 +145,29 @@ public class MySQLInterventionDAO implements InterventionDAO {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_DELETE, Statement.NO_GENERATED_KEYS);
 			ps.setObject(1, ID_intervention);
+			retVal = ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {ps.close();c.close();}catch(SQLException e) {}
+		}
+		return retVal;
+	}
+
+	@Override
+	public int close(int ID_intervention, String remark, int ID_closed, LocalDateTime closed_on, boolean closed) {
+		int retVal=0;
+		Connection c = null;
+		PreparedStatement ps = null;
+		
+		try {
+			c = DataSourceFactory.getMySQLDataSource().getConnection();
+			ps =c.prepareStatement(SQL_CLOSE, Statement.NO_GENERATED_KEYS);
+			ps.setObject(1, ID_closed);
+			ps.setObject(2, closed_on);
+			ps.setObject(3, closed);
+			ps.setObject(4, remark);
+			ps.setObject(5, ID_intervention);
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
