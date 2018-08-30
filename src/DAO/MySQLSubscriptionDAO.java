@@ -36,8 +36,8 @@ public class MySQLSubscriptionDAO implements SubscriptionDAO {
 			rs = ps.executeQuery();
 			while (rs.next())
 				returnValue = new Subscription(rs.getInt("ID_subscription"), rs.getInt("ID_client"),
-						TimeUtility.stringToLocalDateTime(rs.getString("start_date")),
-						TimeUtility.stringToLocalDateTime( rs.getString("end_date")));
+						TimeUtility.stringToLocalDate(rs.getString("start_date")),
+						TimeUtility.stringToLocalDate( rs.getString("end_date")));
 		} catch (SQLException e) {
 			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
 			e.printStackTrace();
@@ -60,8 +60,8 @@ public class MySQLSubscriptionDAO implements SubscriptionDAO {
 			rs = ps.executeQuery();
 			while (rs.next())
 				returnValue.add(new Subscription(rs.getInt("ID_subscription"), rs.getInt("ID_client"),
-						TimeUtility.stringToLocalDateTime(rs.getString("start_date")),
-						TimeUtility.stringToLocalDateTime( rs.getString("end_date"))));
+						TimeUtility.stringToLocalDate(rs.getString("start_date")),
+						TimeUtility.stringToLocalDate( rs.getString("end_date"))));
 		} catch (SQLException e) {
 			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
 			e.printStackTrace();

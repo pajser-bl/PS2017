@@ -9,6 +9,7 @@ import DAO.SubscriptionDAO;
 import DAO.UserDAO;
 import DAO.VehicleDAO;
 import model.users.Client;
+import model.users.Subscription;
 import model.users.User;
 import utility.TimeUtility;
 import DAO.MySQLClientDAO;
@@ -56,8 +57,8 @@ public class MySQLTest {
 		}
 		clientDAO.delete(2);
 		
-		subDAO.insert(new Subsription(5, 2, TimeUtility.stringToLocalDate("2010-12-4")), TimeUtility.stringToLocalDate("2013-5-6"));
-		
+		subDAO.insert(new Subscription(5, TimeUtility.stringToLocalDate("2010-12-04")), TimeUtility.stringToLocalDate("2013-05-06"));
+		subDAO.update(new Subscription(6, TimeUtility.stringToLocalDate("2010-12-04")), TimeUtility.stringToLocalDate("2016-05-06"));
 		
 		
 		

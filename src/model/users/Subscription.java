@@ -1,6 +1,5 @@
 package model.users;
 
-import java.time.LocalDateTime;
 import java.time.LocalDate;
 
 public class Subscription {
