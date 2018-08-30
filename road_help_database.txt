@@ -1,4 +1,19 @@
-create schema road_help_database;
+create database if not exists road_help_database;
+use road_help_database;
+
+
+drop table if exists vehicle;
+drop table if exists coordinate;
+drop table if exists report;
+drop table if exists road_report;
+drop table if exists intervention;
+drop table if exists event;
+drop table if exists session;
+drop table if exists credentials;
+drop table if exists user;
+drop table if exists subscription;
+drop table if exists client;
+
 
 CREATE TABLE user (
     ID_user INT(11) NOT NULL AUTO_INCREMENT,
@@ -15,7 +30,7 @@ CREATE TABLE credentials (
     username VARCHAR(32) UNIQUE NOT NULL,
     hash VARCHAR(255) NOT NULL,
     PRIMARY KEY (ID_credentials),
-    CONSTRAINT FK_credentials_user FOREIGN KEY (ID_user)REFERENCES user (ID_user)
+    CONSTRAINT FK_credentials_user FOREIGN KEY (ID_user)REFERENCES user (ID_user)on delete no action on update no action
 );
 create table client(
 	ID_client int(11)not null auto_increment,
@@ -30,16 +45,7 @@ create table subscription(
     start_date date not null,
     end_date date not null,
     primary key(ID_subscription),
-    constraint FK_subscription_client foreign key(ID_client)references client(ID_client)
-);
-
-create table coordinate(
-	ID_coordinate int(11) not null,
-    ID_intervention int(11)not null,
-    latitude decimal(12,9)not null,
-    longitude decimal(12,9)not null,
-    primary key(ID_coordinate),
-    constraint FK_coordinate_intervention foreign key(ID_intervention) references intervention(ID_intervention)
+    constraint FK_subscription_client foreign key(ID_client)references client(ID_client)on delete no action on update no action
 );
 create table vehicle(
 	ID_vehicle int(11)not null auto_increment,
@@ -49,14 +55,13 @@ create table vehicle(
     registration varchar(10)not null,
     primary key(ID_vehicle)
 );
-
 create table session(
 	ID_session int(11)not null auto_increment,
     ID_user int(11)not null,
     start datetime not null,
     end datetime not null,
     primary key(ID_session),
-    constraint FK_session_user foreign key(ID_user) references user(ID_user)
+    constraint FK_session_user foreign key(ID_user) references user(ID_user)on delete no action on update no action
 );
 create table event(
 	ID_event int(11)not null auto_increment,
@@ -64,9 +69,8 @@ create table event(
     time datetime not null,
     action varchar(50)not null,
     primary key(ID_event,ID_session),
-    constraint FK_event_session foreign key(ID_session)references session(ID_session)
+    constraint FK_event_session foreign key(ID_session)references session(ID_session)on delete no action on update no action
 );
-
 create table intervention(
 	ID_intervention int(11) not null auto_increment,
     ID_client int(11) not null,
@@ -78,8 +82,8 @@ create table intervention(
     remark tinytext,
     closed boolean default false,
     primary key(ID_intervention),
-    constraint FK_intervention_user_opened foreign key(ID_user_opened)references user(ID_user),
-    constraint FK_intervention_user_closed foreign key(ID_user_closed)references user(ID_user)
+    constraint FK_intervention_user_opened foreign key(ID_user_opened)references user(ID_user)on delete no action on update no action,
+    constraint FK_intervention_user_closed foreign key(ID_user_closed)references user(ID_user)on delete no action on update no action
 );
 create table road_report(
 	ID_road_report int(11)not null,
@@ -89,8 +93,8 @@ create table road_report(
     time_of_assistance datetime not null,
     remark tinytext,
     primary key(ID_road_report),
-    constraint FK_road_report_user foreign key(ID_user)references user(ID_user),
-    constraint FK_road_report_intervention foreign key(ID_intervention) references intervention(ID_intervention)
+    constraint FK_road_report_user foreign key(ID_user)references user(ID_user)on delete no action on update no action,
+    constraint FK_road_report_intervention foreign key(ID_intervention) references intervention(ID_intervention)on delete no action on update no action
 );
 create table report(
 	ID_report int(11)not null,
@@ -99,6 +103,14 @@ create table report(
     remark tinytext,
     closed_on datetime not null,
     primary key(ID_report),
-    constraint FK_report_user foreign key(ID_user)references user(ID_user),
-    constraint FK_report_intervention foreign key(ID_intervention)references intervention(ID_intervention)
+    constraint FK_report_user foreign key(ID_user)references user(ID_user)on delete no action on update no action,
+    constraint FK_report_intervention foreign key(ID_intervention)references intervention(ID_intervention)on delete no action on update no action
+);
+create table coordinate(
+	ID_coordinate int(11) not null,
+    ID_intervention int(11)not null,
+    latitude decimal(12,9)not null,
+    longitude decimal(12,9)not null,
+    primary key(ID_coordinate),
+    constraint FK_coordinate_intervention foreign key(ID_intervention) references intervention(ID_intervention)on delete no action on update no action
 );

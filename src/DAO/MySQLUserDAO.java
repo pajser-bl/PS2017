@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 import model.users.User;
 import utility.DataSourceFactory;
 import utility.TimeUtility;
-import java.time.LocalDate;
 
 public class MySQLUserDAO implements UserDAO{
 	private static final String SQL_SELECT = "SELECT * FROM user WHERE ID_user=?";
