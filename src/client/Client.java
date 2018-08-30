@@ -6,6 +6,9 @@ import java.io.PrintWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.Gson;
 
 public class Client {
 
@@ -36,9 +39,12 @@ public class Client {
 	}
 	
 	public static void main(String[] args) {
-		Client client1 = new Client("192.168.1.13",9000);
-		String reply = new String();
-		reply = client1.sendRequest("Pitanje");
-		System.out.println(reply);
+		String s1 = "Prvi String"; String s2 = "Drugi String"; String s3 = "Treci String"; String s4 = "ZAHTJEV";
+		ArrayList<String> podaci = new ArrayList<String>();
+		podaci.add(s1); podaci.add(s2); podaci.add(s3);
+		Request request = new Request(s4, podaci);
+		String jsonResult = new Gson().toJson(request);
+		Request request1 = new Gson().fromJson(jsonResult, new TypeToken<Request>(){}.getType());
+		System.out.println(request1.toString());
 	}
 }
