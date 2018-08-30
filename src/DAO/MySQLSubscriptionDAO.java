@@ -10,23 +10,23 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.time.LocalDateTime;
-
-import model.users.User;
 import utility.DataSourceFactory;
 import utility.TimeUtility;
+import model.users.Client;
+import model.users.Subscription;
 
-public class MySQLUserDAO implements UserDAO{
-	private static final String SQL_SELECT = "SELECT * FROM user WHERE ID_user=?";
-	private static final String SQL_SELECT_ALL = "SELECT * FROM user";
-	private static final String SQL_INSERT = "INSERT INTO user (ID_user, name, surname, qualification, date_of_birth, employment_date) VALUES (?,?, ?, ?, ?, ?)";
-	private static final String SQL_UPDATE = "UPDATE user SET name=?, surname=? ,qualification=?, date_of_birth=?, employment_date=? WHERE ID_user=?";
-	private static final String SQL_DELETE = "DELETE FROM user WHERE ID_user=?";
+public class MySQLSubscriptionDAO implements SubscriptionDAO {
+	private static final String SQL_SELECT = "SELECT * FROM subscription WHERE ID_subscription=?";
+	private static final String SQL_SELECT_ALL = "SELECT * FROM subscription";
+	private static final String SQL_INSERT = "INSERT INTO subscription (ID_subscription, ID_client, start_date, end_date) VALUES (?,?, ?, ?)";
+	private static final String SQL_UPDATE = "UPDATE subscription SET ID_client=?, start_date=? , end_date=?  WHERE ID_subscription=?";
+	private static final String SQL_DELETE = "DELETE FROM subscription WHERE ID_subscription=?";
 	
 	private final static Logger LOGGER = Logger.getLogger(DataSourceFactory.class.getName());
 	
 	@Override
-	public User select(int userID) {
-		User returnValue = null;
+	public Subscription select(int ID_subscription) {
+		Subscription returnValue = null;
 
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -34,24 +34,24 @@ public class MySQLUserDAO implements UserDAO{
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps = c.prepareStatement(SQL_SELECT);
-			ps.setInt(1, userID);
+			ps.setInt(1, ID_subscription);
 			rs = ps.executeQuery();
 			while (rs.next())
-				returnValue = new User(rs.getString("name"), rs.getString("surname"), 
-						rs.getInt("userID"),TimeUtility.stringToLocalDateTime( rs.getString("employment_date")), 
-						TimeUtility.stringToLocalDateTime(rs.getString("date_of_birth")), rs.getString("qualification") );
+				returnValue = new Subscription(rs.getInt("ID_subscription"), rs.getInt("ID_client"),
+						TimeUtility.stringToLocalDateTime(rs.getString("start_date")),
+						TimeUtility.stringToLocalDateTime( rs.getString("end_date")));
 		} catch (SQLException e) {
 			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
 			e.printStackTrace();
-//		}finally {
-//			//stry {rs.close();ps.close();	c.close();}catch(SQLException e) {}
+		}finally {
+			try {rs.close();ps.close();	c.close();} catch(SQLException e) {}
 		}
 		return returnValue;
 	}
 	
 	@Override
-	public List<User> selectAll() {
-		List<User> returnValue = new ArrayList<>();
+	public List<Subscription> selectAll() {
+		List<Subscription> returnValue = new ArrayList<>();
 
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -61,9 +61,9 @@ public class MySQLUserDAO implements UserDAO{
 			ps = c.prepareStatement(SQL_SELECT_ALL);
 			rs = ps.executeQuery();
 			while (rs.next())
-				returnValue.add(new User(rs.getString("name"), rs.getString("surname"), 
-						rs.getInt("userID"),TimeUtility.stringToLocalDateTime( rs.getString("employment_date")), 
-						TimeUtility.stringToLocalDateTime(rs.getString("date_of_birth")), rs.getString("qualification")) );
+				returnValue.add(new Subscription(rs.getInt("ID_subscription"), rs.getInt("ID_client"),
+						TimeUtility.stringToLocalDateTime(rs.getString("start_date")),
+						TimeUtility.stringToLocalDateTime( rs.getString("end_date"))));
 		} catch (SQLException e) {
 			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
 			e.printStackTrace();
@@ -74,7 +74,7 @@ public class MySQLUserDAO implements UserDAO{
 	}
 	
 	@Override
-	public int insert(User user) {
+	public int insert(Subscription subscription) {
 		int retVal = 0;
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -82,12 +82,10 @@ public class MySQLUserDAO implements UserDAO{
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-			ps.setObject(1, user.getName());
-			ps.setObject(2, user.getSurname());
-			ps.setObject(3, user.getUserID());
-			ps.setObject(4, user.getEmployment_date());
-			ps.setObject(5, user.getDate_of_birth());
-			ps.setObject(6, user.getQualification());
+			ps.setObject(1, subscription.getID_subscription());
+			ps.setObject(2, subscription.getID_client());
+			ps.setObject(3, subscription.getStart_date());
+			ps.setObject(4, subscription.getEnd_date());
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
 			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
@@ -99,7 +97,7 @@ public class MySQLUserDAO implements UserDAO{
 	}
 	
 	@Override
-	public int update(User user) {
+	public int update(Subscription subscription) {
 		int retVal=0;
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -107,12 +105,11 @@ public class MySQLUserDAO implements UserDAO{
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_UPDATE, Statement.NO_GENERATED_KEYS);
-			ps.setObject(1, user.getName());
-			ps.setObject(2, user.getSurname());
-			ps.setObject(3, user.getUserID());
-			ps.setObject(4, user.getEmployment_date());
-			ps.setObject(5, user.getDate_of_birth());
-			ps.setObject(6, user.getQualification());
+			ps =c.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
+			ps.setObject(1, subscription.getID_subscription());
+			ps.setObject(2, subscription.getID_client());
+			ps.setObject(3, subscription.getStart_date());
+			ps.setObject(4, subscription.getEnd_date());
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
 			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
@@ -124,7 +121,7 @@ public class MySQLUserDAO implements UserDAO{
 	}
 	
 	@Override
-	public int delete(int userID) {
+	public int delete(int ID_subscription) {
 		int retVal=0;
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -132,7 +129,7 @@ public class MySQLUserDAO implements UserDAO{
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_DELETE, Statement.NO_GENERATED_KEYS);
-			ps.setObject(1, userID);
+			ps.setObject(1, ID_subscription);
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
 			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
