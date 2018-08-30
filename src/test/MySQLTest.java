@@ -43,6 +43,7 @@ public class MySQLTest {
 		RoadReportDAO roadReportDAO = new MySQLRoadReportDAO();
 		VehicleDAO vehicleDAO = new MySQLVehicleDAO();
 		
+
 		userDAO.insert(new User("A", "A", 1, TimeUtility.stringToLocalDate("1999-12-10") , "vss"));
 		userDAO.select(1);
 		System.out.println(userDAO);
@@ -56,6 +57,9 @@ public class MySQLTest {
 		
 		
 		
+
+		user.insert(new User("A", "A", 1, new LocalDate(1990, 11, 1), "vss"));
+
 		
 		
 		

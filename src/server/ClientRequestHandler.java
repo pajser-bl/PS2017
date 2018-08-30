@@ -1,5 +1,7 @@
 package server;
 
+import client.Request;
+
 public class ClientRequestHandler {
 	ClientControllerFacade clientControllerFacade;
 	
