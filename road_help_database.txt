@@ -5,46 +5,18 @@ CREATE TABLE user (
     name VARCHAR(50) NOT NULL,
     surname VARCHAR(50) NOT NULL,
     date_of_birth DATE NOT NULL,
-    qualification VARCHAR(255),
+    type VARCHAR(25)NOT NULL,
+    qualification VARCHAR(255)NOT NULL,
     PRIMARY KEY (ID_user)
 );
 CREATE TABLE credentials (
-    ID_credentials INT(11) NOT NULL AUTO_INCREMENT,
+    ID_credentials INT(11) NOT NULL,
     ID_user INT(11) NOT NULL,
     username VARCHAR(32) UNIQUE NOT NULL,
     hash VARCHAR(255) NOT NULL,
     PRIMARY KEY (ID_credentials),
     CONSTRAINT FK_credentials_user FOREIGN KEY (ID_user)REFERENCES user (ID_user)
 );
-create table administrator(
-	ID_administrator int(11)not null auto_increment,
-    ID_user int(11) not null,
-    primary key(ID_administrator),
-    constraint FK_administrator_user foreign key(ID_user) references user(ID_user)
-);
-create table supervisor(
-	ID_supervisor int(11)not null auto_increment,
-    ID_user int(11) not null,
-    primary key(ID_supervisor),
-    constraint FK_supervisor_user foreign key(ID_user) references user(ID_user)
-);
-create table operator(
-	ID_operator int(11)not null auto_increment,
-    ID_user int(11) not null,
-    primary key(ID_operator),
-    constraint FK_operator_user foreign key(ID_user) references user(ID_user)
-    );
-create table roadside_technician(
-	ID_roadside_technician int(11)not null auto_increment,
-    ID_user int(11) not null,
-    ID_vehicle int(11),
-    driver_licence_number varchar(16) unique not null,
-    driver_licence_categories varchar(50) not null,
-    primary key(ID_roadside_technician),
-    constraint FK_roadside_technician_user foreign key(ID_user) references user(ID_user),
-    constraint FK_roadside_technician_vehicle foreign key(ID_vehicle) references vehicle(ID_vehicle)
-    );
-
 create table client(
 	ID_client int(11)not null auto_increment,
     name varchar(50) not null,
@@ -104,7 +76,7 @@ create table intervention(
     opened_on datetime not null,
     closed_on datetime,
     remark tinytext,
-    closed boolean,
+    closed boolean default false,
     primary key(ID_intervention),
     constraint FK_intervention_user_opened foreign key(ID_user_opened)references user(ID_user),
     constraint FK_intervention_user_closed foreign key(ID_user_closed)references user(ID_user)
@@ -130,6 +102,3 @@ create table report(
     constraint FK_report_user foreign key(ID_user)references user(ID_user),
     constraint FK_report_intervention foreign key(ID_intervention)references intervention(ID_intervention)
 );
-
-
-
