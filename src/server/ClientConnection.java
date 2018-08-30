@@ -12,7 +12,6 @@ public class ClientConnection extends Thread{
 	private Socket socket;
 	private BufferedReader input;
 	private PrintWriter output;
-	//asdf
 	public ClientConnection (Socket socket) {
 		try {
 			this.socket = socket;
@@ -30,9 +29,16 @@ public class ClientConnection extends Thread{
 		catch(Exception e) {
 			System.out.println("Otvaranje input/outpu streama nije uspjelo !");
 		}
+		try {
+			System.out.println(input.readLine());
+			sendReply();
+		}
+		catch(Exception e) {
+			System.out.println("Porslo nesto ali ne valja");
+		}
 	}
 	
-	public void sendReply(Request request){
+	public void sendReply(){
 		output.write("Odgovor");
 	}
 } 
