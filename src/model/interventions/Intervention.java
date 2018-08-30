@@ -12,22 +12,22 @@ public class Intervention {
 	LocalDateTime opened_on;
 	LocalDateTime closed_on;
 	boolean closed;
-	String tinytext;
+	String remark;
 	
 	
 	public Intervention(int iD_client, int iD_vehicle, int iD_user_opened, int iD_user_closed, LocalDateTime opened_on,
-			LocalDateTime closed_on, boolean closed, String tinytext) {
+			LocalDateTime closed_on, String remark, boolean closed) {
 		super();
 		ID_client = iD_client;
 		ID_vehicle = iD_vehicle;
 		ID_user_opened = iD_user_opened;
 		this.opened_on = opened_on;
 		this.closed = closed;
-		this.tinytext = tinytext;
+		this.remark = remark;
 	}
 
 	public Intervention(int iD_intervention, int iD_client, int iD_vehicle, int iD_user_opened, int iD_user_closed,
-			LocalDateTime opened_on, LocalDateTime closed_on, boolean closed, String tinytext) {
+			LocalDateTime opened_on, LocalDateTime closed_on, String remark, boolean closed) {
 		super();
 		ID_intervention = iD_intervention;
 		ID_client = iD_client;
@@ -37,7 +37,7 @@ public class Intervention {
 		this.opened_on = opened_on;
 		this.closed_on = closed_on;
 		this.closed = closed;
-		this.tinytext = tinytext;
+		this.remark = remark;
 	}
 	
 	public int getID_intervention() {
@@ -88,11 +88,11 @@ public class Intervention {
 	public void setClosed(boolean closed) {
 		this.closed = closed;
 	}
-	public String getTinytext() {
-		return tinytext;
+	public String getRemark() {
+		return remark;
 	}
-	public void setTinytext(String tinytext) {
-		this.tinytext = tinytext;
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 	
 	

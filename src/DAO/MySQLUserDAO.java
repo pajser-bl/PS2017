@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.time.LocalDateTime;
-
 import model.users.User;
 import utility.DataSourceFactory;
 import utility.TimeUtility;

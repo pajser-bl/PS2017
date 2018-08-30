@@ -7,9 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import model.users.Credentials;
 import utility.DataSourceFactory;
 
@@ -17,12 +14,12 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 
 	private static final String SQL_SELECT = "SELECT * FROM credentials WHERE ID_credentials=?";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM credentials";
-	private static final String SQL_INSERT = "INSERT INTO credentials (ID_credentials,ID_user, username, password, salt) VALUES (?,?, ?, ?, ?)";
-	private static final String SQL_UPDATE = "UPDATE credentials SET username=?, password=? ,salt=? WHERE ID_credentials=?";
+	private static final String SQL_INSERT = "INSERT INTO credentials (ID_credentials,ID_user, username, hash) VALUES (?,?,?,?)";
+	private static final String SQL_UPDATE = "UPDATE credentials SET username=?, hash=? WHERE ID_credentials=?";
 	private static final String SQL_DELETE = "DELETE FROM credentials WHERE ID_credentials=?";
 	
-	private static final String SQL_UNIQUE_USERNAME = "";
-	private static final String SQL_SELECT_FROM_USERNAME = "SELECT * FROM credentials WHERE username=?";
+	private static final String SQL_UNIQUE_USERNAME = "SELECT EXISTS(SELECT 1 FROM credentials WHERE username=? limit 1)AS is_unique;";
+	private static final String SQL_SELECT_BY_USERNAME = "SELECT * FROM credentials WHERE username=?";
 	
 	
 	@Override
@@ -39,7 +36,7 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 			rs = ps.executeQuery();
 			while (rs.next())
 				returnValue = new Credentials(rs.getInt("ID_credentials"), rs.getInt("ID_user"),
-						rs.getString("username"), rs.getString("password"),rs.getString("salt"));
+						rs.getString("username"), rs.getString("hash"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -61,7 +58,7 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 			rs = ps.executeQuery();
 			while (rs.next())
 				returnValue.add(new Credentials(rs.getInt("ID_credentials"), rs.getInt("ID_user"),
-						rs.getString("username"), rs.getString("password"),rs.getString("salt")));
+						rs.getString("username"), rs.getString("hash")));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -79,11 +76,10 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-			ps.setObject(1, credentials.getID_user());
+			ps.setObject(1, credentials.getID_credentials());//ID_user=ID_credentials
 			ps.setObject(2, credentials.getID_user());
 			ps.setObject(3, credentials.getUsername());
-			ps.setObject(4, credentials.getPassword());
-			ps.setObject(5, credentials.getSalt());
+			ps.setObject(4, credentials.getHash());
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -103,8 +99,7 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_UPDATE, Statement.NO_GENERATED_KEYS);
 			ps.setObject(1, credentials.getUsername());
-			ps.setObject(2, credentials.getPassword());
-			ps.setObject(3, credentials.getSalt());
+			ps.setObject(2, credentials.getHash());
 			ps.setObject(4, credentials.getID_user());
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
@@ -136,14 +131,47 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 
 	@Override
 	public boolean checkUniqueUserame(String username) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean returnValue = false;
+
+		Connection c = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			c = DataSourceFactory.getMySQLDataSource().getConnection();
+			ps = c.prepareStatement(SQL_UNIQUE_USERNAME);
+			ps.setString(1,username);
+			rs = ps.executeQuery();
+			returnValue=rs.getInt("is_unique")!=0;
+			return returnValue;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {rs.close();ps.close();	c.close();}catch(SQLException e) {}
+		}
+		return returnValue;
 	}
 
 	@Override
 	public Credentials select(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		Credentials returnValue = null;
+
+		Connection c = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			c = DataSourceFactory.getMySQLDataSource().getConnection();
+			ps = c.prepareStatement(SQL_SELECT_BY_USERNAME);
+			ps.setString(1,username);
+			rs = ps.executeQuery();
+			while (rs.next())
+				returnValue = new Credentials(rs.getInt("ID_credentials"), rs.getInt("ID_user"),
+						rs.getString("username"), rs.getString("hash"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {rs.close();ps.close();	c.close();}catch(SQLException e) {}
+		}
+		return returnValue;
 	}
 
 }

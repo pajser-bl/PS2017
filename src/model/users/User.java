@@ -2,12 +2,13 @@ package model.users;
 import java.time.LocalDateTime;
 
 public class User {
-	protected String name;
-	protected String surname;
-	protected int userID = 0;
-	protected LocalDateTime employment_date;
-	protected LocalDateTime date_of_birth;
-	protected String qualification;
+
+	private String name;
+	private String surname;
+	private int userID;
+	private LocalDateTime employment_date;
+	private LocalDateTime date_of_birth;
+	private String qualification;
 	
 	
 	
@@ -44,7 +45,7 @@ public class User {
 	public String getQualification( ) {
 		return qualification;
 	}
-	
+
 	public void setUserID(int userID) {
 		this.userID = userID;
 	}

@@ -9,11 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.time.LocalDateTime;
-
 import model.users.Client;
 import utility.DataSourceFactory;
-import utility.TimeUtility;
 
 public class MySQLClientDAO implements ClientDAO {
 	private static final String SQL_SELECT = "SELECT * FROM user WHERE ID_client=?";

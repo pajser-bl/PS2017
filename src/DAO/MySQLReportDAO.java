@@ -5,26 +5,24 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
-
-import model.users.Event;
+import model.interventions.Report;
 import utility.DataSourceFactory;
+import utility.TimeUtility;
 
-public class MySQLEventDAO implements EventDAO {
+public class MySQLReportDAO implements ReportDAO{
+
+	private static final String SQL_SELECT = "SELECT * FROM report WHERE ID_report=?";
+	private static final String SQL_SELECT_ALL = "SELECT * FROM report";
+	private static final String SQL_INSERT = "INSERT INTO report (ID_report,ID_user,ID_intervention, remark,closed_on) VALUES (?,?,?,?)";
+	private static final String SQL_UPDATE = "UPDATE report SET ID_report=?,ID_user=?,ID_intervention=?, remark=?,closed_on=? WHERE ID_report=?";
+	private static final String SQL_DELETE = "DELETE FROM report WHERE ID_report=?";
 	
-	private static final String SQL_SELECT = "SELECT * FROM event WHERE ID_event=?";
-	private static final String SQL_SELECT_ALL = "SELECT * FROM event WHERE ID_session=?";
-	private static final String SQL_INSERT = "INSERT INTO event (ID_event,ID_session, time, action) VALUES (null,?, ?, ?)";
-	private static final String SQL_UPDATE = "UPDATE event SET action=?, session_ID=? ,timeStamp=? WHERE ID_event=?";
-	private static final String SQL_DELETE = "DELETE FROM event WHERE ID_event=?";
 	
 	@Override
-	public Event select(int ID_event) {
-		Event returnValue = null;
+	public Report select(int ID_report) {
+		Report returnValue = null;
 
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -32,22 +30,21 @@ public class MySQLEventDAO implements EventDAO {
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps = c.prepareStatement(SQL_SELECT);
-			ps.setInt(1,ID_event);
+			ps.setInt(1, ID_report);
 			rs = ps.executeQuery();
 			while (rs.next())
-				returnValue = new Event(rs.getInt("ID_event"), rs.getInt("ID_session"),
-						LocalDateTime.parse(rs.getString("time"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), rs.getString("action"));
+				returnValue = new Report(rs.getInt("ID_report"), rs.getInt("ID_user"),rs.getInt("ID_intervention"), rs.getString("remark"),TimeUtility.stringToLocalDateTime(rs.getString("closed_on")));
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
-			try {rs.close();ps.close();	c.close();}catch(SQLException e) {}
+		} finally {
+			try {rs.close();ps.close();c.close();} catch (SQLException e) {}
 		}
 		return returnValue;
 	}
 
 	@Override
-	public List<Event> selectBySession(int ID_session) {
-		List<Event> returnValue = new ArrayList<>();
+	public List<Report> selectAll() {
+		List<Report> returnValue = new ArrayList<>();
 
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -55,22 +52,20 @@ public class MySQLEventDAO implements EventDAO {
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps = c.prepareStatement(SQL_SELECT_ALL);
-			ps.setInt(1,ID_session);
 			rs = ps.executeQuery();
 			while (rs.next())
-				returnValue.add(new Event(rs.getInt("ID_event"), rs.getInt("ID_session"),
-						LocalDateTime.parse(rs.getString("time"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), rs.getString("action")));
+				returnValue.add(new Report(rs.getInt("ID_report"), rs.getInt("ID_user"),rs.getInt("ID_intervention"), rs.getString("remark"),TimeUtility.stringToLocalDateTime(rs.getString("closed_on"))));
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
-			try {rs.close();ps.close();	c.close();}catch(SQLException e) {}
+		} finally {
+			try {
+				rs.close();ps.close();c.close();} catch (SQLException e) {}
 		}
 		return returnValue;
-
 	}
 
 	@Override
-	public int insert(Event event) {
+	public int insert(Report report) {
 		int retVal = 0;
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -78,9 +73,11 @@ public class MySQLEventDAO implements EventDAO {
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-			ps.setObject(1, event.getID_session());
-			ps.setObject(2, event.getTimeStamp());
-			ps.setObject(3, event.getAction());
+			ps.setObject(1, report.getID_report());//ID_report = ID_intervention!!!
+			ps.setObject(2, report.getID_user());
+			ps.setObject(3, report.getID_intervention());
+			ps.setObject(4, report.getRemark());
+			ps.setObject(5, report.getClosed_on());
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -91,21 +88,21 @@ public class MySQLEventDAO implements EventDAO {
 	}
 
 	@Override
-	public int update(Event  event) {
-		int retVal=0;
+	public int update(Report report) {
+		int retVal = 0;
 		Connection c = null;
 		PreparedStatement ps = null;
 		
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
-			ps =c.prepareStatement(SQL_UPDATE, Statement.NO_GENERATED_KEYS);
-			ps.setObject(1, event.getID_event());
-			ps.setObject(2, event.getID_session());
-			ps.setObject(3, event.getTimeStamp());
-			ps.setObject(4, event.getAction());
+			ps =c.prepareStatement(SQL_UPDATE, Statement.RETURN_GENERATED_KEYS);
+			ps.setObject(1, report.getID_user());
+			ps.setObject(2, report.getID_intervention());
+			ps.setObject(3, report.getRemark());
+			ps.setObject(4, report.getClosed_on());
+			ps.setObject(5, report.getID_report());
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
-			//LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
 			e.printStackTrace();
 		}finally {
 			try {ps.close();c.close();}catch(SQLException e) {}
@@ -114,7 +111,7 @@ public class MySQLEventDAO implements EventDAO {
 	}
 
 	@Override
-	public int delete(int ID_event) {
+	public int delete(int ID_report) {
 		int retVal=0;
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -122,16 +119,14 @@ public class MySQLEventDAO implements EventDAO {
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_DELETE, Statement.NO_GENERATED_KEYS);
-			ps.setObject(1, ID_event);
+			ps.setObject(1, ID_report);
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
-			//LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
 			e.printStackTrace();
 		}finally {
 			try {ps.close();c.close();}catch(SQLException e) {}
 		}
 		return retVal;
 	}
-
 	
 }

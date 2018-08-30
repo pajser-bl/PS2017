@@ -1,36 +1,50 @@
 package server;
+
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
-import ostalo.TimeUtil;
-import ostalo.User;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-public class ServerThread extends Thread{
+import utility.TimeUtility;
+
+public class ServerThread extends Thread {
 	private Socket socket;
-	
+	private ObjectInputStream in;
+	private ObjectOutputStream out;
 	public ServerThread(Socket socket) {
-		this.socket=socket;
+		this.socket = socket;
 	}
-	
-	
-	
+
 	@Override
 	public void run() {
-		//login check i postaviti temp da bude user, za sad uvjek true
-		User user=new User("test");
-		boolean loginCheck=true;
-		if(loginCheck) {
-			Server.onlineUsers.put(user,socket);
-			System.out.println("["+TimeUtil.getCurrentTime()+"]User "+user.toString()+" joined.");
-		}else {
-			try {
+		try {
+			// login check i postaviti temp da bude user, za sad uvjek true
+			boolean loginCheck = true;
+			if (loginCheck) {
+				System.out.println("[" + TimeUtility.getLDTNow() + "]User " + " joined.");
+				//test
+				Object a=(String) in.readObject();
+				Gson g=new Gson();
+				
+				ArrayList<String> l=g.fromJson(a.toString(),TypeToken.get( new ArrayList<String>().getClass()).getType());
+				for(String s:l)System.out.println(s);
+				
+				ArrayList<String> r=new ArrayList<>();
+				r.add("A");
+				r.add("B");
+				
+				out.writeObject(g.toJson(r));
+			} else {
 				socket.close();
-			} catch (IOException e) {
-				e.printStackTrace();
+				System.out.println("[" + TimeUtility.getLDTNow() + "]Unsuccessful attempt at login user:");
 			}
-			System.out.println("["+TimeUtil.getCurrentTime()+"]Unsuccessful attempt at login user:"+user.toString());
-		}
-		
+		} catch (IOException |ClassNotFoundException e) {
+			e.printStackTrace();
+		} 
 	}
-	
+
 }

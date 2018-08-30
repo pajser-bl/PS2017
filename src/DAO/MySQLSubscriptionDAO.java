@@ -9,10 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.time.LocalDateTime;
 import utility.DataSourceFactory;
 import utility.TimeUtility;
-import model.users.Client;
 import model.users.Subscription;
 
 public class MySQLSubscriptionDAO implements SubscriptionDAO {

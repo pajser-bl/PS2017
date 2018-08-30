@@ -1,10 +1,6 @@
 package model.users;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-
-import model.users.Event;
-import model.users.User;
 
 public class Session {
 
