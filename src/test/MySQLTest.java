@@ -44,23 +44,31 @@ public class MySQLTest {
 		RoadReportDAO roadReportDAO = new MySQLRoadReportDAO();
 		VehicleDAO vehicleDAO = new MySQLVehicleDAO();
 		
-		User u1=new User(1,"A", "A", TimeUtility.stringToLocalDate("1990-10-1"), "Administrator","vss");
+		userDAO.delete(1);
+		User u1=new User(1,"A", "A", TimeUtility.stringToLocalDate("1990-10-01"), "Administrator","vss");
 		userDAO.insert(u1);
+		System.out.println(u1);
+		userDAO.update(new User(1, "M", "M", TimeUtility.stringToLocalDate("1990-10-01"), "Administrator","vss"));
+		
+		User u2 = new User(4, "G", "G", TimeUtility.stringToLocalDate("1990-10-02"), "Supervizor","vss");
+		userDAO.insert(u2);
+		System.out.println(u2);
 		
 		
 		
-		clientDAO.insert(new Client(2,"Marko", "Markovic", "65656656565"));
-		clientDAO.insert(new Client(3, "M", "M", "2737747"));
-		clientDAO.update(new Client(2,"Marko", "Markovic", "565757575757"));
-		for(Client c : clientDAO.selectAll()) {
-			System.out.println(c.toString());
-		}
-		clientDAO.delete(2);
 		
-		subDAO.insert(new Subscription(5, TimeUtility.stringToLocalDate("2010-12-04")), TimeUtility.stringToLocalDate("2013-05-06"));
-		subDAO.update(new Subscription(6, TimeUtility.stringToLocalDate("2010-12-04")), TimeUtility.stringToLocalDate("2016-05-06"));
-		
-		
+//		clientDAO.insert(new Client(2,"Marko", "Markovic", "65656656565"));
+//		clientDAO.insert(new Client(3, "M", "M", "2737747"));
+//		clientDAO.update(new Client(2,"Marko", "Markovic", "565757575757"));
+//		for(Client c : clientDAO.selectAll()) {
+//			System.out.println(c.toString());
+//		}
+//		clientDAO.delete(2);
+//		
+//		subDAO.insert(new Subscription(5,3, TimeUtility.stringToLocalDate("2010-12-04"), TimeUtility.stringToLocalDate("2013-05-06")));
+//		subDAO.update(new Subscription(5,3, TimeUtility.stringToLocalDate("2010-12-04"), TimeUtility.stringToLocalDate("2016-05-06")));
+//		subDAO.insert(new Subscription(8,3, TimeUtility.stringToLocalDate("2010-12-04"), TimeUtility.stringToLocalDate("2013-05-06")));
+//		
 		
 		
 		

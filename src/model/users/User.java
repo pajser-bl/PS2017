@@ -26,7 +26,7 @@ public class User {
 	public String toString() {
 		String s = "";
 		s += "Ime: " + name + "\nPrezime: " + surname;
-		s += "\nKorisnicki ID: " + ID_user +  "\nStrucna sprema: " + qualification;
+		s += "\nKorisnicki ID: " + ID_user + "\nTip: " + type +  "\nStrucna sprema: " + qualification;
 		return s;
 	}
 	

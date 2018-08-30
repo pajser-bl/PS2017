@@ -37,12 +37,6 @@ public class Subscription {
 		this.start_date = start_date;
 		this.end_date = end_date;
 	}
-	public Subscription(int iD_subscription, LocalDate start_date, LocalDate end_date) {
-		super();
-		ID_subscription = iD_subscription;
-		this.start_date = start_date;
-		this.end_date = end_date;
-	}
 	
 	
 }
