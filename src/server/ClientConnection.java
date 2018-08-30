@@ -1,6 +1,12 @@
 package server;
 
 import java.util.ArrayList;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import client.Request;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.PrintWriter;
@@ -8,7 +14,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
-public class ClientConnection extends Thread{
+public class ClientConnection extends Thread {
 	private Socket socket;
 	private BufferedReader input;
 	private PrintWriter output;
@@ -30,15 +36,15 @@ public class ClientConnection extends Thread{
 			System.out.println("Otvaranje input/outpu streama nije uspjelo !");
 		}
 		try {
-			System.out.println(input.readLine());
-			sendReply();
+			ArrayList<String> reply = new Gson().fromJson(input.readLine(), new TypeToken<ArrayList<String>>(){}.getType());
+			sendReply(reply);
 		}
 		catch(Exception e) {
 			System.out.println("Porslo nesto ali ne valja");
 		}
 	}
 	
-	public void sendReply(){
-		output.println("Odgovor");
+	public void sendReply(ArrayList<String> reply){
+		output.println();
 	}
 } 

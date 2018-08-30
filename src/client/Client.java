@@ -27,10 +27,10 @@ public class Client {
 		}
 	}
 	
-	public String sendRequest(String request) {
-		output.println(request);
+	public String sendRequest(Request request) {
+		output.println(new Gson().toJson(request));
 		try {
-			return input.readLine();
+			return new Gson().fromJson(input.readLine(), new TypeToken<Request>(){}.getType());
 		}
 		catch(Exception e) {
 			System.out.println("Greska kod odogvora");
@@ -43,8 +43,7 @@ public class Client {
 		ArrayList<String> podaci = new ArrayList<String>();
 		podaci.add(s1); podaci.add(s2); podaci.add(s3);
 		Request request = new Request(s4, podaci);
-		String jsonResult = new Gson().toJson(request);
-		Request request1 = new Gson().fromJson(jsonResult, new TypeToken<Request>(){}.getType());
-		System.out.println(request1.toString());
+		Client client = new Client("192.168.1.13", 9000);
+		System.out.println(client.sendRequest(request));
 	}
 }
