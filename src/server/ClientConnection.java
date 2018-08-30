@@ -36,11 +36,12 @@ public class ClientConnection extends Thread {
 			System.out.println("Otvaranje input/outpu streama nije uspjelo !");
 		}
 		try {
-			String jsonRequest = input.readLine();
-			System.out.println(jsonRequest);
+//			String jsonRequest = input.readLine();
+//			System.out.println(jsonRequest);
 			Request request = new Gson().fromJson(input.readLine(), new TypeToken<Request>(){}.getType());
 			ArrayList<String> reply = request.getRequest();
 			sendReply(new Gson().toJson(reply));
+			System.out.println("SSSS");
 		}
 		catch(Exception e) {
 			System.out.println("Porslo nesto ali ne valja");
