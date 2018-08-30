@@ -40,7 +40,7 @@ public class MySQLTest {
 		RoadReportDAO roadReport = new MySQLRoadReportDAO();
 		VehicleDAO vehicle = new MySQLVehicleDAO();
 		
-		user.insert(new User("A", "A", 1, new LocalDate(1990, 11, 1), "vss");
+		user.insert(new User("A", "A", 1, new LocalDate(1990, 11, 1), "vss"));
 		
 		
 		
