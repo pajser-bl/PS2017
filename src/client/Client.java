@@ -34,4 +34,9 @@ public class Client {
 			return "Nema odgovora";
 		}
 	}
+	
+	public static void main(String[] args) {
+		Client client1 = new Client("192.168.1.13",9000);
+		System.out.println(client1.sendRequest("AsdAsdAsd"));
+	}
 }
