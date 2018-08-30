@@ -1,6 +1,7 @@
 package utility;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -31,5 +32,16 @@ public class TimeUtility {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss");
 		LocalDateTime localDateTime = LocalDateTime.parse(stringDateTime, formatter);
 		return localDateTime;
+	}
+	
+	public static LocalDate stringToLocalDate(String date) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd");
+		LocalDate localDate = LocalDate.parse(date, formatter);
+		return localDate;
+	}
+	
+	public static String localDateToDBString(LocalDate localDate) {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd");
+		return simpleDateFormat.format(localDate);
 	}
 }
