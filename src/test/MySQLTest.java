@@ -8,6 +8,7 @@ import DAO.SessionDAO;
 import DAO.SubscriptionDAO;
 import DAO.UserDAO;
 import DAO.VehicleDAO;
+import client.Client;
 import model.users.User;
 import utility.TimeUtility;
 import DAO.MySQLClientDAO;

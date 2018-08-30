@@ -34,7 +34,7 @@ public class MySQLClientDAO implements ClientDAO {
 			ps.setInt(1, ID_client);
 			rs = ps.executeQuery();
 			while (rs.next())
-				returnValue = new Client(rs.getInt("ID_client"), rs.getString("name"), rs.getString("surname"), rs.getInt("phone_number"));
+				returnValue = new Client(rs.getInt("ID_client"), rs.getString("name"), rs.getString("surname"), rs.getString("phone_number"));
 		} catch (SQLException e) {
 			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
 			e.printStackTrace();
@@ -56,7 +56,7 @@ public class MySQLClientDAO implements ClientDAO {
 			ps = c.prepareStatement(SQL_SELECT_ALL);
 			rs = ps.executeQuery();
 			while (rs.next())
-				returnValue.add(new Client(rs.getInt("ID_client"), rs.getString("name"), rs.getString("surname"), rs.getInt("phone_number")));
+				returnValue.add(new Client(rs.getInt("ID_client"), rs.getString("name"), rs.getString("surname"), rs.getString("phone_number")));
 		} catch (SQLException e) {
 			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
 			e.printStackTrace();
