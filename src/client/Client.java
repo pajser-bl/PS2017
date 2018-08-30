@@ -1,51 +1,44 @@
 package client;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.PrintWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-
-import server.Request;
 
 public class Client {
-	public static final String SERVER_IP_ADDRESS="127.0.0.1";
-	public static final int PORT=9000;
+
+	Socket socket;
+	BufferedReader input;
+	PrintWriter output;
 	
-	public static void main(String args[]) throws ClassNotFoundException {
-		
-		Socket socket;
+	public Client(String host, int port) {
 		try {
-			socket = new Socket(SERVER_IP_ADDRESS,PORT);
-			ObjectInputStream input=new ObjectInputStream(socket.getInputStream());
-			ObjectOutputStream output=new ObjectOutputStream(socket.getOutputStream());
-		
-			ArrayList<Object> mes=new ArrayList<>();
-			mes.add(new String("user"));
-			mes.add(new String("password"));
-			Request request=new Request("LOGIN", mes);
-		
-			output.writeObject(request);
-			System.out.print(input.readObject().toString());
-		
-		
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		socket = new Socket(host, port);
+		input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 		}
-		
-		
-		
-		
-		
-		
+		catch(Exception e) {
+			System.out.println("Veza nije uspostavljena !");
+		}
 	}
 	
+	public String sendRequest(String request) {
+		output.println(request);
+		try {
+			return input.readLine();
+		}
+		catch(Exception e) {
+			System.out.println("Greska kod odogvora");
+			return "Nema odgovora";
+		}
+	}
 	
-	
-	
+	public static void main(String[] args) {
+		Client client1 = new Client("192.168.1.13",9000);
+		String reply = new String();
+		reply = client1.sendRequest("Pitanje");
+		System.out.println(reply);
+	}
 }
