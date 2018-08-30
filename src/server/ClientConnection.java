@@ -39,6 +39,6 @@ public class ClientConnection extends Thread{
 	}
 	
 	public void sendReply(){
-		output.write("Odgovor");
+		output.println("Odgovor");
 	}
 } 

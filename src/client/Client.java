@@ -25,7 +25,7 @@ public class Client {
 	}
 	
 	public String sendRequest(String request) {
-		output.write(request);
+		output.println(request);
 		try {
 			return input.readLine();
 		}
@@ -37,6 +37,8 @@ public class Client {
 	
 	public static void main(String[] args) {
 		Client client1 = new Client("192.168.1.13",9000);
-		System.out.println(client1.sendRequest("AsdAsdAsd"));
+		String reply = new String();
+		reply = client1.sendRequest("Pitanje");
+		System.out.println(reply);
 	}
 }
