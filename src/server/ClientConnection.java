@@ -12,7 +12,7 @@ public class ClientConnection extends Thread{
 	private Socket socket;
 	private BufferedReader input;
 	private PrintWriter output;
-	
+	//asdf
 	public ClientConnection (Socket socket) {
 		try {
 			this.socket = socket;
