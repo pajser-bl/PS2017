@@ -12,12 +12,13 @@ import java.util.logging.Logger;
 import model.users.User;
 import utility.DataSourceFactory;
 import utility.TimeUtility;
+import java.time.LocalDate;
 
 public class MySQLUserDAO implements UserDAO{
 	private static final String SQL_SELECT = "SELECT * FROM user WHERE ID_user=?";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM user";
-	private static final String SQL_INSERT = "INSERT INTO user (ID_user, name, surname, qualification, date_of_birth, employment_date) VALUES (?,?, ?, ?, ?, ?)";
-	private static final String SQL_UPDATE = "UPDATE user SET name=?, surname=? ,qualification=?, date_of_birth=?, employment_date=? WHERE ID_user=?";
+	private static final String SQL_INSERT = "INSERT INTO user (ID_user, name, surname, qualification, date_of_birth) VALUES (?,?, ?, ?, ?)";
+	private static final String SQL_UPDATE = "UPDATE user SET name=?, surname=? ,qualification=?, date_of_birth=?  WHERE ID_user=?";
 	private static final String SQL_DELETE = "DELETE FROM user WHERE ID_user=?";
 	
 	private final static Logger LOGGER = Logger.getLogger(DataSourceFactory.class.getName());
@@ -36,8 +37,7 @@ public class MySQLUserDAO implements UserDAO{
 			rs = ps.executeQuery();
 			while (rs.next())
 				returnValue = new User(rs.getString("name"), rs.getString("surname"), 
-						rs.getInt("userID"),TimeUtility.stringToLocalDateTime( rs.getString("employment_date")), 
-						TimeUtility.stringToLocalDateTime(rs.getString("date_of_birth")), rs.getString("qualification") );
+						rs.getInt("userID"), TimeUtility.stringToLocalDate(rs.getString("date_of_birth")), rs.getString("qualification") );
 		} catch (SQLException e) {
 			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
 			e.printStackTrace();
@@ -60,8 +60,8 @@ public class MySQLUserDAO implements UserDAO{
 			rs = ps.executeQuery();
 			while (rs.next())
 				returnValue.add(new User(rs.getString("name"), rs.getString("surname"), 
-						rs.getInt("userID"),TimeUtility.stringToLocalDateTime( rs.getString("employment_date")), 
-						TimeUtility.stringToLocalDateTime(rs.getString("date_of_birth")), rs.getString("qualification")) );
+						rs.getInt("userID"), 
+						TimeUtility.stringToLocalDate(rs.getString("date_of_birth")), rs.getString("qualification")) );
 		} catch (SQLException e) {
 			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
 			e.printStackTrace();
@@ -80,12 +80,11 @@ public class MySQLUserDAO implements UserDAO{
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-			ps.setObject(1, user.getName());
-			ps.setObject(2, user.getSurname());
-			ps.setObject(3, user.getUserID());
-			ps.setObject(4, user.getEmployment_date());
-			ps.setObject(5, user.getDate_of_birth());
-			ps.setObject(6, user.getQualification());
+			ps.setObject(1, user.getUserID());
+			ps.setObject(2, user.getName());
+			ps.setObject(3, user.getSurname());
+			ps.setObject(4, user.getDate_of_birth());
+			ps.setObject(5, user.getQualification());
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
 			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
@@ -107,10 +106,9 @@ public class MySQLUserDAO implements UserDAO{
 			ps =c.prepareStatement(SQL_UPDATE, Statement.NO_GENERATED_KEYS);
 			ps.setObject(1, user.getName());
 			ps.setObject(2, user.getSurname());
-			ps.setObject(3, user.getUserID());
-			ps.setObject(4, user.getEmployment_date());
-			ps.setObject(5, user.getDate_of_birth());
-			ps.setObject(6, user.getQualification());
+			ps.setObject(3, user.getDate_of_birth());
+			ps.setObject(4, user.getQualification());
+			ps.setObject(5, user.getUserID());
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
 			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
