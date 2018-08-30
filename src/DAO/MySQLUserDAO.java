@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class MySQLUserDAO implements UserDAO{
 	private static final String SQL_SELECT = "SELECT * FROM user WHERE ID_user=?";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM user";
-	private static final String SQL_INSERT = "INSERT INTO user (ID_user, name, surname, date_of_birth, type, qualification) VALUES (?,?,?,?,?.?)";
+	private static final String SQL_INSERT = "INSERT INTO user (ID_user, name, surname, date_of_birth, type, qualification) VALUES (?,?,?,?,?,?)";
 	private static final String SQL_UPDATE = "UPDATE user SET name=?, surname=? , date_of_birth=? , type=? , qualification=?,   WHERE ID_user=?";
 	private static final String SQL_DELETE = "DELETE FROM user WHERE ID_user=?";
 	
