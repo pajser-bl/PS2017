@@ -8,7 +8,7 @@ import DAO.SessionDAO;
 import DAO.SubscriptionDAO;
 import DAO.UserDAO;
 import DAO.VehicleDAO;
-import client.Client;
+import model.users.Client;
 import model.users.User;
 import utility.TimeUtility;
 import DAO.MySQLClientDAO;
@@ -31,23 +31,32 @@ import DAO.InterventionDAO;
 
 public class MySQLTest {
 	public static void main(String [] args) {
-		UserDAO user = new MySQLUserDAO();
-		ClientDAO client = new MySQLClientDAO();
-		SubscriptionDAO sub = new MySQLSubscriptionDAO();
-		CredentialsDAO cred = new MySQLCredentialsDAO();
-		EventDAO event = new MySQLEventDAO();
-		SessionDAO session = new MySQLSessionDAO();
-		InterventionCoordinateDAO coordinate = new MySQLInterventionCoordinateDAO();
-		InterventionDAO intervention = new MySQLInterventionDAO();
-		ReportDAO report = new MySQLReportDAO();
-		RoadReportDAO roadReport = new MySQLRoadReportDAO();
-		VehicleDAO vehicle = new MySQLVehicleDAO();
+		UserDAO userDAO = new MySQLUserDAO();
+		ClientDAO clientDAO = new MySQLClientDAO();
+		SubscriptionDAO subDAO = new MySQLSubscriptionDAO();
+		CredentialsDAO credDAO = new MySQLCredentialsDAO();
+		EventDAO eventDAO = new MySQLEventDAO();
+		SessionDAO sessionDAO = new MySQLSessionDAO();
+		InterventionCoordinateDAO coordinateDAO = new MySQLInterventionCoordinateDAO();
+		InterventionDAO interventionDAO = new MySQLInterventionDAO();
+		ReportDAO reportDAO = new MySQLReportDAO();
+		RoadReportDAO roadReportDAO = new MySQLRoadReportDAO();
+		VehicleDAO vehicleDAO = new MySQLVehicleDAO();
 		
 		User u1=new User(1,"A", "A", TimeUtility.stringToLocalDate("1990-10-1"), "Administrator","vss");
-		user.insert(u1);
+		userDAO.insert(u1);
 		
 		
 		
+		clientDAO.insert(new Client(2,"Marko", "Markovic", "65656656565"));
+		clientDAO.insert(new Client(3, "M", "M", "2737747"));
+		clientDAO.update(new Client(2,"Marko", "Markovic", "565757575757"));
+		for(Client c : clientDAO.selectAll()) {
+			System.out.println(c.toString());
+		}
+		clientDAO.delete(2);
+		
+		subDAO.insert(new Subsription(5, 2, TimeUtility.stringToLocalDate("2010-12-4")), TimeUtility.stringToLocalDate("2013-5-6"));
 		
 		
 		

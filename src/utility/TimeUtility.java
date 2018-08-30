@@ -35,9 +35,9 @@ public class TimeUtility {
 	}
 	
 	public static LocalDate stringToLocalDate(String date) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd");
-		LocalDate localDate = LocalDate.parse(date, formatter);
-		return localDate;
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd");
+//		LocalDate localDate = formatter.parse(date);
+		return LocalDate.parse(date);
 	}
 	
 	public static String localDateToDBString(LocalDate localDate) {
