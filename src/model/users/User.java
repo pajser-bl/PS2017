@@ -4,19 +4,29 @@ import java.time.LocalDateTime;
 
 public class User {
 
+	private int ID_user;
 	private String name;
 	private String surname;
-	private int userID;
 	private LocalDate date_of_birth;
+	private String type;
 	private String qualification;
 	
-	
-	
+	public User(int iD_user, String name, String surname, LocalDate date_of_birth, String type, String qualification) {
+		super();
+		ID_user = iD_user;
+		this.name = name;
+		this.surname = surname;
+		this.date_of_birth = date_of_birth;
+		this.setType(type);
+		this.qualification = qualification;
+	}
+
+
 	@Override
 	public String toString() {
 		String s = "";
 		s += "Ime: " + name + "\nPrezime: " + surname;
-		s += "\nKorisnicki ID: " + userID +  "\nStrucna sprema: " + qualification;
+		s += "\nKorisnicki ID: " + ID_user +  "\nStrucna sprema: " + qualification;
 		return s;
 	}
 	
@@ -45,33 +55,28 @@ public class User {
 		return qualification;
 	}
 
-	public void setUserID(int userID) {
-		this.userID = userID;
+	public void setID_user(int ID_user) {
+		this.ID_user = ID_user;
 	}
 
-	public int getUserID() {
-		return userID;
+	public int getID_user() {
+		return ID_user;
 	}
-	
-
 	public LocalDate getDate_of_birth() {
 		return date_of_birth;
 	}
-
 	public void setDate_of_birth(LocalDate date_of_birth) {
 		this.date_of_birth = date_of_birth;
 	}
 
-	public User(String name, String surname, int userID, LocalDate date_of_birth,
-			String qualification) {
-		super();
-		this.name = name;
-		this.surname = surname;
-		this.userID = userID;
-		this.date_of_birth = date_of_birth;
-		this.qualification = qualification;
+
+	public String getType() {
+		return type;
 	}
 
-	
+
+	public void setType(String type) {
+		this.type = type;
+	}
 	
 }
