@@ -8,6 +8,9 @@ import DAO.SessionDAO;
 import DAO.SubscriptionDAO;
 import DAO.UserDAO;
 import DAO.VehicleDAO;
+import client.Client;
+import model.users.User;
+import utility.TimeUtility;
 import DAO.MySQLClientDAO;
 import DAO.MySQLCredentialsDAO;
 import DAO.MySQLEventDAO;
@@ -40,7 +43,8 @@ public class MySQLTest {
 		RoadReportDAO roadReport = new MySQLRoadReportDAO();
 		VehicleDAO vehicle = new MySQLVehicleDAO();
 		
-		user.insert(new User("A", "A", 1, new LocalDate(1990, 11, 1), "vss");
+		User u1=new User(1,"A", "A", TimeUtility.stringToLocalDate("1990-10-1"), "Administrator","vss");
+		user.insert(u1);
 		
 		
 		
