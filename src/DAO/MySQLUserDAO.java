@@ -14,7 +14,7 @@ import utility.TimeUtility;
 public class MySQLUserDAO implements UserDAO{
 	private static final String SQL_SELECT = "SELECT * FROM user WHERE ID_user=?";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM user";
-	private static final String SQL_INSERT = "INSERT INTO user (ID_user, name, surname, date_of_birth, type, qualification) VALUES (?,?,?,?,?,?)";
+	private static final String SQL_INSERT = "INSERT INTO user (ID_user, name, surname, date_of_birth, type, qualification) VALUES (null,?,?,?,?,?)";
 	private static final String SQL_UPDATE = "UPDATE user SET name=?, surname=? , date_of_birth=? , type=? , qualification=?   WHERE ID_user=?";
 	private static final String SQL_DELETE = "DELETE FROM user WHERE ID_user=?";
 	
@@ -73,12 +73,11 @@ public class MySQLUserDAO implements UserDAO{
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-			ps.setObject(1, user.getID_user());
-			ps.setObject(2, user.getName());
-			ps.setObject(3, user.getSurname());
-			ps.setObject(4, user.getDate_of_birth());
-			ps.setObject(5, user.getType());
-			ps.setObject(6, user.getQualification());
+			ps.setObject(1, user.getName());
+			ps.setObject(2, user.getSurname());
+			ps.setObject(3, user.getDate_of_birth());
+			ps.setObject(4, user.getType());
+			ps.setObject(5, user.getQualification());
 			ps.executeUpdate();
 			rs=ps.getGeneratedKeys();
 			if(rs.next())

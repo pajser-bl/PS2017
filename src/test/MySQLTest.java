@@ -54,22 +54,22 @@ public class MySQLTest {
 		
 		
 		
-		System.out.println("USER TEST");
-		System.out.println("test:user-insert:");
-		User u1 = new User(1, "A", "A", TimeUtility.stringToLocalDate("1990-10-01"), "Administrator", "vss");
-		User u2 = new User(2, "G", "G", TimeUtility.stringToLocalDate("1990-10-02"), "Supervizor", "vss");
-		scan.nextLine();
-		System.out.println(userDAO.insert(u1));
-		System.out.println(userDAO.insert(u2));
-		System.out.println("test:user-update:");
-		scan.nextLine();
-		System.out.println(userDAO.update(new User(1, "M", "M", TimeUtility.stringToLocalDate("1990-10-01"), "Administrator", "vss")));
-		System.out.println("test:user-delete:");
-		scan.nextLine();
-		System.out.println(userDAO.delete(1));
-		System.out.println("test:user-select:");
-		scan.nextLine();
-		System.out.println(userDAO.select(2));
+//		System.out.println("USER TEST");
+//		System.out.println("test:user-insert:");
+//		User u1 = new User(1, "A", "A", TimeUtility.stringToLocalDate("1990-10-01"), "Administrator", "vss");
+//		User u2 = new User(2, "G", "G", TimeUtility.stringToLocalDate("1990-10-02"), "Supervizor", "vss");
+//		scan.nextLine();
+//		System.out.println(userDAO.insert(u1));
+//		System.out.println(userDAO.insert(u2));
+//		System.out.println("test:user-update:");
+//		scan.nextLine();
+//		System.out.println(userDAO.update(new User(1, "M", "M", TimeUtility.stringToLocalDate("1990-10-01"), "Administrator", "vss")));
+//		System.out.println("test:user-delete:");
+//		scan.nextLine();
+//		System.out.println(userDAO.delete(1));
+//		System.out.println("test:user-select:");
+//		scan.nextLine();
+//		System.out.println(userDAO.select(2));
 		
 //		System.out.println("CLIENT TEST");
 //		System.out.println("test:client-insert:");
@@ -117,7 +117,7 @@ public class MySQLTest {
 //		System.out.println("test:session-select:");
 //		scan.nextLine();
 //		System.out.println(sessionDAO.select(i-1));
-		
+//		
 		
 		
 //		System.out.println("EVENT TEST");

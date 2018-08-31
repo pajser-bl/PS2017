@@ -12,14 +12,21 @@ public class User {
 	
 	public User(int iD_user, String name, String surname, LocalDate date_of_birth, String type, String qualification) {
 		super();
-		ID_user = iD_user;
+		this.ID_user = iD_user;
 		this.name = name;
 		this.surname = surname;
 		this.date_of_birth = date_of_birth;
 		this.setType(type);
 		this.qualification = qualification;
 	}
-
+	public User( String name, String surname, LocalDate date_of_birth, String type, String qualification) {
+		super();
+		this.name = name;
+		this.surname = surname;
+		this.date_of_birth = date_of_birth;
+		this.setType(type);
+		this.qualification = qualification;
+	}
 
 	@Override
 	public String toString() {
