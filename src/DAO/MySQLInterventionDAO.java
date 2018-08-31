@@ -82,7 +82,7 @@ public class MySQLInterventionDAO implements InterventionDAO {
 		int retVal = 0;
 		Connection c = null;
 		PreparedStatement ps = null;
-		
+		ResultSet rs=null;
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
@@ -94,11 +94,14 @@ public class MySQLInterventionDAO implements InterventionDAO {
 			ps.setObject(6, intervention.getClosed_on());
 			ps.setObject(7, intervention.getRemark());
 			ps.setObject(8, intervention.isClosed());
-			retVal = ps.executeUpdate();
+			ps.executeUpdate();
+			rs=ps.getGeneratedKeys();
+			if(rs.next())
+				retVal=rs.getInt(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			try {ps.close();c.close();}catch(SQLException e) {}
+			try {rs.close();ps.close();c.close();}catch(SQLException e) {}
 		}
 		return retVal;
 	}

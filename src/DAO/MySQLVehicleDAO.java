@@ -71,7 +71,7 @@ public class MySQLVehicleDAO implements VehicleDAO{
 		int retVal = 0;
 		Connection c = null;
 		PreparedStatement ps = null;
-		
+		ResultSet rs=null;
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
@@ -79,11 +79,14 @@ public class MySQLVehicleDAO implements VehicleDAO{
 			ps.setObject(2, vehicle.getManufacturer());
 			ps.setObject(3, vehicle.getModel());
 			ps.setObject(4, vehicle.getYear());
-			retVal = ps.executeUpdate();
+			ps.executeUpdate();
+			rs=ps.getGeneratedKeys();
+			if(rs.next())
+				retVal=rs.getInt(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			try {ps.close();c.close();}catch(SQLException e) {}
+			try {rs.close();ps.close();c.close();}catch(SQLException e) {}
 		}
 		return retVal;
 	}

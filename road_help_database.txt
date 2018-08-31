@@ -59,7 +59,7 @@ create table session(
 	ID_session int(11)not null auto_increment,
     ID_user int(11)not null,
     start datetime not null,
-    end datetime not null,
+    end datetime default null,
     primary key(ID_session),
     constraint FK_session_user foreign key(ID_user) references user(ID_user)on delete no action on update no action
 );

@@ -29,14 +29,16 @@ public class TimeUtility {
 		return simpleDateFormat.format(localDateTime);
 	}
 	public static LocalDateTime stringToLocalDateTime(String stringDateTime) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss");
+		if(stringDateTime==null)return null;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		LocalDateTime localDateTime = LocalDateTime.parse(stringDateTime, formatter);
 		return localDateTime;
 	}
 	
-	public static LocalDate stringToLocalDate(String date) {
+	public static LocalDate stringToLocalDate(String stringDate) {
+		if(stringDate==null)return null;
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDate localDate = LocalDate.parse(date, formatter);
+		LocalDate localDate = LocalDate.parse(stringDate, formatter);
 		return localDate;
 	}
 	

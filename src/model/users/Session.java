@@ -28,6 +28,17 @@ public class Session {
 		this.end = end;
 	}
 
+	public Session(int sessionID, int userID, LocalDateTime start) {
+		super();
+		this.sessionID = sessionID;
+		this.userID = userID;
+		this.start = start;
+	}
+	public Session( int userID, LocalDateTime start) {
+		super();
+		this.userID = userID;
+		this.start = start;
+	}
 	public LocalDateTime getEnd() {
 		return end;
 	}
@@ -51,13 +62,6 @@ public class Session {
 
 	public void setUserID(int userID) {
 		this.userID = userID;
-	}
-
-	public Session(int userID, LocalDateTime start, LocalDateTime end) {
-		super();
-		this.userID = userID;
-		this.start = start;
-		this.end = end;
 	}
 
 }

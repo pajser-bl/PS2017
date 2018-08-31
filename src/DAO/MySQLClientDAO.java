@@ -7,19 +7,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.users.Client;
 import utility.DataSourceFactory;
 
 public class MySQLClientDAO implements ClientDAO {
-	private static final String SQL_SELECT = "SELECT * FROM user WHERE ID_client=?";
+	private static final String SQL_SELECT = "SELECT * FROM client WHERE ID_client=?";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM client";
 	private static final String SQL_INSERT = "INSERT INTO client (ID_client, name, surname, phone_number) VALUES (?,?, ?, ?)";
-	private static final String SQL_UPDATE = "UPDATE user SET name=?, surname=? , phone_number=?  WHERE ID_client=?";
+	private static final String SQL_UPDATE = "UPDATE client SET name=?, surname=? , phone_number=?  WHERE ID_client=?";
 	private static final String SQL_DELETE = "DELETE FROM client WHERE ID_client=?";
 	
-	private final static Logger LOGGER = Logger.getLogger(DataSourceFactory.class.getName());
 	
 	@Override
 	public Client select(int ID_client) {
@@ -36,7 +33,6 @@ public class MySQLClientDAO implements ClientDAO {
 			while (rs.next())
 				returnValue = new Client(rs.getInt("ID_client"), rs.getString("name"), rs.getString("surname"), rs.getString("phone_number"));
 		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
 			e.printStackTrace();
 		}finally {
 			try {rs.close();ps.close();	c.close();} catch(SQLException e) {}
@@ -58,7 +54,6 @@ public class MySQLClientDAO implements ClientDAO {
 			while (rs.next())
 				returnValue.add(new Client(rs.getInt("ID_client"), rs.getString("name"), rs.getString("surname"), rs.getString("phone_number")));
 		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
 			e.printStackTrace();
 		}finally {
 			try {rs.close();ps.close();	c.close();}catch(SQLException e) {}
@@ -71,7 +66,7 @@ public class MySQLClientDAO implements ClientDAO {
 		int retVal = 0;
 		Connection c = null;
 		PreparedStatement ps = null;
-		
+		ResultSet rs=null;
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
@@ -79,12 +74,14 @@ public class MySQLClientDAO implements ClientDAO {
 			ps.setObject(2, client.getName());
 			ps.setObject(3, client.getSurname());
 			ps.setObject(4, client.getPhone_number());
-			retVal = ps.executeUpdate();
+			ps.executeUpdate();
+			rs=ps.getGeneratedKeys();
+			if(rs.next())
+				retVal=rs.getInt(1);
 		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
 			e.printStackTrace();
 		}finally {
-			try {ps.close();c.close();}catch(SQLException e) {}
+			try {rs.close();ps.close();c.close();}catch(SQLException e) {}
 		}
 		return retVal;
 	}
@@ -98,13 +95,12 @@ public class MySQLClientDAO implements ClientDAO {
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_UPDATE, Statement.NO_GENERATED_KEYS);
-			ps.setObject(1, client.getID_client());
-			ps.setObject(2, client.getName());
-			ps.setObject(3, client.getSurname());
-			ps.setObject(4, client.getPhone_number());
+			ps.setObject(1, client.getName());
+			ps.setObject(2, client.getSurname());
+			ps.setObject(3, client.getPhone_number());
+			ps.setObject(4, client.getID_client());
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
 			e.printStackTrace();
 		}finally {
 			try {ps.close();c.close();}catch(SQLException e) {}
@@ -124,7 +120,6 @@ public class MySQLClientDAO implements ClientDAO {
 			ps.setObject(1, ID_client);
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, this.getClass() + " exception:", e);
 			e.printStackTrace();
 		}finally {
 			try {ps.close();c.close();}catch(SQLException e) {}
