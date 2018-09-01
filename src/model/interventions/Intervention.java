@@ -14,6 +14,13 @@ public class Intervention {
 	boolean closed;
 	String remark;
 	
+	public Intervention(int iD_client, int iD_vehicle, int iD_user_opened, LocalDateTime opened_on) {
+		super();
+		ID_client = iD_client;
+		ID_vehicle = iD_vehicle;
+		ID_user_opened = iD_user_opened;
+		this.opened_on = opened_on;
+	}
 	
 	public Intervention(int iD_client, int iD_vehicle, int iD_user_opened, int iD_user_closed, LocalDateTime opened_on,
 			LocalDateTime closed_on, String remark, boolean closed) {

@@ -1,13 +1,14 @@
-package DAO;
+package DAO.MySQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
+
+import DAO.VehicleDAO;
 import model.Vehicle;
 import utility.DataSourceFactory;
 
@@ -16,7 +17,7 @@ public class MySQLVehicleDAO implements VehicleDAO{
 	private static final String SQL_SELECT = "SELECT * FROM vehicle WHERE ID_vehicle=?";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM vehicle";
 	private static final String SQL_INSERT = "INSERT INTO vehicle (ID_vehicle,registration,manufacturer,model, year) VALUES (null,?, ?, ?, ?)";
-	private static final String SQL_UPDATE = "UPDATE credentials SET registration=?, manufacturer=?, model=?, year=? WHERE ID_vehicle=?";
+	private static final String SQL_UPDATE = "UPDATE vehicle SET registration=?, manufacturer=?, model=?, year=? WHERE ID_vehicle=?";
 	private static final String SQL_DELETE = "DELETE FROM vehicle WHERE ID_vehicle=?";
 	
 	
@@ -35,7 +36,7 @@ public class MySQLVehicleDAO implements VehicleDAO{
 			rs = ps.executeQuery();
 			while (rs.next())
 				returnValue = new Vehicle(rs.getInt("ID_vehicle"), rs.getString("registration"),
-						rs.getString("manufacturer"), rs.getString("model"),Year.parse(rs.getString("year")));
+						rs.getString("manufacturer"), rs.getString("model"),rs.getShort("year"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -57,7 +58,7 @@ public class MySQLVehicleDAO implements VehicleDAO{
 			rs = ps.executeQuery();
 			while (rs.next())
 				returnValue.add(new Vehicle(rs.getInt("ID_vehicle"), rs.getString("registration"),
-						rs.getString("manufacturer"), rs.getString("model"),Year.parse(rs.getString("year"))));
+						rs.getString("manufacturer"), rs.getString("model"),rs.getShort("year")));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {

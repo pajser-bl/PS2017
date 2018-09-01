@@ -1,28 +1,29 @@
-package DAO;
+package DAO.MySQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import model.users.Event;
-import utility.DataSourceFactory;
 
-public class MySQLEventDAO implements EventDAO {
+import DAO.UserDAO;
+import model.users.User;
+import utility.DataSourceFactory;
+import utility.TimeUtility;
+
+public class MySQLUserDAO implements UserDAO{
+	private static final String SQL_SELECT = "SELECT * FROM user WHERE ID_user=?";
+	private static final String SQL_SELECT_ALL = "SELECT * FROM user";
+	private static final String SQL_INSERT = "INSERT INTO user (ID_user, name, surname, date_of_birth, type, qualification) VALUES (null,?,?,?,?,?)";
+	private static final String SQL_UPDATE = "UPDATE user SET name=?, surname=? , date_of_birth=? , type=? , qualification=?   WHERE ID_user=?";
+	private static final String SQL_DELETE = "DELETE FROM user WHERE ID_user=?";
 	
-	private static final String SQL_SELECT = "SELECT * FROM event WHERE ID_event=?";
-	private static final String SQL_SELECT_ALL = "SELECT * FROM event WHERE ID_session=?";
-	private static final String SQL_INSERT = "INSERT INTO event (ID_event,ID_session, time, action) VALUES (null,?, ?, ?)";
-	private static final String SQL_UPDATE = "UPDATE event SET  ID_session=? ,time=?,action=? WHERE ID_event=?";
-	private static final String SQL_DELETE = "DELETE FROM event WHERE ID_event=?";
 	
 	@Override
-	public Event select(int ID_event) {
-		Event returnValue = null;
+	public User select(int userID) {
+		User returnValue = null;
 
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -30,11 +31,11 @@ public class MySQLEventDAO implements EventDAO {
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps = c.prepareStatement(SQL_SELECT);
-			ps.setInt(1,ID_event);
+			ps.setInt(1, userID);
 			rs = ps.executeQuery();
 			while (rs.next())
-				returnValue = new Event(rs.getInt("ID_event"), rs.getInt("ID_session"),
-						LocalDateTime.parse(rs.getString("time"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), rs.getString("action"));
+				returnValue = new User(rs.getInt("ID_user"),rs.getString("name"), rs.getString("surname"), 
+						 TimeUtility.stringToLocalDate(rs.getString("date_of_birth")),rs.getString("type"), rs.getString("qualification") );
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -42,10 +43,10 @@ public class MySQLEventDAO implements EventDAO {
 		}
 		return returnValue;
 	}
-
+	
 	@Override
-	public List<Event> selectBySession(int ID_session) {
-		List<Event> returnValue = new ArrayList<>();
+	public List<User> selectAll() {
+		List<User> returnValue = new ArrayList<>();
 
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -53,22 +54,20 @@ public class MySQLEventDAO implements EventDAO {
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps = c.prepareStatement(SQL_SELECT_ALL);
-			ps.setInt(1,ID_session);
 			rs = ps.executeQuery();
 			while (rs.next())
-				returnValue.add(new Event(rs.getInt("ID_event"), rs.getInt("ID_session"),
-						LocalDateTime.parse(rs.getString("time"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), rs.getString("action")));
+				returnValue.add(new User(rs.getInt("ID_user"),rs.getString("name"), rs.getString("surname"), 
+						 TimeUtility.stringToLocalDate(rs.getString("date_of_birth")),rs.getString("type"), rs.getString("qualification")));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
 			try {rs.close();ps.close();	c.close();}catch(SQLException e) {}
 		}
 		return returnValue;
-
 	}
-
+	
 	@Override
-	public int insert(Event event) {
+	public int insert(User user) {
 		int retVal = 0;
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -76,10 +75,13 @@ public class MySQLEventDAO implements EventDAO {
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-			ps.setObject(1, event.getID_session());
-			ps.setObject(2, event.getTimeStamp());
-			ps.setObject(3, event.getAction());
-			retVal = ps.executeUpdate();rs=ps.getGeneratedKeys();
+			ps.setObject(1, user.getName());
+			ps.setObject(2, user.getSurname());
+			ps.setObject(3, user.getDate_of_birth());
+			ps.setObject(4, user.getType());
+			ps.setObject(5, user.getQualification());
+			ps.executeUpdate();
+			rs=ps.getGeneratedKeys();
 			if(rs.next())
 				retVal=rs.getInt(1);
 		} catch (SQLException e) {
@@ -89,9 +91,9 @@ public class MySQLEventDAO implements EventDAO {
 		}
 		return retVal;
 	}
-
+	
 	@Override
-	public int update(Event  event) {
+	public int update(User user) {
 		int retVal=0;
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -99,10 +101,12 @@ public class MySQLEventDAO implements EventDAO {
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_UPDATE, Statement.NO_GENERATED_KEYS);
-			ps.setObject(4, event.getID_event());
-			ps.setObject(1, event.getID_session());
-			ps.setObject(2, event.getTimeStamp());
-			ps.setObject(3, event.getAction());
+			ps.setObject(1, user.getName());
+			ps.setObject(2, user.getSurname());
+			ps.setObject(3, user.getDate_of_birth());
+			ps.setObject(4, user.getType());
+			ps.setObject(5, user.getQualification());
+			ps.setObject(6, user.getID_user());
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -111,9 +115,9 @@ public class MySQLEventDAO implements EventDAO {
 		}
 		return retVal;
 	}
-
+	
 	@Override
-	public int delete(int ID_event) {
+	public int delete(int ID_user) {
 		int retVal=0;
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -121,7 +125,7 @@ public class MySQLEventDAO implements EventDAO {
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_DELETE, Statement.NO_GENERATED_KEYS);
-			ps.setObject(1, ID_event);
+			ps.setObject(1, ID_user);
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -130,6 +134,4 @@ public class MySQLEventDAO implements EventDAO {
 		}
 		return retVal;
 	}
-
-	
 }

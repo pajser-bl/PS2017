@@ -1,4 +1,4 @@
-package DAO;
+package DAO.MySQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,21 +7,22 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import model.users.User;
-import utility.DataSourceFactory;
-import utility.TimeUtility;
 
-public class MySQLUserDAO implements UserDAO{
-	private static final String SQL_SELECT = "SELECT * FROM user WHERE ID_user=?";
-	private static final String SQL_SELECT_ALL = "SELECT * FROM user";
-	private static final String SQL_INSERT = "INSERT INTO user (ID_user, name, surname, date_of_birth, type, qualification) VALUES (null,?,?,?,?,?)";
-	private static final String SQL_UPDATE = "UPDATE user SET name=?, surname=? , date_of_birth=? , type=? , qualification=?   WHERE ID_user=?";
-	private static final String SQL_DELETE = "DELETE FROM user WHERE ID_user=?";
+import DAO.ClientDAO;
+import model.users.Client;
+import utility.DataSourceFactory;
+
+public class MySQLClientDAO implements ClientDAO {
+	private static final String SQL_SELECT = "SELECT * FROM client WHERE ID_client=?";
+	private static final String SQL_SELECT_ALL = "SELECT * FROM client";
+	private static final String SQL_INSERT = "INSERT INTO client (ID_client, name, surname, phone_number) VALUES (null,?, ?, ?)";
+	private static final String SQL_UPDATE = "UPDATE client SET name=?, surname=? , phone_number=?  WHERE ID_client=?";
+	private static final String SQL_DELETE = "DELETE FROM client WHERE ID_client=?";
 	
 	
 	@Override
-	public User select(int userID) {
-		User returnValue = null;
+	public Client select(int ID_client) {
+		Client returnValue = null;
 
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -29,22 +30,21 @@ public class MySQLUserDAO implements UserDAO{
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps = c.prepareStatement(SQL_SELECT);
-			ps.setInt(1, userID);
+			ps.setInt(1, ID_client);
 			rs = ps.executeQuery();
 			while (rs.next())
-				returnValue = new User(rs.getInt("ID_user"),rs.getString("name"), rs.getString("surname"), 
-						 TimeUtility.stringToLocalDate(rs.getString("date_of_birth")),rs.getString("type"), rs.getString("qualification") );
+				returnValue = new Client(rs.getInt("ID_client"), rs.getString("name"), rs.getString("surname"), rs.getString("phone_number"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			try {rs.close();ps.close();	c.close();}catch(SQLException e) {}
+			try {rs.close();ps.close();	c.close();} catch(SQLException e) {}
 		}
 		return returnValue;
 	}
 	
 	@Override
-	public List<User> selectAll() {
-		List<User> returnValue = new ArrayList<>();
+	public List<Client> selectAll() {
+		List<Client> returnValue = new ArrayList<>();
 
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -54,8 +54,7 @@ public class MySQLUserDAO implements UserDAO{
 			ps = c.prepareStatement(SQL_SELECT_ALL);
 			rs = ps.executeQuery();
 			while (rs.next())
-				returnValue.add(new User(rs.getInt("ID_user"),rs.getString("name"), rs.getString("surname"), 
-						 TimeUtility.stringToLocalDate(rs.getString("date_of_birth")),rs.getString("type"), rs.getString("qualification")));
+				returnValue.add(new Client(rs.getInt("ID_client"), rs.getString("name"), rs.getString("surname"), rs.getString("phone_number")));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -65,7 +64,7 @@ public class MySQLUserDAO implements UserDAO{
 	}
 	
 	@Override
-	public int insert(User user) {
+	public int insert(Client client) {
 		int retVal = 0;
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -73,11 +72,9 @@ public class MySQLUserDAO implements UserDAO{
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-			ps.setObject(1, user.getName());
-			ps.setObject(2, user.getSurname());
-			ps.setObject(3, user.getDate_of_birth());
-			ps.setObject(4, user.getType());
-			ps.setObject(5, user.getQualification());
+			ps.setObject(1, client.getName());
+			ps.setObject(2, client.getSurname());
+			ps.setObject(3, client.getPhone_number());
 			ps.executeUpdate();
 			rs=ps.getGeneratedKeys();
 			if(rs.next())
@@ -91,7 +88,7 @@ public class MySQLUserDAO implements UserDAO{
 	}
 	
 	@Override
-	public int update(User user) {
+	public int update(Client client) {
 		int retVal=0;
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -99,12 +96,10 @@ public class MySQLUserDAO implements UserDAO{
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_UPDATE, Statement.NO_GENERATED_KEYS);
-			ps.setObject(1, user.getName());
-			ps.setObject(2, user.getSurname());
-			ps.setObject(3, user.getDate_of_birth());
-			ps.setObject(4, user.getType());
-			ps.setObject(5, user.getQualification());
-			ps.setObject(6, user.getID_user());
+			ps.setObject(1, client.getName());
+			ps.setObject(2, client.getSurname());
+			ps.setObject(3, client.getPhone_number());
+			ps.setObject(4, client.getID_client());
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -115,7 +110,7 @@ public class MySQLUserDAO implements UserDAO{
 	}
 	
 	@Override
-	public int delete(int ID_user) {
+	public int delete(int ID_client) {
 		int retVal=0;
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -123,7 +118,7 @@ public class MySQLUserDAO implements UserDAO{
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_DELETE, Statement.NO_GENERATED_KEYS);
-			ps.setObject(1, ID_user);
+			ps.setObject(1, ID_client);
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

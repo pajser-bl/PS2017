@@ -9,7 +9,7 @@ public class Report {
 	String remark;
 	LocalDateTime closed_on;
 	
-	public Report(int iD_report, int iD_user, int iD_intervention, String remark, LocalDateTime closed_on) {
+	public Report(int iD_report,  int iD_intervention,int iD_user, String remark, LocalDateTime closed_on) {
 		super();
 		ID_report = iD_report;
 		ID_user = iD_user;

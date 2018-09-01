@@ -1,4 +1,4 @@
-package DAO;
+package DAO.MySQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import DAO.ReportDAO;
 import model.interventions.Report;
 import utility.DataSourceFactory;
 import utility.TimeUtility;
@@ -15,8 +17,8 @@ public class MySQLReportDAO implements ReportDAO{
 
 	private static final String SQL_SELECT = "SELECT * FROM report WHERE ID_report=?";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM report";
-	private static final String SQL_INSERT = "INSERT INTO report (ID_report,ID_user,ID_intervention, remark,closed_on) VALUES (?,?,?,?)";
-	private static final String SQL_UPDATE = "UPDATE report SET ID_report=?,ID_user=?,ID_intervention=?, remark=?,closed_on=? WHERE ID_report=?";
+	private static final String SQL_INSERT = "INSERT INTO report (ID_report,ID_user,ID_intervention, remark,closed_on) VALUES (?,?,?,?,?)";
+	private static final String SQL_UPDATE = "UPDATE report SET ID_user=?,ID_intervention=?, remark=?,closed_on=? WHERE ID_report=?";
 	private static final String SQL_DELETE = "DELETE FROM report WHERE ID_report=?";
 	
 	

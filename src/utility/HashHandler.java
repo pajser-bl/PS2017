@@ -50,8 +50,14 @@ public class HashHandler {
 		}
 	}
 
-	public static String createHash(String password) throws CannotPerformOperationException {
-		return createHash(password.toCharArray());
+	public static String createHash(String password){
+		try {
+			return createHash(password.toCharArray());
+		} catch (CannotPerformOperationException e) {
+			e.printStackTrace();
+			return null;
+
+		}
 	}
 
 	public static String createHash(char[] password) throws CannotPerformOperationException {
@@ -69,9 +75,13 @@ public class HashHandler {
 		return parts;
 	}
 
-	public static boolean verifyPassword(String password, String correctHash)
-			throws CannotPerformOperationException, InvalidHashException {
-		return verifyPassword(password.toCharArray(), correctHash);
+	public static boolean verifyPassword(String password, String correctHash){
+		try {
+			return verifyPassword(password.toCharArray(), correctHash);
+		} catch (CannotPerformOperationException | InvalidHashException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public static boolean verifyPassword(char[] password, String correctHash)
@@ -157,24 +167,6 @@ public class HashHandler {
 
 	private static String toBase64(byte[] array) {
 		return DatatypeConverter.printBase64Binary(array);
-	}
-	public static void main(String args[]) {
+	}	
 		
-		try {
-			String password="sifra";
-			String hash=createHash(password);
-			System.out.println(password);
-			System.out.println(hash);
-			System.out.println(verifyPassword(password,hash));
-		} catch (CannotPerformOperationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidHashException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		
-	}
 }

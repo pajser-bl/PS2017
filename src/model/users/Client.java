@@ -37,7 +37,12 @@ public class Client {
 		this.surname = surname;
 		this.phone_number = phone_number;
 	}
-	
+	public Client( String name, String surname, String phone_number) {
+		super();
+		this.name = name;
+		this.surname = surname;
+		this.phone_number = phone_number;
+	}
 	
 
 }

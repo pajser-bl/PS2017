@@ -1,4 +1,4 @@
-package DAO;
+package DAO.MySQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import DAO.CredentialsDAO;
 import model.users.Credentials;
 import utility.DataSourceFactory;
 
@@ -100,7 +102,7 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 			ps =c.prepareStatement(SQL_UPDATE, Statement.NO_GENERATED_KEYS);
 			ps.setObject(1, credentials.getUsername());
 			ps.setObject(2, credentials.getHash());
-			ps.setObject(4, credentials.getID_user());
+			ps.setObject(3, credentials.getID_user());
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

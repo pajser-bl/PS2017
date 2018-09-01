@@ -1,28 +1,30 @@
-package DAO;
+package DAO.MySQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import utility.TimeUtility;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.users.Session;
+import DAO.EventDAO;
+import model.users.Event;
 import utility.DataSourceFactory;
 
-public class MySQLSessionDAO implements SessionDAO {
-	private static final String SQL_SELECT = "SELECT * FROM session WHERE ID_session=?";
-	private static final String SQL_SELECT_ALL = "SELECT * FROM session";
-	private static final String SQL_INSERT = "INSERT INTO session (ID_session, ID_user, start, end)  VALUES (null,?,?,null)";
-	private static final String SQL_UPDATE = "UPDATE session SET ID_user=?, start=?, end=?  WHERE ID_session = ?";
-	private static final String SQL_DELETE = "DELETE FROM session WHERE ID_session=?";
+public class MySQLEventDAO implements EventDAO {
 	
+	private static final String SQL_SELECT = "SELECT * FROM event WHERE ID_event=?";
+	private static final String SQL_SELECT_ALL = "SELECT * FROM event WHERE ID_session=?";
+	private static final String SQL_INSERT = "INSERT INTO event (ID_event,ID_session, time, action) VALUES (null,?, ?, ?)";
+	private static final String SQL_UPDATE = "UPDATE event SET  ID_session=? ,time=?,action=? WHERE ID_event=?";
+	private static final String SQL_DELETE = "DELETE FROM event WHERE ID_event=?";
 	
 	@Override
-	public Session select(int sessionID) {
-		Session returnValue = null;
+	public Event select(int ID_event) {
+		Event returnValue = null;
 
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -30,35 +32,11 @@ public class MySQLSessionDAO implements SessionDAO {
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps = c.prepareStatement(SQL_SELECT);
-			ps.setInt(1,sessionID);
+			ps.setInt(1,ID_event);
 			rs = ps.executeQuery();
 			while (rs.next())
-				returnValue = new Session(rs.getInt("ID_session"), rs.getInt("ID_user"), 
-						TimeUtility.stringToLocalDateTime(rs.getString("start")), 
-						TimeUtility.stringToLocalDateTime(rs.getString("end")));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			try {rs.close();ps.close();c.close();}catch(SQLException e) {}
-		}
-		return returnValue;
-	}
-	
-	@Override
-	public List<Session> selectAll() {
-		List<Session> returnValue = new ArrayList<>();
-
-		Connection c = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			c = DataSourceFactory.getMySQLDataSource().getConnection();
-			ps = c.prepareStatement(SQL_SELECT_ALL);
-			rs = ps.executeQuery();
-			while (rs.next())
-				returnValue.add(new Session(rs.getInt("ID_session"), rs.getInt("ID_user"), 
-						TimeUtility.stringToLocalDateTime(rs.getString("start")), 
-						TimeUtility.stringToLocalDateTime(rs.getString("end"))));
+				returnValue = new Event(rs.getInt("ID_event"), rs.getInt("ID_session"),
+						LocalDateTime.parse(rs.getString("time"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), rs.getString("action"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -66,9 +44,33 @@ public class MySQLSessionDAO implements SessionDAO {
 		}
 		return returnValue;
 	}
-	
+
 	@Override
-	public int insert(Session session) {
+	public List<Event> selectBySession(int ID_session) {
+		List<Event> returnValue = new ArrayList<>();
+
+		Connection c = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			c = DataSourceFactory.getMySQLDataSource().getConnection();
+			ps = c.prepareStatement(SQL_SELECT_ALL);
+			ps.setInt(1,ID_session);
+			rs = ps.executeQuery();
+			while (rs.next())
+				returnValue.add(new Event(rs.getInt("ID_event"), rs.getInt("ID_session"),
+						LocalDateTime.parse(rs.getString("time"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), rs.getString("action")));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {rs.close();ps.close();	c.close();}catch(SQLException e) {}
+		}
+		return returnValue;
+
+	}
+
+	@Override
+	public int insert(Event event) {
 		int retVal = 0;
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -76,10 +78,10 @@ public class MySQLSessionDAO implements SessionDAO {
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-			ps.setObject(1, session.getUserID());
-			ps.setObject(2, session.getStart());
-			ps.executeUpdate();
-			rs=ps.getGeneratedKeys();
+			ps.setObject(1, event.getID_session());
+			ps.setObject(2, event.getTimeStamp());
+			ps.setObject(3, event.getAction());
+			retVal = ps.executeUpdate();rs=ps.getGeneratedKeys();
 			if(rs.next())
 				retVal=rs.getInt(1);
 		} catch (SQLException e) {
@@ -89,9 +91,9 @@ public class MySQLSessionDAO implements SessionDAO {
 		}
 		return retVal;
 	}
-	
+
 	@Override
-	public int update(Session session) {
+	public int update(Event  event) {
 		int retVal=0;
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -99,10 +101,10 @@ public class MySQLSessionDAO implements SessionDAO {
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_UPDATE, Statement.NO_GENERATED_KEYS);
-			ps.setObject(1, session.getUserID());
-			ps.setObject(2, session.getStart());
-			ps.setObject(3, session.getEnd());
-			ps.setObject(4, session.getSessionID());
+			ps.setObject(4, event.getID_event());
+			ps.setObject(1, event.getID_session());
+			ps.setObject(2, event.getTimeStamp());
+			ps.setObject(3, event.getAction());
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -111,9 +113,9 @@ public class MySQLSessionDAO implements SessionDAO {
 		}
 		return retVal;
 	}
-	
+
 	@Override
-	public int delete(int ID_session) {
+	public int delete(int ID_event) {
 		int retVal=0;
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -121,7 +123,7 @@ public class MySQLSessionDAO implements SessionDAO {
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_DELETE, Statement.NO_GENERATED_KEYS);
-			ps.setObject(1, ID_session);
+			ps.setObject(1, ID_event);
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -130,4 +132,6 @@ public class MySQLSessionDAO implements SessionDAO {
 		}
 		return retVal;
 	}
+
+	
 }

@@ -1,17 +1,15 @@
 package model;
 
-import java.time.Year;
-
 public class Vehicle {
 	private int ID_vehicle;
 	private String registration;
 	private String manufacturer;
 	private String model;
-	private Year year;
+	private int year;
 	
 	public Vehicle() {}
 	
-	public Vehicle(String registration, String manufacturer, String model, Year year) {
+	public Vehicle(String registration, String manufacturer, String model, int year) {
 		super();
 		this.registration = registration;
 		this.manufacturer = manufacturer;
@@ -20,7 +18,7 @@ public class Vehicle {
 	}
 
 
-	public Vehicle(int iD_vehicle, String registration, String manufacturer, String model, Year year) {
+	public Vehicle(int iD_vehicle, String registration, String manufacturer, String model, int year) {
 		super();
 		ID_vehicle = iD_vehicle;
 		this.registration = registration;
@@ -48,14 +46,14 @@ public class Vehicle {
 	public void setModel(String model) {
 		this.model = model;
 	}
-	public Year getYear() {
-		return year;
+	public int getYear() {
+		return this.year;
 	}
-	public void setYear(Year year) {
+	public void setYear(int year) {
 		this.year = year;
 	}
 	public String getRegistration() {
-		return registration;
+		return this.registration;
 	}
 	public void setRegistration(String registration) {
 		this.registration = registration;

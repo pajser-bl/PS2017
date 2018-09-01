@@ -1,4 +1,4 @@
-package DAO;
+package DAO.MySQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import DAO.RoadReportDAO;
 import model.interventions.RoadReport;
 import utility.DataSourceFactory;
 import utility.TimeUtility;
@@ -18,7 +19,7 @@ public class MySQLRoadReportDAO implements RoadReportDAO{
 	private static final String SQL_SELECT = "SELECT * FROM road_report WHERE ID_road_report=?";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM road_report";
 	private static final String SQL_INSERT = "INSERT INTO road_report (ID_road_report,ID_user,ID_intervention,assistance,time_of_assistance, remark) VALUES (?,?,?,?,?,?)";
-	private static final String SQL_UPDATE = "UPDATE road_report SET ID_road_report=?,ID_user=?,ID_intervention=?,assistance=?,time_of_assistance=?, remark=? WHERE ID_road_report=?";
+	private static final String SQL_UPDATE = "UPDATE road_report SET ID_user=?,ID_intervention=?,assistance=?,time_of_assistance=?, remark=? WHERE ID_road_report=?";
 	private static final String SQL_DELETE = "DELETE FROM road_report WHERE ID_road_report=?";
 	
 	
@@ -101,7 +102,6 @@ public class MySQLRoadReportDAO implements RoadReportDAO{
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps =c.prepareStatement(SQL_UPDATE, Statement.NO_GENERATED_KEYS);
-			ps =c.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
 			ps.setObject(1, roadReport.getID_user());
 			ps.setObject(2, roadReport.getID_intervention());
 			ps.setObject(3, roadReport.getAssistance());

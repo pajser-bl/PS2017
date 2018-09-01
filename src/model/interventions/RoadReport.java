@@ -10,17 +10,8 @@ public class RoadReport {
 	LocalDateTime time_of_assistance;
 	String remark;
 	
-	public RoadReport(int iD_user, int iD_intervention, String assistance,
-			LocalDateTime time_of_assistance, String remark) {
-		super();
-		ID_user = iD_user;
-		ID_intervention = iD_intervention;
-		this.assistance = assistance;
-		this.time_of_assistance = time_of_assistance;
-		this.remark = remark;
-	}
 	
-	public RoadReport(int iD_road_report, int iD_user, int iD_intervention, String assistance,
+	public RoadReport(int iD_road_report,  int iD_intervention,int iD_user, String assistance,
 			LocalDateTime time_of_assistance, String remark) {
 		super();
 		ID_road_report = iD_road_report;
