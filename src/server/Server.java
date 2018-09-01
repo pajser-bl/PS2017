@@ -1,14 +1,18 @@
 package server;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import utility.TimeUtility;
+import java.util.Properties;
 
+import javax.net.ServerSocketFactory;
+import javax.net.ssl.SSLServerSocketFactory;
+import utility.TimeUtility;
 
 public class Server {
 
-	public final static String CONFIG_FILE="config.txt";
+	public final static String CONFIG_FILE = "config.txt";
 	public static String SERVER_IP_ADDRESS;
 	public static int SERVER_PORT;
 	public static int SERVER_CONNECTION_LIMIT;
@@ -16,14 +20,15 @@ public class Server {
 	public static boolean SERVER_ONLINE;
 //	public static HashMap<User,Socket> onlineUsers;
 	public static MapHandler mapHandler;
-	
+
 	public static void main(String args[]) {
 		System.out.println("Server starting up...");
 		setUpServer();
 		try {
-			ServerSocket serverSocket = new ServerSocket(SERVER_PORT);
+			ServerSocketFactory sslSocketFactory = SSLServerSocketFactory.getDefault();
+			ServerSocket serverSocket = sslSocketFactory.createServerSocket(SERVER_PORT);
 			System.out.println("[" + TimeUtility.getLDTNow() + "]Server is online, awaiting incoming user connections");
-			while(SERVER_ONLINE && serverLimitNotReached()) {
+			while (SERVER_ONLINE && serverLimitNotReached()) {
 				Socket socket = serverSocket.accept();
 				SERVER_CONNECTION_COUNTER++;
 				ClientConnection connection = new ClientConnection(socket);
@@ -34,17 +39,26 @@ public class Server {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void setUpServer() {
-		SERVER_IP_ADDRESS = "127.0.0.1";
-		SERVER_PORT = 9000;
-		SERVER_CONNECTION_LIMIT = 100;
-		SERVER_CONNECTION_COUNTER = 0;
-		SERVER_ONLINE = true;
+		try {
+			Properties props = new Properties();
+			FileInputStream in = new FileInputStream("server.conf");
+			props.load(in);
+			in.close();
+
+			SERVER_IP_ADDRESS = props.getProperty("server.ip_address");
+			SERVER_PORT = Integer.parseInt(props.getProperty("server.port"));
+			SERVER_CONNECTION_LIMIT = Integer.parseInt(props.getProperty("server.max_connections"));
+			SERVER_CONNECTION_COUNTER = 0;
 //		onlineUsers = new HashMap<>();
+			SERVER_ONLINE = true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	public static boolean serverLimitNotReached() {
-		return SERVER_CONNECTION_COUNTER<SERVER_CONNECTION_LIMIT;
+		return SERVER_CONNECTION_COUNTER < SERVER_CONNECTION_LIMIT;
 	}
 }
