@@ -20,7 +20,7 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 	private static final String SQL_UPDATE = "UPDATE credentials SET username=?, hash=? WHERE ID_credentials=?";
 	private static final String SQL_DELETE = "DELETE FROM credentials WHERE ID_credentials=?";
 	
-	private static final String SQL_UNIQUE_USERNAME = "SELECT EXISTS(SELECT 1 FROM credentials WHERE username=? limit 1)AS is_unique;";
+	private static final String SQL_UNIQUE_USERNAME = "SELECT EXISTS(SELECT 1 FROM credentials WHERE username=? limit 1)AS _exists";
 	private static final String SQL_SELECT_BY_USERNAME = "SELECT * FROM credentials WHERE username=?";
 	private static final String SQL_EXISTS = "SELECT EXISTS(SELECT 1 FROM credentials WHERE username=? limit 1)AS _exists";
 //	private static final String SQL_EXISTS = "SELECT count(*) as count FROM credentials WHERE username =?";
@@ -145,7 +145,7 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 			ps.setString(1,username);
 			rs = ps.executeQuery();
 			if(rs.next()) {
-				returnValue=rs.getInt("is_unique")!=0;
+				returnValue=rs.getInt("_exists")==0;
 			}else {
 				returnValue=false;
 			}
