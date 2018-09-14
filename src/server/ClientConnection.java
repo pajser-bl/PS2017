@@ -28,6 +28,7 @@ public class ClientConnection extends Thread {
 		}
 	
 	public void run() {
+		System.out.println("SSSS");
 		try {
 		input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
@@ -36,12 +37,14 @@ public class ClientConnection extends Thread {
 			System.out.println("Otvaranje input/outpu streama nije uspjelo !");
 		}
 		try {
+			System.out.println("try1");
 //			String jsonRequest = input.readLine();
 //			System.out.println(jsonRequest);
+			System.out.println("try2");
 			Request request = new Gson().fromJson(input.readLine(), new TypeToken<Request>(){}.getType());
 			ArrayList<String> reply = request.getRequest();
 			sendReply(new Gson().toJson(reply));
-			System.out.println("SSSS");
+			
 		}
 		catch(Exception e) {
 			System.out.println("Porslo nesto ali ne valja");

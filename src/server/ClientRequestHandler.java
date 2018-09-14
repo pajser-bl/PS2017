@@ -1,15 +1,20 @@
 package server;
 
+import java.util.ArrayList;
+
 import client.Request;
 
 public class ClientRequestHandler {
-	ClientControllerFacade clientControllerFacade;
+	static ClientControllerFacade clientControllerFacade;
 	
-	public void handle(Request request) {
+	public static ArrayList<String> handle(Request request) {
 		switch(request.getRequestType()) {
-			case "LOGIN":{}break;
-			case "LOGOUT":{}break;
-			
+			case "LOGIN":{
+				return clientControllerFacade.login(request.getRequest().get(0), request.getRequest().get(1));
+			}
+			case "LOGOUT":{
+				return clientControllerFacade.logout();
+			}
 			case "NEW CREDENTIALS":{}break;
 			case "DELETE CREDENTIALS":{}break;
 			case "VIEW CREDENTIALS":{}break;
@@ -51,6 +56,7 @@ public class ClientRequestHandler {
 			
 			default:{}break;
 		}
+		return null;
 		
 	}
 }

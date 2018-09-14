@@ -6,8 +6,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
 
-import javax.net.ServerSocketFactory;
-import javax.net.ssl.SSLServerSocketFactory;
+//import javax.net.ServerSocketFactory;
+//import javax.net.ssl.SSLServerSocketFactory;
 import utility.TimeUtility;
 
 public class Server {
@@ -25,14 +25,16 @@ public class Server {
 		System.out.println("Server starting up...");
 		setUpServer();
 		try {
-			ServerSocketFactory sslSocketFactory = SSLServerSocketFactory.getDefault();
-			ServerSocket serverSocket = sslSocketFactory.createServerSocket(SERVER_PORT);
+			//ServerSocketFactory sslSocketFactory = SSLServerSocketFactory.getDefault();
+			//ServerSocket serverSocket = sslSocketFactory.createServerSocket(SERVER_PORT);
+			ServerSocket serverSocket=new ServerSocket(SERVER_PORT);
 			System.out.println("[" + TimeUtility.getLDTNow() + "]Server is online, awaiting incoming user connections");
 			while (SERVER_ONLINE && serverLimitNotReached()) {
 				Socket socket = serverSocket.accept();
 				SERVER_CONNECTION_COUNTER++;
 				ClientConnection connection = new ClientConnection(socket);
 				connection.start();
+				System.out.println("Connection enstablished");
 			}
 			serverSocket.close();
 		} catch (IOException e) {
