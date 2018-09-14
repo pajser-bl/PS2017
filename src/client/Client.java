@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.Gson;
-
+//azd
 public class Client {
 
 	Socket socket;
