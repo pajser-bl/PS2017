@@ -144,7 +144,11 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 			ps = c.prepareStatement(SQL_UNIQUE_USERNAME);
 			ps.setString(1,username);
 			rs = ps.executeQuery();
-			returnValue=rs.getInt("is_unique")!=0;
+			if(rs.next()) {
+				returnValue=rs.getInt("is_unique")!=0;
+			}else {
+				returnValue=false;
+			}
 			return returnValue;
 		} catch (SQLException e) {
 			e.printStackTrace();
