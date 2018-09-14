@@ -48,10 +48,8 @@ public class Client {
 		ArrayList<String> reply = new Gson().fromJson(testjson, new TypeToken<ArrayList<String>>(){}.getType());
 		for(int i = 0 ;i < reply.size(); i++)
 			System.out.print(reply.get(i) + " ;");
-		/*Request test = new Gson().fromJson(testjson, new TypeToken<Request>(){}.getType());
-		System.out.println(test.toString());*/
 		
-		//Client client = new Client("192.168.1.13", 9000);
+		//Client client = new Client("192.168.1.6", 9000);
 		//System.out.println(client.sendRequest(request));
 	}
 }
