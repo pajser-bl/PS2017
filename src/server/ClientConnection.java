@@ -54,7 +54,7 @@ public class ClientConnection extends Thread {
 					logoutCheck=true;
 				}
 				sendReply(new Gson().toJson(reply));
-			}	
+			}
 		}catch(Exception e) {
 			System.out.println("Porslo nesto ali ne valja");
 		}
