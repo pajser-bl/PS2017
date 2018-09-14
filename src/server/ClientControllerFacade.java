@@ -3,20 +3,26 @@ package server;
 import java.util.ArrayList;
 
 import DAO.CredentialsDAO;
+import DAO.SessionDAO;
 import DAO.UserDAO;
 import DAO.MySQL.MySQLCredentialsDAO;
+import DAO.MySQL.MySQLSessionDAO;
 import DAO.MySQL.MySQLUserDAO;
 import model.users.Credentials;
+import model.users.Session;
 import model.users.User;
 import utility.HashHandler;
+import utility.TimeUtility;
 
 public class ClientControllerFacade {
 	CredentialsDAO credentialsDAO;
 	UserDAO userDAO;
+	SessionDAO sessionDAO;
 	
 	public ClientControllerFacade() {
 		credentialsDAO=new MySQLCredentialsDAO();
 		userDAO=new MySQLUserDAO();
+		sessionDAO=new MySQLSessionDAO();
 	}
 	public ArrayList<String> login(String username,String password) {
 		boolean retVal=credentialsDAO.exists(username);
@@ -29,11 +35,15 @@ public class ClientControllerFacade {
 			if(loginCheck) {
 				//uspjesan logine
 				User user=userDAO.select(credentials.getID_user());
+				int ID_session=sessionDAO.insert(new Session(user.getID_user(),TimeUtility.getLDTNow()));
+				
 				reply.add("LOGIN OK");
 				reply.add(String.valueOf(user.getID_user()));
 				reply.add(user.getName());
 				reply.add(user.getSurname());
 				reply.add(user.getType());
+				reply.add(String.valueOf(ID_session));
+			
 			}else {
 				// neuspjesan login
 				reply.add("LOGIN PASSWORD NOT OK");
