@@ -22,7 +22,8 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 	
 	private static final String SQL_UNIQUE_USERNAME = "SELECT EXISTS(SELECT 1 FROM credentials WHERE username=? limit 1)AS is_unique;";
 	private static final String SQL_SELECT_BY_USERNAME = "SELECT * FROM credentials WHERE username=?";
-	private static final String SQL_EXISTS = "SELECT EXISTS(SELECT 1 FROM credentials WHERE username=? limit 1)AS exists";
+	private static final String SQL_EXISTS = "SELECT EXISTS(SELECT 1 FROM credentials WHERE username=? limit 1)AS _exists";
+//	private static final String SQL_EXISTS = "SELECT count(*) as count FROM credentials WHERE username =?";
 	
 	@Override
 	public Credentials select(int ID_credentials) {
@@ -186,8 +187,12 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps = c.prepareStatement(SQL_EXISTS);
 			ps.setString(1,username);
-			rs = ps.executeQuery();
-			returnValue=rs.getInt("exists")==1;
+			rs=ps.executeQuery();
+			if(rs.next()) {
+				returnValue=rs.getInt("_exists")==1;
+			}else {
+				returnValue=false;
+				}
 			return returnValue;
 		}catch(SQLException e) {
 			e.printStackTrace();

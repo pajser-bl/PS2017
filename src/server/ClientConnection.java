@@ -15,6 +15,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 public class ClientConnection extends Thread {
+	private ClientControllerFacade cCF;
 	private Socket socket;
 	private BufferedReader input;
 	private PrintWriter output;
@@ -40,11 +41,11 @@ public class ClientConnection extends Thread {
 			System.out.println("try1");
 //			String jsonRequest = input.readLine();
 //			System.out.println(jsonRequest);
-			System.out.println("try2");
+//			System.out.println("try2");
 			Request request = new Gson().fromJson(input.readLine(), new TypeToken<Request>(){}.getType());
-			ArrayList<String> reply = request.getRequest();
-			sendReply(new Gson().toJson(reply));
-			
+			//ArrayList<String> reply = request.getRequest();
+//			sendReply(new Gson().toJson(reply));
+			sendReply(new Gson().toJson(ClientRequestHandler.handle(request)));
 		}
 		catch(Exception e) {
 			System.out.println("Porslo nesto ali ne valja");

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import client.Request;
 
 public class ClientRequestHandler {
-	static ClientControllerFacade clientControllerFacade;
+	static ClientControllerFacade clientControllerFacade=new ClientControllerFacade();
 	
 	public static ArrayList<String> handle(Request request) {
 		switch(request.getRequestType()) {
