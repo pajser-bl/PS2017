@@ -39,17 +39,17 @@ public class Client {
 	}
 	
 	public static void main(String[] args) {
-		String s1 = "Prvi String"; String s2 = "Drugi String"; String s3 = "Treci String"; String s4 = "ZAHTJEV";
+		String s1 = "LOGIN";
+		String s2 = "a";
+		String s3 = "aa";
 		ArrayList<String> podaci = new ArrayList<String>();
-		podaci.add(s1); podaci.add(s2); podaci.add(s3);
-		Request request = new Request(s4, podaci);
+		podaci.add(s2); podaci.add(s3);
+		Request request = new Request(s1, podaci);
 		String testjson = new Gson().toJson(request.getRequest());
 		System.out.println(testjson);
-		ArrayList<String> reply = new Gson().fromJson(testjson, new TypeToken<ArrayList<String>>(){}.getType());
-		for(int i = 0 ;i < reply.size(); i++)
-			System.out.print(reply.get(i) + " ;");
-		
-		//Client client = new Client("192.168.1.6", 9000);
-		//System.out.println(client.sendRequest(request));
+		Client client = new Client("192.168.1.6", 9000);
+		ArrayList<String> reply = client.sendRequest(request);
+		for(int i = 0; i < reply.size() - 1; i++)
+			System.out.println(reply.get(i));
 	}
 }
