@@ -199,7 +199,7 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 		}finally {
 			try{rs.close();ps.close();c.close();}catch(SQLException e){}
 		}
-		return false;
+		return false; //blablablablaaaa
 	}
 
 }
