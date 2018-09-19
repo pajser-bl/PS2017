@@ -87,7 +87,7 @@ public class ClientControllerFacade {
 		int ID_user=session.getUserID();
 		LocalDateTime start=session.getStart();
 		LocalDateTime end=session.getEnd();
-		reply.add();
+		//reply.add();
 		for(Event e:eventDAO.selectBySession(ID_session))
 			reply.add(e.toString());
 		return reply;
