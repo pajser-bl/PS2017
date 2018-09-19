@@ -58,6 +58,7 @@ public class MySQLTest {
 		RoadReportDAO road_reportDAO = new MySQLRoadReportDAO();
 		VehicleDAO vehicleDAO = new MySQLVehicleDAO();
 
+		
 //		Credentials credentials = new Credentials(1, 1, "a", HashHandler.createHash("a"));
 //		credentialsDAO.insert(credentials);
 
