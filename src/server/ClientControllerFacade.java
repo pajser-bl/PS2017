@@ -1,14 +1,18 @@
 package server;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import DAO.CredentialsDAO;
+import DAO.EventDAO;
 import DAO.SessionDAO;
 import DAO.UserDAO;
 import DAO.MySQL.MySQLCredentialsDAO;
+import DAO.MySQL.MySQLEventDAO;
 import DAO.MySQL.MySQLSessionDAO;
 import DAO.MySQL.MySQLUserDAO;
 import model.users.Credentials;
+import model.users.Event;
 import model.users.Session;
 import model.users.User;
 import utility.HashHandler;
@@ -18,11 +22,13 @@ public class ClientControllerFacade {
 	CredentialsDAO credentialsDAO;
 	UserDAO userDAO;
 	SessionDAO sessionDAO;
+	EventDAO eventDAO;
 	
 	public ClientControllerFacade() {
 		credentialsDAO=new MySQLCredentialsDAO();
 		userDAO=new MySQLUserDAO();
 		sessionDAO=new MySQLSessionDAO();
+		eventDAO=new MySQLEventDAO();
 	}
 	public ArrayList<String> login(String username,String password) {
 		boolean retVal=credentialsDAO.exists(username);
@@ -74,7 +80,18 @@ public class ClientControllerFacade {
 //	public void viewFieldTechnitianState(int userID){}
 //	public void viewStatesFieldTechnitians(String param){}
 //	public void viewOnlineUseres(){}
-//	public void viewUserSession(int sesionId){}
+	public ArrayList<String> viewUserSession(int ID_session){
+		//ID_session,ID_user,start,end
+		ArrayList<String>reply=new ArrayList<>();
+		Session session=sessionDAO.select(ID_session);
+		int ID_user=session.getUserID();
+		LocalDateTime start=session.getStart();
+		LocalDateTime end=session.getEnd();
+		reply.add();
+		for(Event e:eventDAO.selectBySession(ID_session))
+			reply.add(e.toString());
+		return reply;
+	}
 //	public void viewUserSessions(String param){}
 	
 //	public void viewClient(int clientID){}

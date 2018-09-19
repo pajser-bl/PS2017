@@ -30,7 +30,9 @@ public class ClientRequestHandler {
 			case "VIEW STATE FIELD TECHNITIAN":{}break;
 			case "VIEW STATES FIELD TECHNITIAN":{}break;
 			case "VIEW ONLINE USERS":{}break;
-			case "VIEW USER SESSION":{}break;
+			case "VIEW USER SESSION":{
+				return clientControllerFacade.viewUserSession(request.getRequest().get(1));
+			}
 			case "VIEW USER SESSIONS":{}break;
 			
 			case "VIEW CLIENT":{}break;
