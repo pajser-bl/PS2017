@@ -2,7 +2,7 @@ package server;
 
 import java.util.ArrayList;
 
-import client.Request;
+import server.Request;
 
 public class ClientRequestHandler {
 	static ClientControllerFacade clientControllerFacade=new ClientControllerFacade();
