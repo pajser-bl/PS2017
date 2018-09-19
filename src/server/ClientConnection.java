@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import client.Request;
+import server.Request;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
