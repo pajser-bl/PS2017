@@ -6,14 +6,20 @@ import java.util.ArrayList;
 import DAO.ClientDAO;
 import DAO.CredentialsDAO;
 import DAO.EventDAO;
+import DAO.InterventionDAO;
 import DAO.SessionDAO;
 import DAO.UserDAO;
 import DAO.MySQL.MySQLClientDAO;
 import DAO.MySQL.MySQLCredentialsDAO;
 import DAO.MySQL.MySQLEventDAO;
+import DAO.MySQL.MySQLInterventionDAO;
 import DAO.MySQL.MySQLSessionDAO;
 import DAO.MySQL.MySQLUserDAO;
+<<<<<<< HEAD
 import model.users.Client;
+=======
+import model.interventions.Intervention;
+>>>>>>> branch 'master' of https://github.com/pajser-bl/PS2017
 import model.users.Credentials;
 import model.users.Event;
 import model.users.Session;
@@ -26,14 +32,22 @@ public class ClientControllerFacade {
 	UserDAO userDAO;
 	SessionDAO sessionDAO;
 	EventDAO eventDAO;
+<<<<<<< HEAD
 	ClientDAO clientDAO;
+=======
+	InterventionDAO interventionDAO;
+>>>>>>> branch 'master' of https://github.com/pajser-bl/PS2017
 
 	public ClientControllerFacade() {
 		credentialsDAO = new MySQLCredentialsDAO();
 		userDAO = new MySQLUserDAO();
 		sessionDAO = new MySQLSessionDAO();
 		eventDAO = new MySQLEventDAO();
+<<<<<<< HEAD
 		clientDAO = new MySQLClientDAO();
+=======
+		interventionDAO=new MySQLInterventionDAO();
+>>>>>>> branch 'master' of https://github.com/pajser-bl/PS2017
 	}
 
 	public ArrayList<String> login(String username, String password) {
@@ -109,7 +123,7 @@ public class ClientControllerFacade {
 		return reply;
 	}
 
-//	public void viewUsers(String param){}
+	// public void viewUsers(String param){}
 	public ArrayList<String> addUser(String name, String surname, String date_of_birth, String type,
 			String qualification) {
 		ArrayList<String> reply = new ArrayList<>();
@@ -144,12 +158,12 @@ public class ClientControllerFacade {
 		return reply;
 	}
 
-//	public void accessMapFieldTechnician(int intervention ID){}
-//	public void accessMapOperator(){}
-//	public void changeStateFieldTechnitian(String state){}
-//	public void viewFieldTechnitianState(int userID){}
-//	public void viewStatesFieldTechnitians(String param){}
-//	public void viewOnlineUseres(){}
+	// public void accessMapFieldTechnician(int intervention ID){}
+	// public void accessMapOperator(){}
+	// public void changeStateFieldTechnitian(String state){}
+	// public void viewFieldTechnitianState(int userID){}
+	// public void viewStatesFieldTechnitians(String param){}
+	// public void viewOnlineUseres(){}
 	public ArrayList<String> viewUserSession(int ID_session) {
 		// ID_session,ID_user,start,end
 		ArrayList<String> reply = new ArrayList<>();
@@ -162,8 +176,9 @@ public class ClientControllerFacade {
 			reply.add(e.toString());
 		return reply;
 	}
-//	public void viewUserSessions(String param){}
+	// public void viewUserSessions(String param){}
 
+<<<<<<< HEAD
 	public ArrayList<String> viewClient(int clientID) {
 		
 		ArrayList<String> reply = new ArrayList<>();
@@ -216,21 +231,57 @@ public class ClientControllerFacade {
 		}
 		return reply;
 	}
+=======
+	// public void viewClient(int clientID){}
+	// public void viewClients(String param){}
+	// public void newClient(Client client){}
+	// public void deleteClient(Client client){}
+>>>>>>> branch 'master' of https://github.com/pajser-bl/PS2017
 
-//	public void newSubscription(Subscripption subscription){}
-//	public void deleteSubscription(int subscriptionID){}
-//	public void viewSubscription(int subscriptionID){}
-//	public void viewSubscriptions(String param){}
+	// public void newSubscription(Subscripption subscription){}
+	// public void deleteSubscription(int subscriptionID){}
+	// public void viewSubscription(int subscriptionID){}
+	// public void viewSubscriptions(String param){}
 
-//	public void newIntervention(Intervention intervention){}
-//	public void closeIntervention(Intervention intervention){}
-//	public void viewIntervention(int interventionID){}
-//	public void viewInterventions(String param){}
+	 public ArrayList<String> newIntervention(Intervention intervention){
+		 ArrayList<String> reply = new ArrayList<>();
+		 if(interventionDAO.insert(intervention)!=0) {
+			 reply.add("NEW INTERVENTION OK");
+		 }else {
+			 reply.add("NEW INTERVENTION FAILED");
+		 }
+		 return reply;
+	 }
 
-//	public void newFieldReport(FieldReport fieldReport){}
+	public ArrayList<String> viewIntervention(int ID_intervention) {
+		ArrayList<String> reply = new ArrayList<>();
+		Intervention intervention = interventionDAO.select(ID_intervention);
+//		if(interventionDAO.exists(ID_intervention)) {
+		//reply.add("VIEW INTERVENTION OK");
+		reply.add(""+intervention.getID_intervention());
+		reply.add(""+intervention.getID_client());
+		reply.add(""+intervention.getID_vehicle());
+		reply.add(""+intervention.getID_user_opened());
+		reply.add(""+intervention.getID_user_closed());
+		reply.add(TimeUtility.formatTimeDate(intervention.getOpened_on()));
+		reply.add(TimeUtility.formatTimeDate(intervention.getClosed_on()));
+		reply.add(intervention.getRemark());
+		if(intervention.isClosed())
+			reply.add("CLOSED");
+		else 
+			reply.add("OPEN");
+//		}else{
+//			reply.add("VIEW INTERVENTION FAILED");
+//		}
+		return reply;
+	}
+	// public void closeIntervention(Intervention intervention){}
+	// public void viewInterventions(String param){}
 
-//	public void newReport(Report report){}
-//	public void viewReport(int reportID){}
-//	public void viewReports(String param){}
+	// public void newFieldReport(FieldReport fieldReport){}
+
+	// public void newReport(Report report){}
+	// public void viewReport(int reportID){}
+	// public void viewReports(String param){}
 
 }

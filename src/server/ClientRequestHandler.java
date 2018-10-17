@@ -2,7 +2,9 @@ package server;
 
 import java.util.ArrayList;
 
+import model.interventions.Intervention;
 import server.Request;
+import utility.TimeUtility;
 
 public class ClientRequestHandler {
 	static ClientControllerFacade clientControllerFacade = new ClientControllerFacade();
@@ -31,8 +33,9 @@ public class ClientRequestHandler {
 					request.getRequest().get(2), request.getRequest().get(3), request.getRequest().get(4));
 		}
 		case "UPDATE USER": {
-			return clientControllerFacade.updateUser(Integer.parseInt(request.getRequest().get(0)), request.getRequest().get(1),
-					request.getRequest().get(2), request.getRequest().get(3), request.getRequest().get(4),request.getRequest().get(5));
+			return clientControllerFacade.updateUser(Integer.parseInt(request.getRequest().get(0)),
+					request.getRequest().get(1), request.getRequest().get(2), request.getRequest().get(3),
+					request.getRequest().get(4), request.getRequest().get(5));
 		}
 		case "DELETE USER": {
 			return clientControllerFacade.deleteUser(Integer.parseInt(request.getRequest().get(0)));
@@ -62,9 +65,9 @@ public class ClientRequestHandler {
 		case "VIEW ONLINE USERS": {
 		}
 			break;
-//			case "VIEW USER SESSION":{
-//				return clientControllerFacade.viewUserSession(request.getRequest().get(1));
-//			}
+		// case "VIEW USER SESSION":{
+		// return clientControllerFacade.viewUserSession(request.getRequest().get(1));
+		// }
 		case "VIEW USER SESSIONS": {
 		}
 			break;
@@ -98,14 +101,17 @@ public class ClientRequestHandler {
 			break;
 
 		case "VIEW INTERVENTION": {
+			return clientControllerFacade.viewIntervention(Integer.parseInt(request.getRequest().get(0)));
 		}
-			break;
 		case "VIEW INTERVENTIONS": {
 		}
 			break;
 		case "NEW INTERVENTION": {
+			return clientControllerFacade.newIntervention(new Intervention(
+					Integer.parseInt(request.getRequest().get(0)), Integer.parseInt(request.getRequest().get(1)),
+					Integer.parseInt(request.getRequest().get(2)),
+					TimeUtility.stringToLocalDateTime(request.getRequest().get(3))));
 		}
-			break;
 		case "DELETE INTERVENTION": {
 		}
 			break;
