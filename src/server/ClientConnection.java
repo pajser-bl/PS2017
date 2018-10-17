@@ -58,6 +58,7 @@ public class ClientConnection extends Thread {
 					sendReply(new Gson().toJson(reply));
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 				System.out.println("Porslo nesto ali ne valja");
 			}
 		}

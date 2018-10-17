@@ -70,17 +70,19 @@ public class ClientRequestHandler {
 			break;
 
 		case "VIEW CLIENT": {
+			return clientControllerFacade.viewClient(Integer.parseInt(request.getRequest().get(0)));
 		}
-			break;
 		case "VIEW CLIENTS": {
 		}
-			break;
 		case "NEW CLIENT": {
+			return clientControllerFacade.newClient(request.getRequest().get(0),request.getRequest().get(1),request.getRequest().get(2));
 		}
-			break;
+		case "UPDATE CLIENT" : {
+			return clientControllerFacade.updateClient(request.getRequest().get(0),request.getRequest().get(1),request.getRequest().get(2),request.getRequest().get(3));
+		}
 		case "DELETE CLIENT": {
+			return clientControllerFacade.deleteClient(request.getRequest().get(0));
 		}
-			break;
 
 		case "VIEW SUBSCRIPTION": {
 		}

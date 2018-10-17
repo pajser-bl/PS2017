@@ -3,14 +3,17 @@ package server;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import DAO.ClientDAO;
 import DAO.CredentialsDAO;
 import DAO.EventDAO;
 import DAO.SessionDAO;
 import DAO.UserDAO;
+import DAO.MySQL.MySQLClientDAO;
 import DAO.MySQL.MySQLCredentialsDAO;
 import DAO.MySQL.MySQLEventDAO;
 import DAO.MySQL.MySQLSessionDAO;
 import DAO.MySQL.MySQLUserDAO;
+import model.users.Client;
 import model.users.Credentials;
 import model.users.Event;
 import model.users.Session;
@@ -23,12 +26,14 @@ public class ClientControllerFacade {
 	UserDAO userDAO;
 	SessionDAO sessionDAO;
 	EventDAO eventDAO;
+	ClientDAO clientDAO;
 
 	public ClientControllerFacade() {
 		credentialsDAO = new MySQLCredentialsDAO();
 		userDAO = new MySQLUserDAO();
 		sessionDAO = new MySQLSessionDAO();
 		eventDAO = new MySQLEventDAO();
+		clientDAO = new MySQLClientDAO();
 	}
 
 	public ArrayList<String> login(String username, String password) {
@@ -159,10 +164,58 @@ public class ClientControllerFacade {
 	}
 //	public void viewUserSessions(String param){}
 
-//	public void viewClient(int clientID){}
+	public ArrayList<String> viewClient(int clientID) {
+		
+		ArrayList<String> reply = new ArrayList<>();
+		Client client = clientDAO.select(clientID);
+		
+		if(client != null) {
+		reply.add("VIEW USER OK");
+		reply.add(""+client.getID_client());
+		reply.add(client.getName());
+		reply.add(client.getSurname());
+		reply.add(client.getPhone_number());
+		} else {
+			reply.add("VIEW USER FAILED");
+		}
+		 return reply;
+		
+	}
 //	public void viewClients(String param){}
-//	public void newClient(Client client){}
-//	public void deleteClient(Client client){}
+
+	public ArrayList<String> newClient(String name, String surname, String phone_number) {
+		ArrayList<String> reply = new ArrayList<>();
+		Client client = new Client(name, surname, phone_number);
+		
+		if(clientDAO.insert(client) != 0) {
+		reply.add("NEW CLIENT OK");
+		} else {
+			reply.add("NEW CLIENT FAILED");
+		}
+		 return reply;
+	}
+
+	public ArrayList<String> updateClient(String client_ID, String name, String surname, String phone_number) {
+		ArrayList<String> reply = new ArrayList<>();
+		Client client = new Client(Integer.parseInt(client_ID), name, surname, phone_number);
+		if (clientDAO.update(client) != 0) {
+			reply.add("UPDATE CLIENT OK");
+		} else {
+			reply.add("UPDATE CLIENT FAILED");
+		}
+		return reply;
+	
+	}
+
+	public ArrayList<String> deleteClient(String client_ID) {
+		ArrayList<String> reply = new ArrayList<>();
+		if (clientDAO.delete(Integer.parseInt(client_ID)) != 0) {
+			reply.add("DELETE CLIENT OK");
+		} else {
+			reply.add("DELETE CLIENT FAILED");
+		}
+		return reply;
+	}
 
 //	public void newSubscription(Subscripption subscription){}
 //	public void deleteSubscription(int subscriptionID){}
