@@ -88,6 +88,7 @@ public class ClientRequestHandler {
 		}
 
 		case "VIEW SUBSCRIPTION": {
+			return clientControllerFacade.viewSubscription(Integer.parseInt(request.getRequest().get(0)));
 		}
 			break;
 		case "VIEW SUBSCRIPTIONS": {

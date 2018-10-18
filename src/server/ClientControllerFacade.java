@@ -7,18 +7,21 @@ import DAO.CredentialsDAO;
 import DAO.EventDAO;
 import DAO.InterventionDAO;
 import DAO.SessionDAO;
+import DAO.SubscriptionDAO;
 import DAO.UserDAO;
 import DAO.MySQL.MySQLClientDAO;
 import DAO.MySQL.MySQLCredentialsDAO;
 import DAO.MySQL.MySQLEventDAO;
 import DAO.MySQL.MySQLInterventionDAO;
 import DAO.MySQL.MySQLSessionDAO;
+import DAO.MySQL.MySQLSubscriptionDAO;
 import DAO.MySQL.MySQLUserDAO;
 import model.users.Client;
 import model.interventions.Intervention;
 import model.users.Credentials;
 import model.users.Event;
 import model.users.Session;
+import model.users.Subscription;
 import model.users.User;
 import utility.HashHandler;
 import utility.TimeUtility;
@@ -30,6 +33,7 @@ public class ClientControllerFacade {
 	EventDAO eventDAO;
 	ClientDAO clientDAO;
 	InterventionDAO interventionDAO;
+	SubscriptionDAO subscriptionDAO;
 
 
 	public ClientControllerFacade() {
@@ -39,6 +43,7 @@ public class ClientControllerFacade {
 		eventDAO = new MySQLEventDAO();
 		clientDAO = new MySQLClientDAO();
 		interventionDAO=new MySQLInterventionDAO();
+		subscriptionDAO = new MySQLSubscriptionDAO();
 	}
 
 	public ArrayList<String> login(String username, String password) {
@@ -186,7 +191,6 @@ public class ClientControllerFacade {
 		 return reply;
 		
 	}
-//	public void viewClients(String param){}
 
 	public ArrayList<String> newClient(String name, String surname, String phone_number) {
 		ArrayList<String> reply = new ArrayList<>();
@@ -222,15 +226,27 @@ public class ClientControllerFacade {
 		return reply;
 	}
 
-	// public void viewClient(int clientID){}
 	// public void viewClients(String param){}
-	// public void newClient(Client client){}
-	// public void deleteClient(Client client){}
 
 
 	// public void newSubscription(Subscripption subscription){}
 	// public void deleteSubscription(int subscriptionID){}
-	// public void viewSubscription(int subscriptionID){}
+	
+	 public void viewSubscription(int subscription_ID) {
+		 ArrayList<String> reply = new ArrayList<>();
+			Subscription subscription = subscriptionDAO.select(subscription_ID);
+			
+			if(subscription != null) {
+			reply.add("VIEW SUBSCRIPTION OK");
+			reply.add(""+subscription.getID_subscription());
+			reply.add(subscription.getID_client());
+			reply.add(subscription.getStart_date());
+			reply.add(subscription.getEnd_date());
+			} else {
+				reply.add("VIEW subscription FAILED");
+			}
+			 return reply;
+	 }
 	// public void viewSubscriptions(String param){}
 
 	 public ArrayList<String> newIntervention(Intervention intervention){
