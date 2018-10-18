@@ -39,8 +39,4 @@ public class TimeUtility {
 		return LocalDate.parse(stringDate, formatter);
 	}
 
-	public static void main(String args[]) {
-		System.out.println(TimeUtility.getStringTimeNow());
-
-	}
 }
