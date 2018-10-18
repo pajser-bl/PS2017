@@ -2,7 +2,6 @@ package server;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
 import DAO.ClientDAO;
 import DAO.CredentialsDAO;
 import DAO.EventDAO;
@@ -222,10 +221,12 @@ public class ClientControllerFacade {
 		}
 		return reply;
 	}
+
 	// public void viewClient(int clientID){}
 	// public void viewClients(String param){}
 	// public void newClient(Client client){}
 	// public void deleteClient(Client client){}
+
 
 	// public void newSubscription(Subscripption subscription){}
 	// public void deleteSubscription(int subscriptionID){}
