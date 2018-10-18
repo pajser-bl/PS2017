@@ -12,12 +12,12 @@ public class TimeUtility {
 		return formatter.format(LocalDateTime.now());
 	}
 
-	public static String localDateTimeToDDMMYYYY(LocalDateTime localDateTime) {
+	public static String localDateTimeToDDmmYYYY(LocalDateTime localDateTime) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.YYYY");
 		return formatter.format(localDateTime);
 	}
 
-	public static String formatTime(LocalDateTime localDateTime) {
+	public static String localDateTimeToHHmm(LocalDateTime localDateTime) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 		return formatter.format(localDateTime);
 	}
@@ -38,5 +38,10 @@ public class TimeUtility {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		return LocalDate.parse(stringDate, formatter);
 	}
-
+	public static String localDateToString(LocalDate localDate) {
+		DateTimeFormatter formatter=DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return formatter.format(localDate);
+		
+	}
+	
 }
