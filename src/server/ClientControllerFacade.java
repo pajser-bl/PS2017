@@ -57,7 +57,7 @@ public class ClientControllerFacade {
 			if (loginCheck) {
 				// uspjesan logine
 				User user = userDAO.select(credentials.getID_user());
-				int ID_session = sessionDAO.insert(new Session(user.getID_user(), TimeUtility.getLDTNow()));
+				int ID_session = sessionDAO.insert(new Session(user.getID_user(), LocalDateTime.now()));
 
 				reply.add("LOGIN OK");
 				reply.add(String.valueOf(user.getID_user()));
@@ -269,8 +269,8 @@ public class ClientControllerFacade {
 		reply.add(""+intervention.getID_vehicle());
 		reply.add(""+intervention.getID_user_opened());
 		reply.add(""+intervention.getID_user_closed());
-		reply.add(TimeUtility.formatTimeDate(intervention.getOpened_on()));
-		reply.add(TimeUtility.formatTimeDate(intervention.getClosed_on()));
+		reply.add(TimeUtility.localDateTimeToString(intervention.getOpened_on()));
+		reply.add(TimeUtility.localDateTimeToString(intervention.getClosed_on()));
 		reply.add(intervention.getRemark());
 		if(intervention.isClosed())
 			reply.add("CLOSED");
