@@ -28,7 +28,7 @@ public class Server {
 			//ServerSocketFactory sslSocketFactory = SSLServerSocketFactory.getDefault();
 			//ServerSocket serverSocket = sslSocketFactory.createServerSocket(SERVER_PORT);
 			ServerSocket serverSocket=new ServerSocket(SERVER_PORT);
-			System.out.println("[" + TimeUtility.getLDTNow() + "]Server is online, awaiting incoming user connections");
+			System.out.println("[" +TimeUtility.getStringTimeNow() + "]Server is online, awaiting incoming user connections");
 			while (SERVER_ONLINE && serverLimitNotReached()) {
 				Socket socket = serverSocket.accept();
 				SERVER_CONNECTION_COUNTER++;
