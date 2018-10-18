@@ -90,16 +90,18 @@ public class ClientRequestHandler {
 		case "VIEW SUBSCRIPTION": {
 			return clientControllerFacade.viewSubscription(Integer.parseInt(request.getRequest().get(0)));
 		}
-			break;
 		case "VIEW SUBSCRIPTIONS": {
 		}
 			break;
 		case "NEW SUBSCRIPTION": {
+			return clientControllerFacade.newSubscription(request.getRequest().get(0),request.getRequest().get(1),request.getRequest().get(2));
 		}
-			break;
 		case "DELETE SUBSCRIPTION": {
+			return clientControllerFacade.deleteSubscription(request.getRequest().get(0));
 		}
-			break;
+		case "UPDATE SUBSCRIPTION" : {
+			return clientControllerFacade.updateSubscription(request.getRequest().get(0),request.getRequest().get(1),request.getRequest().get(2),request.getRequest().get(3));
+		}
 
 		case "VIEW INTERVENTION": {
 			return clientControllerFacade.viewIntervention(Integer.parseInt(request.getRequest().get(0)));

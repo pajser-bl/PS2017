@@ -120,6 +120,7 @@ public class ClientControllerFacade {
 	}
 
 	// public void viewUsers(String param){}
+	
 	public ArrayList<String> addUser(String name, String surname, String date_of_birth, String type,
 			String qualification) {
 		ArrayList<String> reply = new ArrayList<>();
@@ -227,10 +228,6 @@ public class ClientControllerFacade {
 	}
 
 	// public void viewClients(String param){}
-
-
-	// public void newSubscription(Subscripption subscription){}
-	// public void deleteSubscription(int subscriptionID){}
 	
 	 public ArrayList<String> viewSubscription(int subscription_ID) {
 		 ArrayList<String> reply = new ArrayList<>();
@@ -240,15 +237,47 @@ public class ClientControllerFacade {
 			reply.add("VIEW SUBSCRIPTION OK");
 			reply.add(""+subscription.getID_subscription());
 			reply.add(""+subscription.getID_client());
-			reply.add(TimeUtility.localDateTimeToString(subscription.getStart_date()));
-			reply.add(TimeUtility.localDateTimeToString(subscription.getEnd_date()));
+			reply.add(TimeUtility.localDateToString(subscription.getStart_date()));
+			reply.add(TimeUtility.localDateToString(subscription.getEnd_date()));
 			} else {
 				reply.add("VIEW subscription FAILED");
 			}
 			 return reply;
 	 }
 	// public void viewSubscriptions(String param){}
-
+	 
+	 public ArrayList<String> newSubscription(String client_ID, String start_date, String end_date) {
+		ArrayList<String> reply = new ArrayList<>();
+		Subscription subscription = new Subscription(Integer.parseInt(client_ID),Integer.parseInt(client_ID), TimeUtility.stringToLocalDate(start_date),TimeUtility.stringToLocalDate(end_date));
+			if(subscriptionDAO.insert(subscription) != 0) {
+			reply.add("NEW SUBSCRIPTION OK");
+			} else {
+				reply.add("NEW SUBSCRIPTION FAILED");
+			}
+			 return reply;
+		}
+	 public ArrayList<String> updateSubscription(String subscription_ID, String client_ID, String start_date, String end_date) {
+		 ArrayList<String> reply = new ArrayList<>();
+			Subscription subscription = new Subscription(Integer.parseInt(subscription_ID),Integer.parseInt(client_ID), TimeUtility.stringToLocalDate(start_date),TimeUtility.stringToLocalDate(end_date));
+				if(subscriptionDAO.update(subscription) != 0) {
+				reply.add("UPDATE SUBSCRIPTION OK");
+				} else {
+					reply.add("UPDATE SUBSCRIPTION FAILED");
+				}
+				 return reply;
+		}
+	 
+	 public ArrayList<String> deleteSubscription(String subscription_ID) {
+		ArrayList<String> reply = new ArrayList<>();
+		if (subscriptionDAO.delete(Integer.parseInt(subscription_ID)) != 0) {
+			reply.add("DELETE SUBSCRIPTION OK");
+			} else {
+				reply.add("DELETE SUBSCRIPTION FAILED");
+			}
+			return reply;
+			
+		}
+	 
 	 public ArrayList<String> newIntervention(Intervention intervention){
 		 ArrayList<String> reply = new ArrayList<>();
 		 if(interventionDAO.insert(intervention)!=0) {
@@ -258,7 +287,7 @@ public class ClientControllerFacade {
 		 }
 		 return reply;
 	 }
-
+	 
 	public ArrayList<String> viewIntervention(int ID_intervention) {
 		ArrayList<String> reply = new ArrayList<>();
 		Intervention intervention = interventionDAO.select(ID_intervention);
@@ -283,6 +312,7 @@ public class ClientControllerFacade {
 	}
 	// public void closeIntervention(Intervention intervention){}
 	// public void viewInterventions(String param){}
+
 
 	// public void newFieldReport(FieldReport fieldReport){}
 

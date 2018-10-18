@@ -31,7 +31,7 @@ public class TimeUtility {
 
 	public static String localDateTimeToString(LocalDateTime localDateTime) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		return formatter.format(localDate);
+		return formatter.format(localDateTime);
 	}
 
 	public static LocalDate stringToLocalDate(String stringDate) {
