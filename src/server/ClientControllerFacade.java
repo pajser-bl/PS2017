@@ -232,16 +232,16 @@ public class ClientControllerFacade {
 	// public void newSubscription(Subscripption subscription){}
 	// public void deleteSubscription(int subscriptionID){}
 	
-	 public void viewSubscription(int subscription_ID) {
+	 public ArrayList<String> viewSubscription(int subscription_ID) {
 		 ArrayList<String> reply = new ArrayList<>();
 			Subscription subscription = subscriptionDAO.select(subscription_ID);
 			
 			if(subscription != null) {
 			reply.add("VIEW SUBSCRIPTION OK");
 			reply.add(""+subscription.getID_subscription());
-			reply.add(subscription.getID_client());
-			reply.add(subscription.getStart_date());
-			reply.add(subscription.getEnd_date());
+			reply.add(""+subscription.getID_client());
+			reply.add(TimeUtility.localDateTimeToString(subscription.getStart_date()));
+			reply.add(TimeUtility.localDateTimeToString(subscription.getEnd_date()));
 			} else {
 				reply.add("VIEW subscription FAILED");
 			}

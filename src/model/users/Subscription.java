@@ -12,7 +12,7 @@ public class Subscription {
 	public void setID_subscription(int iD_subscription) {
 		ID_subscription = iD_subscription;
 	}
-	public String getID_client() {
+	public int getID_client() {
 		return ID_client;
 	}
 	public void setID_client(int iD_client) {
