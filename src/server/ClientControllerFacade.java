@@ -2,7 +2,6 @@ package server;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
 import DAO.ClientDAO;
 import DAO.CredentialsDAO;
 import DAO.EventDAO;
@@ -15,11 +14,8 @@ import DAO.MySQL.MySQLEventDAO;
 import DAO.MySQL.MySQLInterventionDAO;
 import DAO.MySQL.MySQLSessionDAO;
 import DAO.MySQL.MySQLUserDAO;
-
 import model.users.Client;
-
 import model.interventions.Intervention;
-
 import model.users.Credentials;
 import model.users.Event;
 import model.users.Session;
@@ -32,9 +28,7 @@ public class ClientControllerFacade {
 	UserDAO userDAO;
 	SessionDAO sessionDAO;
 	EventDAO eventDAO;
-
 	ClientDAO clientDAO;
-
 	InterventionDAO interventionDAO;
 
 
@@ -43,11 +37,8 @@ public class ClientControllerFacade {
 		userDAO = new MySQLUserDAO();
 		sessionDAO = new MySQLSessionDAO();
 		eventDAO = new MySQLEventDAO();
-
 		clientDAO = new MySQLClientDAO();
-
 		interventionDAO=new MySQLInterventionDAO();
-
 	}
 
 	public ArrayList<String> login(String username, String password) {
@@ -177,7 +168,6 @@ public class ClientControllerFacade {
 		return reply;
 	}
 	// public void viewUserSessions(String param){}
-
 
 	public ArrayList<String> viewClient(int clientID) {
 		
