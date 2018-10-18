@@ -44,8 +44,4 @@ public class TimeUtility {
 		
 	}
 	
-	public static void main(String args[]) {
-		System.out.println(TimeUtility.getStringTimeNow());
-
-	}
 }
