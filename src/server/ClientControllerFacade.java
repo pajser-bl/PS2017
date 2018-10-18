@@ -15,11 +15,11 @@ import DAO.MySQL.MySQLEventDAO;
 import DAO.MySQL.MySQLInterventionDAO;
 import DAO.MySQL.MySQLSessionDAO;
 import DAO.MySQL.MySQLUserDAO;
-<<<<<<< HEAD
+
 import model.users.Client;
-=======
+
 import model.interventions.Intervention;
->>>>>>> branch 'master' of https://github.com/pajser-bl/PS2017
+
 import model.users.Credentials;
 import model.users.Event;
 import model.users.Session;
@@ -32,22 +32,22 @@ public class ClientControllerFacade {
 	UserDAO userDAO;
 	SessionDAO sessionDAO;
 	EventDAO eventDAO;
-<<<<<<< HEAD
+
 	ClientDAO clientDAO;
-=======
+
 	InterventionDAO interventionDAO;
->>>>>>> branch 'master' of https://github.com/pajser-bl/PS2017
+
 
 	public ClientControllerFacade() {
 		credentialsDAO = new MySQLCredentialsDAO();
 		userDAO = new MySQLUserDAO();
 		sessionDAO = new MySQLSessionDAO();
 		eventDAO = new MySQLEventDAO();
-<<<<<<< HEAD
+
 		clientDAO = new MySQLClientDAO();
-=======
+
 		interventionDAO=new MySQLInterventionDAO();
->>>>>>> branch 'master' of https://github.com/pajser-bl/PS2017
+
 	}
 
 	public ArrayList<String> login(String username, String password) {
@@ -178,7 +178,7 @@ public class ClientControllerFacade {
 	}
 	// public void viewUserSessions(String param){}
 
-<<<<<<< HEAD
+
 	public ArrayList<String> viewClient(int clientID) {
 		
 		ArrayList<String> reply = new ArrayList<>();
@@ -231,12 +231,12 @@ public class ClientControllerFacade {
 		}
 		return reply;
 	}
-=======
+
 	// public void viewClient(int clientID){}
 	// public void viewClients(String param){}
 	// public void newClient(Client client){}
 	// public void deleteClient(Client client){}
->>>>>>> branch 'master' of https://github.com/pajser-bl/PS2017
+
 
 	// public void newSubscription(Subscripption subscription){}
 	// public void deleteSubscription(int subscriptionID){}
