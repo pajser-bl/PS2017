@@ -94,7 +94,6 @@ public class ClientRequestHandler {
 		}
 		case "VIEW SUBSCRIPTIONS": {
 		}
-			break;
 		case "NEW SUBSCRIPTION": {
 			return clientControllerFacade.newSubscription(request.getRequest().get(0), request.getRequest().get(1),
 					request.getRequest().get(2));
@@ -112,7 +111,6 @@ public class ClientRequestHandler {
 		}
 		case "VIEW INTERVENTIONS": {
 		}
-			break;
 		case "NEW INTERVENTION": {
 			return clientControllerFacade.newIntervention(new Intervention(
 					Integer.parseInt(request.getRequest().get(0)), Integer.parseInt(request.getRequest().get(1)),
@@ -140,26 +138,32 @@ public class ClientRequestHandler {
 		}
 		case "NEW  ROADREPORT": {
 			return clientControllerFacade.newRoadReport(Integer.parseInt(request.getRequest().get(0)),
-					Integer.parseInt(request.getRequest().get(0)),Integer.parseInt(request.getRequest().get(2)),request.getRequest().get(3),
-					TimeUtility.stringToLocalDateTime(request.getRequest().get(4)), 
+					Integer.parseInt(request.getRequest().get(0)), Integer.parseInt(request.getRequest().get(2)),
+					request.getRequest().get(3), TimeUtility.stringToLocalDateTime(request.getRequest().get(4)),
 					request.getRequest().get(5));
+		}
+		case "VIEW ROADREPORT": {
+		}
+		case "UPDATE ROADREPORT": {
+		}
+		case "DELETE ROADREPORT": {
 		}
 
 		case "VIEW REPORT": {
+			return clientControllerFacade.viewReport(Integer.parseInt((request.getRequest().get(0))));
 		}
-			break;
 		case "VIEW REPORTS": {
+
 		}
-			break;
 		case "NEW REPORT": {
-		}
-			break;
 
-		default: {
 		}
-			break;
+		case "INSERT REPORT": {
 		}
-		return null;
-
+		case "DELETE REPORT": {
+		}
+		}
+		System.out.println("Unexisting function requested");
+		return clientControllerFacade.unexistingRequest();
 	}
 }

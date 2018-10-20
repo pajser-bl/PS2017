@@ -6,6 +6,7 @@ import DAO.ClientDAO;
 import DAO.CredentialsDAO;
 import DAO.EventDAO;
 import DAO.InterventionDAO;
+import DAO.ReportDAO;
 import DAO.RoadReportDAO;
 import DAO.SessionDAO;
 import DAO.SubscriptionDAO;
@@ -14,12 +15,14 @@ import DAO.MySQL.MySQLClientDAO;
 import DAO.MySQL.MySQLCredentialsDAO;
 import DAO.MySQL.MySQLEventDAO;
 import DAO.MySQL.MySQLInterventionDAO;
+import DAO.MySQL.MySQLReportDAO;
 import DAO.MySQL.MySQLRoadReportDAO;
 import DAO.MySQL.MySQLSessionDAO;
 import DAO.MySQL.MySQLSubscriptionDAO;
 import DAO.MySQL.MySQLUserDAO;
 import model.users.Client;
 import model.interventions.Intervention;
+import model.interventions.Report;
 import model.interventions.RoadReport;
 import model.users.Credentials;
 import model.users.Event;
@@ -38,6 +41,7 @@ public class ClientControllerFacade {
 	InterventionDAO interventionDAO;
 	SubscriptionDAO subscriptionDAO;
 	RoadReportDAO roadReportDAO;
+	ReportDAO reportDAO;
 
 	public ClientControllerFacade() {
 		credentialsDAO = new MySQLCredentialsDAO();
@@ -48,6 +52,7 @@ public class ClientControllerFacade {
 		interventionDAO = new MySQLInterventionDAO();
 		subscriptionDAO = new MySQLSubscriptionDAO();
 		roadReportDAO = new MySQLRoadReportDAO();
+		reportDAO = new MySQLReportDAO();
 	}
 
 	public ArrayList<String> login(String username, String password) {
@@ -164,8 +169,8 @@ public class ClientControllerFacade {
 		ArrayList<String> reply = new ArrayList<>();
 		Session session = sessionDAO.select(ID_session);
 		int ID_user = session.getUserID();
-		LocalDateTime start = session.getStart();
-		LocalDateTime end = session.getEnd();
+		// LocalDateTime start = session.getStart();
+		// LocalDateTime end = session.getEnd();
 		// reply.add();
 		for (Event e : eventDAO.selectBySession(ID_session))
 			reply.add(e.toString());
@@ -277,10 +282,11 @@ public class ClientControllerFacade {
 			reply.add("DELETE SUBSCRIPTION FAILED");
 		}
 		return reply;
-
 	}
 
 	public ArrayList<String> newIntervention(Intervention intervention) {
+		// new Intervention(int iD_client, int iD_vehicle,
+		// 					int iD_user_opened, LocalDateTime opened_on)
 		ArrayList<String> reply = new ArrayList<>();
 		if (interventionDAO.insert(intervention) != 0) {
 			reply.add("NEW INTERVENTION OK");
@@ -293,7 +299,7 @@ public class ClientControllerFacade {
 	public ArrayList<String> viewIntervention(int ID_intervention) {
 		ArrayList<String> reply = new ArrayList<>();
 		Intervention intervention = interventionDAO.select(ID_intervention);
-//		if(interventionDAO.exists(ID_intervention)) {
+		// if(interventionDAO.exists(ID_intervention)) {
 		// reply.add("VIEW INTERVENTION OK");
 		reply.add("" + intervention.getID_intervention());
 		reply.add("" + intervention.getID_client());
@@ -307,9 +313,9 @@ public class ClientControllerFacade {
 			reply.add("CLOSED");
 		else
 			reply.add("OPEN");
-//		}else{
-//			reply.add("VIEW INTERVENTION FAILED");
-//		}
+		// }else{
+		// reply.add("VIEW INTERVENTION FAILED");
+		// }
 		return reply;
 	}
 	// public void viewInterventions(String param){}
@@ -346,10 +352,11 @@ public class ClientControllerFacade {
 	}
 
 	public ArrayList<String> newRoadReport(int fieldreport_ID, int intervention_ID, int user_ID, String assistance,
-			LocalDateTime time, String  remark) {
+			LocalDateTime time, String remark) {
 		ArrayList<String> reply = new ArrayList<>();
-		
-		if (roadReportDAO.insert(new RoadReport(fieldreport_ID, intervention_ID, user_ID,  assistance, time, remark)) != 0) {
+
+		if (roadReportDAO
+				.insert(new RoadReport(fieldreport_ID, intervention_ID, user_ID, assistance, time, remark)) != 0) {
 			reply.add("NEW ROADREPORT OK");
 		} else {
 			reply.add("NEW ROADREPORT FAILED");
@@ -357,10 +364,24 @@ public class ClientControllerFacade {
 		return reply;
 	}
 
-	
+	public ArrayList<String> viewReport(int report_ID) {
+		ArrayList<String> reply = new ArrayList<>();
+		Intervention intervention = interventionDAO.select(report_ID);
+		RoadReport roadReport = roadReportDAO.select(report_ID);
+		Report report = reportDAO.select(report_ID);
 
-	// public void newReport(Report report){}
-	// public void viewReport(int reportID){}
+		return reply;
+	}
+
+	public void newReport(int iD_report, int iD_intervention, int iD_user, String remark, LocalDateTime closed_on) {
+		ArrayList<String> reply = new ArrayList<>();
+		if (reportDAO.insert(new Report(iD_report, iD_intervention, iD_user, remark, closed_on)) != 0) {
+			reply.add("NEW ROADREPORT OK");
+		} else {
+			reply.add("NEW ROADREPORT FAILED");
+		}
+	}
+
 	// public void viewReports(String param){}
 
 	// public void accessMapFieldTechnician(int intervention ID){}
@@ -371,4 +392,9 @@ public class ClientControllerFacade {
 	// public void viewStatesFieldTechnitians(String param){}
 	// public void viewOnlineUseres(){}
 
+	public ArrayList<String> unexistingRequest() {
+		ArrayList<String> reply = new ArrayList<>();
+		reply.add("UNEXISTING FUNCTION REQUEST");
+		return reply;
+	}
 }
