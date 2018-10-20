@@ -15,7 +15,7 @@ public class ClientRequestHandler {
 			return clientControllerFacade.login(request.getRequest().get(0), request.getRequest().get(1));
 		}
 		case "LOGOUT": {
-			return clientControllerFacade.logout();
+			return clientControllerFacade.logout(Integer.parseInt(request.getRequest().get(0)));
 		}
 		case "NEW CREDENTIALS": {
 			return clientControllerFacade.newCredentials(Integer.parseInt(request.getRequest().get(0)),
@@ -63,8 +63,8 @@ public class ClientRequestHandler {
 		}
 			break;
 		case "VIEW ONLINE USERS": {
+			return clientControllerFacade.viewOnlineUsers();
 		}
-			break;
 		// case "VIEW USER SESSION":{
 		// return clientControllerFacade.viewUserSession(request.getRequest().get(1));
 		// }

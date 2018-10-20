@@ -74,6 +74,8 @@ public class ClientControllerFacade {
 				reply.add(user.getSurname());
 				reply.add(user.getType());
 				reply.add(String.valueOf(ID_session));
+				
+				ActiveUsersWatch.addActiveUser(user);
 
 			} else {
 				// neuspjesan login
@@ -88,6 +90,7 @@ public class ClientControllerFacade {
 
 	public ArrayList<String> logout() {
 		ArrayList<String> reply = new ArrayList<>();
+		ActiveUsersWatch.removeActiveUser(user_ID);
 		reply.add("LOGOUT OK");
 		return reply;
 	}
@@ -286,7 +289,7 @@ public class ClientControllerFacade {
 
 	public ArrayList<String> newIntervention(Intervention intervention) {
 		// new Intervention(int iD_client, int iD_vehicle,
-		// 					int iD_user_opened, LocalDateTime opened_on)
+		// int iD_user_opened, LocalDateTime opened_on)
 		ArrayList<String> reply = new ArrayList<>();
 		if (interventionDAO.insert(intervention) != 0) {
 			reply.add("NEW INTERVENTION OK");
@@ -386,15 +389,49 @@ public class ClientControllerFacade {
 
 	// public void accessMapFieldTechnician(int intervention ID){}
 	// public void accessMapOperator(){}
+	public ArrayList<String> viewOnlineUsers() {
+		ArrayList<String> reply = new ArrayList<>();
+		reply.add("VIEW ONLINE USERS");
+		reply.addAll(ActiveUsersWatch.getActiveUsers());
+		return reply;
+	}
+//	public void viewStatesFieldTechnitians(String param){}
+	public ArrayList<String> viewStatesFieldTechnitians(){
+		ArrayList<String> reply = new ArrayList<>();
+		reply.add("VIEW FIELD TECHNITIANS STATE");
+		reply.addAll(ActiveUsersWatch.getOnlineFieldTechnitians());
+		return reply;
+	}
+	public ArrayList<String> viewAvailableFieldTechnitians(){
+		ArrayList<String> reply = new ArrayList<>();
+		reply.add("VIEW AVAILABLE FIELD TECHNITIANS");
+		reply.addAll(ActiveUsersWatch.getAvailableFieldTechnitians());
+		return reply;
+	}
 
-	// public void changeStateFieldTechnitian(String state){}
-	// public void viewFieldTechnitianState(int userID){}
-	// public void viewStatesFieldTechnitians(String param){}
-	// public void viewOnlineUseres(){}
+
+	public ArrayList<String> changeStateFieldTechnitian(int user_ID,String state) {
+		ArrayList<String> reply = new ArrayList<>();
+		reply.add("CHANGE FIELD TECHNITIAN STATE");
+		ActiveUsersWatch.changeFieldTechnitianState(user_ID, state);
+		return reply;
+	}
+
+	public ArrayList<String> viewFieldTechnitianState(int user_ID) {
+		ArrayList<String> reply = new ArrayList<>();
+		reply.add("VIEW FIELD TECHNITIAN STATE");
+		reply.add(ActiveUsersWatch.getFieldTechnitianState(user_ID));
+		return reply;
+	}
+
+	
 
 	public ArrayList<String> unexistingRequest() {
 		ArrayList<String> reply = new ArrayList<>();
 		reply.add("UNEXISTING FUNCTION REQUEST");
 		return reply;
 	}
+
+	
+	
 }
