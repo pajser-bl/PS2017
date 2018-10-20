@@ -78,63 +78,92 @@ public class ClientRequestHandler {
 		case "VIEW CLIENTS": {
 		}
 		case "NEW CLIENT": {
-			return clientControllerFacade.newClient(request.getRequest().get(0),request.getRequest().get(1),request.getRequest().get(2));
+			return clientControllerFacade.newClient(request.getRequest().get(0), request.getRequest().get(1),
+					request.getRequest().get(2));
 		}
-		case "UPDATE CLIENT" : {
-			return clientControllerFacade.updateClient(request.getRequest().get(0),request.getRequest().get(1),request.getRequest().get(2),request.getRequest().get(3));
+		case "UPDATE CLIENT": {
+			return clientControllerFacade.updateClient(request.getRequest().get(0), request.getRequest().get(1),
+					request.getRequest().get(2), request.getRequest().get(3));
 		}
 		case "DELETE CLIENT": {
 			return clientControllerFacade.deleteClient(request.getRequest().get(0));
 		}
 
 		case "VIEW SUBSCRIPTION": {
+			return clientControllerFacade.viewSubscription(Integer.parseInt(request.getRequest().get(0)));
 		}
-			break;
 		case "VIEW SUBSCRIPTIONS": {
 		}
-			break;
 		case "NEW SUBSCRIPTION": {
+			return clientControllerFacade.newSubscription(request.getRequest().get(0), request.getRequest().get(1),
+					request.getRequest().get(2));
 		}
-			break;
 		case "DELETE SUBSCRIPTION": {
+			return clientControllerFacade.deleteSubscription(request.getRequest().get(0));
 		}
-			break;
+		case "UPDATE SUBSCRIPTION": {
+			return clientControllerFacade.updateSubscription(request.getRequest().get(0), request.getRequest().get(1),
+					request.getRequest().get(2), request.getRequest().get(3));
+		}
 
 		case "VIEW INTERVENTION": {
 			return clientControllerFacade.viewIntervention(Integer.parseInt(request.getRequest().get(0)));
 		}
 		case "VIEW INTERVENTIONS": {
 		}
-			break;
 		case "NEW INTERVENTION": {
 			return clientControllerFacade.newIntervention(new Intervention(
 					Integer.parseInt(request.getRequest().get(0)), Integer.parseInt(request.getRequest().get(1)),
 					Integer.parseInt(request.getRequest().get(2)),
 					TimeUtility.stringToLocalDateTime(request.getRequest().get(3))));
 		}
+		case "UPDATE INTERVENTION": {
+			return clientControllerFacade.updateIntervention(new Intervention(
+					Integer.parseInt(request.getRequest().get(0)), Integer.parseInt(request.getRequest().get(1)),
+					Integer.parseInt(request.getRequest().get(2)), Integer.parseInt(request.getRequest().get(3)),
+					Integer.parseInt(request.getRequest().get(4)),
+					TimeUtility.stringToLocalDateTime(request.getRequest().get(5)),
+					TimeUtility.stringToLocalDateTime(request.getRequest().get(6)), request.getRequest().get(7),
+					Boolean.parseBoolean(request.getRequest().get(8))));
+		}
 		case "DELETE INTERVENTION": {
+			return clientControllerFacade.deleteIntervention(request.getRequest().get(0));
 		}
-			break;
 
-		case "NEW FIELD REPORT": {
+		case "CLOSE INTERVENTION": {
+			return clientControllerFacade.closeIntervention(Integer.parseInt(request.getRequest().get(0)),
+					Integer.parseInt(request.getRequest().get(1)),
+					TimeUtility.stringToLocalDateTime(request.getRequest().get(3)), request.getRequest().get(4),
+					Boolean.parseBoolean(request.getRequest().get(5)));
 		}
-			break;
+		case "NEW  ROADREPORT": {
+			return clientControllerFacade.newRoadReport(Integer.parseInt(request.getRequest().get(0)),
+					Integer.parseInt(request.getRequest().get(0)), Integer.parseInt(request.getRequest().get(2)),
+					request.getRequest().get(3), TimeUtility.stringToLocalDateTime(request.getRequest().get(4)),
+					request.getRequest().get(5));
+		}
+		case "VIEW ROADREPORT": {
+		}
+		case "UPDATE ROADREPORT": {
+		}
+		case "DELETE ROADREPORT": {
+		}
 
 		case "VIEW REPORT": {
+			return clientControllerFacade.viewReport(Integer.parseInt((request.getRequest().get(0))));
 		}
-			break;
 		case "VIEW REPORTS": {
+
 		}
-			break;
 		case "NEW REPORT": {
-		}
-			break;
 
-		default: {
 		}
-			break;
+		case "INSERT REPORT": {
 		}
-		return null;
-
+		case "DELETE REPORT": {
+		}
+		}
+		System.out.println("Unexisting function requested");
+		return clientControllerFacade.unexistingRequest();
 	}
 }

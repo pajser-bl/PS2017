@@ -2,24 +2,32 @@ package server;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
 import DAO.ClientDAO;
 import DAO.CredentialsDAO;
 import DAO.EventDAO;
 import DAO.InterventionDAO;
+import DAO.ReportDAO;
+import DAO.RoadReportDAO;
 import DAO.SessionDAO;
+import DAO.SubscriptionDAO;
 import DAO.UserDAO;
 import DAO.MySQL.MySQLClientDAO;
 import DAO.MySQL.MySQLCredentialsDAO;
 import DAO.MySQL.MySQLEventDAO;
 import DAO.MySQL.MySQLInterventionDAO;
+import DAO.MySQL.MySQLReportDAO;
+import DAO.MySQL.MySQLRoadReportDAO;
 import DAO.MySQL.MySQLSessionDAO;
+import DAO.MySQL.MySQLSubscriptionDAO;
 import DAO.MySQL.MySQLUserDAO;
 import model.users.Client;
 import model.interventions.Intervention;
+import model.interventions.Report;
+import model.interventions.RoadReport;
 import model.users.Credentials;
 import model.users.Event;
 import model.users.Session;
+import model.users.Subscription;
 import model.users.User;
 import utility.HashHandler;
 import utility.TimeUtility;
@@ -31,7 +39,9 @@ public class ClientControllerFacade {
 	EventDAO eventDAO;
 	ClientDAO clientDAO;
 	InterventionDAO interventionDAO;
-
+	SubscriptionDAO subscriptionDAO;
+	RoadReportDAO roadReportDAO;
+	ReportDAO reportDAO;
 
 	public ClientControllerFacade() {
 		credentialsDAO = new MySQLCredentialsDAO();
@@ -39,7 +49,10 @@ public class ClientControllerFacade {
 		sessionDAO = new MySQLSessionDAO();
 		eventDAO = new MySQLEventDAO();
 		clientDAO = new MySQLClientDAO();
-		interventionDAO=new MySQLInterventionDAO();
+		interventionDAO = new MySQLInterventionDAO();
+		subscriptionDAO = new MySQLSubscriptionDAO();
+		roadReportDAO = new MySQLRoadReportDAO();
+		reportDAO = new MySQLReportDAO();
 	}
 
 	public ArrayList<String> login(String username, String password) {
@@ -53,7 +66,7 @@ public class ClientControllerFacade {
 			if (loginCheck) {
 				// uspjesan logine
 				User user = userDAO.select(credentials.getID_user());
-				int ID_session = sessionDAO.insert(new Session(user.getID_user(), TimeUtility.getLDTNow()));
+				int ID_session = sessionDAO.insert(new Session(user.getID_user(), LocalDateTime.now()));
 
 				reply.add("LOGIN OK");
 				reply.add(String.valueOf(user.getID_user()));
@@ -116,6 +129,7 @@ public class ClientControllerFacade {
 	}
 
 	// public void viewUsers(String param){}
+
 	public ArrayList<String> addUser(String name, String surname, String date_of_birth, String type,
 			String qualification) {
 		ArrayList<String> reply = new ArrayList<>();
@@ -150,19 +164,13 @@ public class ClientControllerFacade {
 		return reply;
 	}
 
-	// public void accessMapFieldTechnician(int intervention ID){}
-	// public void accessMapOperator(){}
-	// public void changeStateFieldTechnitian(String state){}
-	// public void viewFieldTechnitianState(int userID){}
-	// public void viewStatesFieldTechnitians(String param){}
-	// public void viewOnlineUseres(){}
 	public ArrayList<String> viewUserSession(int ID_session) {
 		// ID_session,ID_user,start,end
 		ArrayList<String> reply = new ArrayList<>();
 		Session session = sessionDAO.select(ID_session);
 		int ID_user = session.getUserID();
-		LocalDateTime start = session.getStart();
-		LocalDateTime end = session.getEnd();
+		// LocalDateTime start = session.getStart();
+		// LocalDateTime end = session.getEnd();
 		// reply.add();
 		for (Event e : eventDAO.selectBySession(ID_session))
 			reply.add(e.toString());
@@ -171,34 +179,33 @@ public class ClientControllerFacade {
 	// public void viewUserSessions(String param){}
 
 	public ArrayList<String> viewClient(int clientID) {
-		
+
 		ArrayList<String> reply = new ArrayList<>();
 		Client client = clientDAO.select(clientID);
-		
-		if(client != null) {
-		reply.add("VIEW USER OK");
-		reply.add(""+client.getID_client());
-		reply.add(client.getName());
-		reply.add(client.getSurname());
-		reply.add(client.getPhone_number());
+
+		if (client != null) {
+			reply.add("VIEW USER OK");
+			reply.add("" + client.getID_client());
+			reply.add(client.getName());
+			reply.add(client.getSurname());
+			reply.add(client.getPhone_number());
 		} else {
 			reply.add("VIEW USER FAILED");
 		}
-		 return reply;
-		
+		return reply;
+
 	}
-//	public void viewClients(String param){}
 
 	public ArrayList<String> newClient(String name, String surname, String phone_number) {
 		ArrayList<String> reply = new ArrayList<>();
 		Client client = new Client(name, surname, phone_number);
-		
-		if(clientDAO.insert(client) != 0) {
-		reply.add("NEW CLIENT OK");
+
+		if (clientDAO.insert(client) != 0) {
+			reply.add("NEW CLIENT OK");
 		} else {
 			reply.add("NEW CLIENT FAILED");
 		}
-		 return reply;
+		return reply;
 	}
 
 	public ArrayList<String> updateClient(String client_ID, String name, String surname, String phone_number) {
@@ -210,7 +217,7 @@ public class ClientControllerFacade {
 			reply.add("UPDATE CLIENT FAILED");
 		}
 		return reply;
-	
+
 	}
 
 	public ArrayList<String> deleteClient(String client_ID) {
@@ -222,55 +229,172 @@ public class ClientControllerFacade {
 		}
 		return reply;
 	}
-	// public void viewClient(int clientID){}
-	// public void viewClients(String param){}
-	// public void newClient(Client client){}
-	// public void deleteClient(Client client){}
 
-	// public void newSubscription(Subscripption subscription){}
-	// public void deleteSubscription(int subscriptionID){}
-	// public void viewSubscription(int subscriptionID){}
+	// public void viewClients(String param){}
+
+	public ArrayList<String> viewSubscription(int subscription_ID) {
+		ArrayList<String> reply = new ArrayList<>();
+		Subscription subscription = subscriptionDAO.select(subscription_ID);
+
+		if (subscription != null) {
+			reply.add("VIEW SUBSCRIPTION OK");
+			reply.add("" + subscription.getID_subscription());
+			reply.add("" + subscription.getID_client());
+			reply.add(TimeUtility.localDateToString(subscription.getStart_date()));
+			reply.add(TimeUtility.localDateToString(subscription.getEnd_date()));
+		} else {
+			reply.add("VIEW subscription FAILED");
+		}
+		return reply;
+	}
 	// public void viewSubscriptions(String param){}
 
-	 public ArrayList<String> newIntervention(Intervention intervention){
-		 ArrayList<String> reply = new ArrayList<>();
-		 if(interventionDAO.insert(intervention)!=0) {
-			 reply.add("NEW INTERVENTION OK");
-		 }else {
-			 reply.add("NEW INTERVENTION FAILED");
-		 }
-		 return reply;
-	 }
+	public ArrayList<String> newSubscription(String client_ID, String start_date, String end_date) {
+		ArrayList<String> reply = new ArrayList<>();
+		Subscription subscription = new Subscription(Integer.parseInt(client_ID), Integer.parseInt(client_ID),
+				TimeUtility.stringToLocalDate(start_date), TimeUtility.stringToLocalDate(end_date));
+		if (subscriptionDAO.insert(subscription) != 0) {
+			reply.add("NEW SUBSCRIPTION OK");
+		} else {
+			reply.add("NEW SUBSCRIPTION FAILED");
+		}
+		return reply;
+	}
+
+	public ArrayList<String> updateSubscription(String subscription_ID, String client_ID, String start_date,
+			String end_date) {
+		ArrayList<String> reply = new ArrayList<>();
+		Subscription subscription = new Subscription(Integer.parseInt(subscription_ID), Integer.parseInt(client_ID),
+				TimeUtility.stringToLocalDate(start_date), TimeUtility.stringToLocalDate(end_date));
+		if (subscriptionDAO.update(subscription) != 0) {
+			reply.add("UPDATE SUBSCRIPTION OK");
+		} else {
+			reply.add("UPDATE SUBSCRIPTION FAILED");
+		}
+		return reply;
+	}
+
+	public ArrayList<String> deleteSubscription(String subscription_ID) {
+		ArrayList<String> reply = new ArrayList<>();
+		if (subscriptionDAO.delete(Integer.parseInt(subscription_ID)) != 0) {
+			reply.add("DELETE SUBSCRIPTION OK");
+		} else {
+			reply.add("DELETE SUBSCRIPTION FAILED");
+		}
+		return reply;
+	}
+
+	public ArrayList<String> newIntervention(Intervention intervention) {
+		// new Intervention(int iD_client, int iD_vehicle,
+		// 					int iD_user_opened, LocalDateTime opened_on)
+		ArrayList<String> reply = new ArrayList<>();
+		if (interventionDAO.insert(intervention) != 0) {
+			reply.add("NEW INTERVENTION OK");
+		} else {
+			reply.add("NEW INTERVENTION FAILED");
+		}
+		return reply;
+	}
 
 	public ArrayList<String> viewIntervention(int ID_intervention) {
 		ArrayList<String> reply = new ArrayList<>();
 		Intervention intervention = interventionDAO.select(ID_intervention);
-//		if(interventionDAO.exists(ID_intervention)) {
-		//reply.add("VIEW INTERVENTION OK");
-		reply.add(""+intervention.getID_intervention());
-		reply.add(""+intervention.getID_client());
-		reply.add(""+intervention.getID_vehicle());
-		reply.add(""+intervention.getID_user_opened());
-		reply.add(""+intervention.getID_user_closed());
-		reply.add(TimeUtility.formatTimeDate(intervention.getOpened_on()));
-		reply.add(TimeUtility.formatTimeDate(intervention.getClosed_on()));
+		// if(interventionDAO.exists(ID_intervention)) {
+		// reply.add("VIEW INTERVENTION OK");
+		reply.add("" + intervention.getID_intervention());
+		reply.add("" + intervention.getID_client());
+		reply.add("" + intervention.getID_vehicle());
+		reply.add("" + intervention.getID_user_opened());
+		reply.add("" + intervention.getID_user_closed());
+		reply.add(TimeUtility.localDateTimeToString(intervention.getOpened_on()));
+		reply.add(TimeUtility.localDateTimeToString(intervention.getClosed_on()));
 		reply.add(intervention.getRemark());
-		if(intervention.isClosed())
+		if (intervention.isClosed())
 			reply.add("CLOSED");
-		else 
+		else
 			reply.add("OPEN");
-//		}else{
-//			reply.add("VIEW INTERVENTION FAILED");
-//		}
+		// }else{
+		// reply.add("VIEW INTERVENTION FAILED");
+		// }
 		return reply;
 	}
-	// public void closeIntervention(Intervention intervention){}
 	// public void viewInterventions(String param){}
 
-	// public void newFieldReport(FieldReport fieldReport){}
+	public ArrayList<String> updateIntervention(Intervention intervention) {
+		ArrayList<String> reply = new ArrayList<>();
+		if (interventionDAO.update(intervention) != 0) {
+			reply.add("UPDATE INTERVENTION OK");
+		} else {
+			reply.add("UPDATE INTERVENTION FAILED");
+		}
+		return reply;
+	}
 
-	// public void newReport(Report report){}
-	// public void viewReport(int reportID){}
+	public ArrayList<String> deleteIntervention(String intervention_ID) {
+		ArrayList<String> reply = new ArrayList<>();
+		if (interventionDAO.delete(Integer.parseInt(intervention_ID)) != 0) {
+			reply.add("DELETE INTERVENTION OK");
+		} else {
+			reply.add("DELETE INTERVENTION FAILED");
+		}
+		return reply;
+	}
+
+	public ArrayList<String> closeIntervention(int intervention_ID, int user_ID, LocalDateTime closed_on, String remark,
+			boolean closed) {
+		ArrayList<String> reply = new ArrayList<>();
+		if (interventionDAO.close(intervention_ID, remark, user_ID, closed_on, closed) != 0) {
+			reply.add("CLOSE INTERVENTION OK");
+		} else {
+			reply.add("CLOSE INTERVENTION FAILED");
+		}
+		return reply;
+	}
+
+	public ArrayList<String> newRoadReport(int fieldreport_ID, int intervention_ID, int user_ID, String assistance,
+			LocalDateTime time, String remark) {
+		ArrayList<String> reply = new ArrayList<>();
+
+		if (roadReportDAO
+				.insert(new RoadReport(fieldreport_ID, intervention_ID, user_ID, assistance, time, remark)) != 0) {
+			reply.add("NEW ROADREPORT OK");
+		} else {
+			reply.add("NEW ROADREPORT FAILED");
+		}
+		return reply;
+	}
+
+	public ArrayList<String> viewReport(int report_ID) {
+		ArrayList<String> reply = new ArrayList<>();
+		Intervention intervention = interventionDAO.select(report_ID);
+		RoadReport roadReport = roadReportDAO.select(report_ID);
+		Report report = reportDAO.select(report_ID);
+
+		return reply;
+	}
+
+	public void newReport(int iD_report, int iD_intervention, int iD_user, String remark, LocalDateTime closed_on) {
+		ArrayList<String> reply = new ArrayList<>();
+		if (reportDAO.insert(new Report(iD_report, iD_intervention, iD_user, remark, closed_on)) != 0) {
+			reply.add("NEW ROADREPORT OK");
+		} else {
+			reply.add("NEW ROADREPORT FAILED");
+		}
+	}
+
 	// public void viewReports(String param){}
 
+	// public void accessMapFieldTechnician(int intervention ID){}
+	// public void accessMapOperator(){}
+
+	// public void changeStateFieldTechnitian(String state){}
+	// public void viewFieldTechnitianState(int userID){}
+	// public void viewStatesFieldTechnitians(String param){}
+	// public void viewOnlineUseres(){}
+
+	public ArrayList<String> unexistingRequest() {
+		ArrayList<String> reply = new ArrayList<>();
+		reply.add("UNEXISTING FUNCTION REQUEST");
+		return reply;
+	}
 }
