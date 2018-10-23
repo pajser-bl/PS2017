@@ -64,7 +64,7 @@ public class ClientControllerFacade {
 			// postoje kredencijali sa datim username-om
 			Credentials credentials = credentialsDAO.select(username);
 			loginCheck = HashHandler.verifyPassword(password, credentials.getHash());
-			alredyLoggedIn = ActiveUsersWatch.isAlredyLoggedIn(credentials.getID_credentials());
+			alredyLoggedIn = ActiveUsersWatch.isAlredyLoggedIn(credentials.getID_user());
 			if (loginCheck && !alredyLoggedIn) {
 				// uspjesan logine
 				User user = userDAO.select(credentials.getID_user());

@@ -18,7 +18,6 @@ public class Server {
 	public static int SERVER_CONNECTION_LIMIT;
 	public static int SERVER_CONNECTION_COUNTER;
 	public static boolean SERVER_ONLINE;
-//	public static HashMap<User,Socket> onlineUsers;
 	public static MapHandler mapHandler;
 
 	public static void main(String args[]) {

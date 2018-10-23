@@ -18,7 +18,7 @@ public class ActiveUsersWatch {
 	}
 	
 	public static boolean isAlredyLoggedIn(int user_ID) {
-		for(User user:activeUsersList) 
+		for(User user:activeUsersList)
 			if(user.getID_user()==user_ID)
 				return true;
 		return false;
