@@ -16,7 +16,14 @@ public class ActiveUsersWatch {
 			roadAssistentStates.put(user, "zauzet");
 		}
 	}
-
+	
+	public static boolean isAlredyLoggedIn(int user_ID) {
+		for(User user:activeUsersList) 
+			if(user.getID_user()==user_ID)
+				return true;
+		return false;
+	}
+	
 	public static void removeActiveUser(int user_ID) {
 		for (User u : activeUsersList) {
 			if (u.getID_user() == user_ID) {

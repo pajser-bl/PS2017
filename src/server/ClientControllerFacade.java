@@ -58,12 +58,14 @@ public class ClientControllerFacade {
 	public ArrayList<String> login(String username, String password) {
 		boolean retVal = credentialsDAO.exists(username);
 		boolean loginCheck = false;
+		boolean alredyLoggedIn = false;
 		ArrayList<String> reply = new ArrayList<>();
 		if (retVal) {
 			// postoje kredencijali sa datim username-om
 			Credentials credentials = credentialsDAO.select(username);
 			loginCheck = HashHandler.verifyPassword(password, credentials.getHash());
-			if (loginCheck) {
+			alredyLoggedIn = ActiveUsersWatch.isAlredyLoggedIn(credentials.getID_credentials());
+			if (loginCheck && !alredyLoggedIn) {
 				// uspjesan logine
 				User user = userDAO.select(credentials.getID_user());
 				int ID_session = sessionDAO.insert(new Session(user.getID_user(), LocalDateTime.now()));
@@ -88,7 +90,7 @@ public class ClientControllerFacade {
 		return reply;
 	}
 
-	public ArrayList<String> logout() {
+	public ArrayList<String> logout(int user_ID) {
 		ArrayList<String> reply = new ArrayList<>();
 		ActiveUsersWatch.removeActiveUser(user_ID);
 		reply.add("LOGOUT OK");
