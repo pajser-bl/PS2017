@@ -65,7 +65,10 @@ public class ClientControllerFacade {
 			Credentials credentials = credentialsDAO.select(username);
 			loginCheck = HashHandler.verifyPassword(password, credentials.getHash());
 			alredyLoggedIn = ActiveUsersWatch.isAlredyLoggedIn(credentials.getID_user());
-			if (loginCheck) {
+			if (!alredyLoggedIn) {
+				reply.clear();
+				reply.add("LOGIN ALREDY LOGGED IN");
+			} else if (loginCheck) {
 				// uspjesan login
 				User user = userDAO.select(credentials.getID_user());
 				int ID_session = sessionDAO.insert(new Session(user.getID_user(), LocalDateTime.now()));
@@ -81,10 +84,6 @@ public class ClientControllerFacade {
 			} else {
 				// neuspjesan login
 				reply.add("LOGIN PASSWORD NOT OK");
-			}
-			if (!alredyLoggedIn) {
-				reply.clear();
-				reply.add("LOGIN ALREDY LOGGED IN");
 			}
 		} else {
 			// ne postoje kredencijali sa username-om
