@@ -65,8 +65,8 @@ public class ClientControllerFacade {
 			Credentials credentials = credentialsDAO.select(username);
 			loginCheck = HashHandler.verifyPassword(password, credentials.getHash());
 			alredyLoggedIn = ActiveUsersWatch.isAlredyLoggedIn(credentials.getID_user());
-			if (loginCheck && !alredyLoggedIn) {
-				// uspjesan logine
+			if (loginCheck) {
+				// uspjesan login
 				User user = userDAO.select(credentials.getID_user());
 				int ID_session = sessionDAO.insert(new Session(user.getID_user(), LocalDateTime.now()));
 
@@ -76,12 +76,15 @@ public class ClientControllerFacade {
 				reply.add(user.getSurname());
 				reply.add(user.getType());
 				reply.add(String.valueOf(ID_session));
-				
-				ActiveUsersWatch.addActiveUser(user);
 
+				ActiveUsersWatch.addActiveUser(user);
 			} else {
 				// neuspjesan login
 				reply.add("LOGIN PASSWORD NOT OK");
+			}
+			if (!alredyLoggedIn) {
+				reply.clear();
+				reply.add("LOGIN ALREDY LOGGED IN");
 			}
 		} else {
 			// ne postoje kredencijali sa username-om
@@ -397,22 +400,23 @@ public class ClientControllerFacade {
 		reply.addAll(ActiveUsersWatch.getActiveUsers());
 		return reply;
 	}
-//	public void viewStatesFieldTechnitians(String param){}
-	public ArrayList<String> viewStatesFieldTechnitians(){
+
+	// public void viewStatesFieldTechnitians(String param){}
+	public ArrayList<String> viewStatesFieldTechnitians() {
 		ArrayList<String> reply = new ArrayList<>();
 		reply.add("VIEW FIELD TECHNITIANS STATE");
 		reply.addAll(ActiveUsersWatch.getOnlineFieldTechnitians());
 		return reply;
 	}
-	public ArrayList<String> viewAvailableFieldTechnitians(){
+
+	public ArrayList<String> viewAvailableFieldTechnitians() {
 		ArrayList<String> reply = new ArrayList<>();
 		reply.add("VIEW AVAILABLE FIELD TECHNITIANS");
 		reply.addAll(ActiveUsersWatch.getAvailableFieldTechnitians());
 		return reply;
 	}
 
-
-	public ArrayList<String> changeStateFieldTechnitian(int user_ID,String state) {
+	public ArrayList<String> changeStateFieldTechnitian(int user_ID, String state) {
 		ArrayList<String> reply = new ArrayList<>();
 		reply.add("CHANGE FIELD TECHNITIAN STATE");
 		ActiveUsersWatch.changeFieldTechnitianState(user_ID, state);
@@ -426,14 +430,10 @@ public class ClientControllerFacade {
 		return reply;
 	}
 
-	
-
 	public ArrayList<String> unexistingRequest() {
 		ArrayList<String> reply = new ArrayList<>();
 		reply.add("UNEXISTING FUNCTION REQUEST");
 		return reply;
 	}
 
-	
-	
 }
