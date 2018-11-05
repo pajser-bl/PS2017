@@ -29,6 +29,7 @@ import model.users.Event;
 import model.users.Session;
 import model.users.Subscription;
 import model.users.User;
+import server.controller.access.AccessControl;
 import utility.HashHandler;
 import utility.TimeUtility;
 
@@ -56,44 +57,10 @@ public class ClientControllerFacade {
 	}
 
 	public ArrayList<String> login(String username, String password) {
-		boolean retVal = credentialsDAO.exists(username);
-		boolean loginCheck = false;
-		boolean alredyLoggedIn = false;
-		ArrayList<String> reply = new ArrayList<>();
-		if (retVal) {
-			// postoje kredencijali sa datim username-om
-			Credentials credentials = credentialsDAO.select(username);
-			loginCheck = HashHandler.verifyPassword(password, credentials.getHash());
-			alredyLoggedIn = ActiveUsersWatch.isAlredyLoggedIn(credentials.getID_user());
-			if (loginCheck && !alredyLoggedIn) {
-				// uspjesan login
-				User user = userDAO.select(credentials.getID_user());
-				int ID_session = sessionDAO.insert(new Session(user.getID_user(), LocalDateTime.now()));
-
-				reply.add("LOGIN OK");
-				reply.add(String.valueOf(user.getID_user()));
-				reply.add(user.getName());
-				reply.add(user.getSurname());
-				reply.add(user.getType());
-				reply.add(String.valueOf(ID_session));
-
-				ActiveUsersWatch.addActiveUser(user);
-			} else {
-				// neuspjesan login
-				reply.add("LOGIN NOT OK");
-			}
-		} else {
-			// ne postoje kredencijali sa username-om
-			reply.add("LOGIN USERNAME NOT OK");
-		}
-		return reply;
+		return AccessControl.login(username,password,credentialsDAO,userDAO,sessionDAO,eventDAO);
 	}
-
 	public ArrayList<String> logout(int user_ID) {
-		ArrayList<String> reply = new ArrayList<>();
-		ActiveUsersWatch.removeActiveUser(user_ID);
-		reply.add("LOGOUT OK");
-		return reply;
+		return AccessControl.logout(user_ID,eventDAO);
 	}
 
 	public ArrayList<String> newCredentials(int ID_user, String username, String password) {

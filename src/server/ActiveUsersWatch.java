@@ -9,7 +9,8 @@ import model.users.User;
 public class ActiveUsersWatch {
 	public static ArrayList<User> activeUsersList = new ArrayList<>();
 	public static Map<User, String> roadAssistentStates = new HashMap<User, String>();
-
+	public static Map<Integer,Integer> activeUsersSession = new HashMap<Integer,Integer>();
+	
 	public static void addActiveUser(User user) {
 		activeUsersList.add(user);
 		if (user.getType().toLowerCase().equals("terenski radnik")) {
@@ -90,5 +91,14 @@ public class ActiveUsersWatch {
 			}
 		}
 		return reply;
+	}
+	public static void addUserSession(int ID_user, int ID_session) {
+		activeUsersSession.put(ID_user, ID_session);
+	}
+	public static void removeUserSession(int ID_user) {
+		activeUsersSession.remove(ID_user);
+	}
+	public static boolean userHasSession(int ID_user) {
+		return activeUsersSession.containsKey(ID_user);
 	}
 }
