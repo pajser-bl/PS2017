@@ -48,7 +48,7 @@ public class ClientConnection extends Thread {
 					// JA BIH BEZ OVOGA TJ DA SERVERA ZABOLE KO JE KLIJENT
 					reply.clear();
 					reply.addAll(ClientRequestHandler.handle(request));
-					if (request.getRequestType().equals("LOGIN")) {
+					if (request.getRequestType().equals("LOGIN") && reply.get(0).equals("LOGIN OK")) {
 						ID_user = Integer.parseInt(reply.get(1));
 						ID_session = Integer.parseInt(reply.get(5));
 					}
