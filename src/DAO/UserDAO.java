@@ -10,4 +10,5 @@ public interface UserDAO {
 	int insert(User user);
 	public int update(User user);
 	public int delete(int userID);
+	public boolean administrator_exists();
 }
