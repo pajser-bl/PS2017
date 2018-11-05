@@ -49,10 +49,10 @@ public class MySQLTest {
 		String admin_username="admin";
 		String admin_password="admin";
 		
-		User user=new User("a","a",TimeUtility.stringToLocalDate("1990-09-09"),"administrator","vss");
-		int id_admin=userDAO.insert(user);
-		Credentials credentials= new Credentials(id_admin,id_admin,"admin","admin");
-		credentialsDAO.insert(credentials);
+		//User user=new User("a","a",TimeUtility.stringToLocalDate("1990-09-09"),"administrator","vss");
+//		int id_admin=userDAO.insert(user);
+		Credentials credentials= new Credentials(2,2,"admin",HashHandler.createHash("admin"));
+		credentialsDAO.update(credentials);
 
 	}
 }

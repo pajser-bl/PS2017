@@ -4,8 +4,17 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Properties;
 
+import DAO.CredentialsDAO;
+import DAO.UserDAO;
+import DAO.MySQL.MySQLCredentialsDAO;
+import DAO.MySQL.MySQLUserDAO;
+import model.users.Credentials;
+import model.users.User;
+import utility.HashHandler;
 //import javax.net.ServerSocketFactory;
 //import javax.net.ssl.SSLServerSocketFactory;
 import utility.TimeUtility;
@@ -23,9 +32,8 @@ public class Server {
 	public static void main(String args[]) {
 		System.out.println("Server starting up...");
 		setUpServer();
+		administrator_check();
 		try {
-			//ServerSocketFactory sslSocketFactory = SSLServerSocketFactory.getDefault();
-			//ServerSocket serverSocket = sslSocketFactory.createServerSocket(SERVER_PORT);
 			ServerSocket serverSocket=new ServerSocket(SERVER_PORT);
 			System.out.println("[" +TimeUtility.getStringTimeNow() + "]Server is online, awaiting incoming user connections");
 			while (SERVER_ONLINE && serverLimitNotReached()) {
@@ -52,13 +60,28 @@ public class Server {
 			SERVER_PORT = Integer.parseInt(props.getProperty("server.port"));
 			SERVER_CONNECTION_LIMIT = Integer.parseInt(props.getProperty("server.max_connections"));
 			SERVER_CONNECTION_COUNTER = 0;
-//		onlineUsers = new HashMap<>();
 			SERVER_ONLINE = true;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public static void administrator_check() {
+		System.out.println("Checking database for administrator account.");
+		UserDAO userDAO=new MySQLUserDAO();
+		CredentialsDAO credentialsDAO=new MySQLCredentialsDAO();
+		if(!userDAO.administrator_exists()) {
+			User admin=new User("temp", "temp", LocalDate.now(), "Administrator", "temp");
+			int admin_id=userDAO.insert(admin);
+			Credentials admin_credentials=new Credentials(admin_id, admin_id, "admin", HashHandler.createHash("admin"));
+			credentialsDAO.insert(admin_credentials);
+			System.out.println("Administrator is missing, creating temporary administrator account...");
+		}else {
+			System.out.println("Administrator is present.");
+		}
+		
+	}
+	
 	public static boolean serverLimitNotReached() {
 		return SERVER_CONNECTION_COUNTER < SERVER_CONNECTION_LIMIT;
 	}

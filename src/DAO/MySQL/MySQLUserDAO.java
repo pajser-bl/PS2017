@@ -19,6 +19,7 @@ public class MySQLUserDAO implements UserDAO{
 	private static final String SQL_INSERT = "INSERT INTO user (ID_user, name, surname, date_of_birth, type, qualification) VALUES (null,?,?,?,?,?)";
 	private static final String SQL_UPDATE = "UPDATE user SET name=?, surname=? , date_of_birth=? , type=? , qualification=?   WHERE ID_user=?";
 	private static final String SQL_DELETE = "DELETE FROM user WHERE ID_user=?";
+	private static final String SQL_ADMINISTRATOR_EXISTS = "SELECT EXISTS(SELECT 1 FROM user WHERE type=? limit 1)AS _administrator_exists";
 	
 	
 	@Override
@@ -133,5 +134,30 @@ public class MySQLUserDAO implements UserDAO{
 			try {ps.close();c.close();}catch(SQLException e) {}
 		}
 		return retVal;
+	}
+
+	@Override
+	public boolean administrator_exists() {
+		boolean returnValue = false;
+		Connection c = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			c = DataSourceFactory.getMySQLDataSource().getConnection();
+			ps = c.prepareStatement(SQL_ADMINISTRATOR_EXISTS);
+			ps.setString(1,"Administrator");
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				returnValue=rs.getInt("_administrator_exists")!=0;
+			}else {
+				returnValue=false;
+			}
+			return returnValue;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {rs.close();ps.close();	c.close();}catch(SQLException e) {}
+		}
+		return returnValue;
 	}
 }
