@@ -292,6 +292,7 @@ public class ClientControllerFacade {
 		// new Intervention(int iD_client, int iD_vehicle,
 		// int iD_user_opened, LocalDateTime opened_on)
 		ArrayList<String> reply = new ArrayList<>();
+		Event event = new Event();
 		if (interventionDAO.insert(intervention) != 0) {
 			reply.add("NEW INTERVENTION OK");
 		} else {
