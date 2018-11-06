@@ -1,4 +1,4 @@
-package server.controller.access;
+package server.controller;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

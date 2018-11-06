@@ -29,7 +29,9 @@ import model.users.Event;
 import model.users.Session;
 import model.users.Subscription;
 import model.users.User;
-import server.controller.access.AccessControl;
+import server.controller.AccessControl;
+import server.controller.ClientControl;
+import server.controller.UserControl;
 import utility.HashHandler;
 import utility.TimeUtility;
 
@@ -57,82 +59,39 @@ public class ClientControllerFacade {
 	}
 
 	public ArrayList<String> login(String username, String password) {
-		return AccessControl.login(username,password,credentialsDAO,userDAO,sessionDAO,eventDAO);
+		return AccessControl.login(username, password, credentialsDAO, userDAO, sessionDAO, eventDAO);
 	}
+
 	public ArrayList<String> logout(int user_ID) {
-		return AccessControl.logout(user_ID,eventDAO);
+		return AccessControl.logout(user_ID, eventDAO);
 	}
 
 	public ArrayList<String> newCredentials(int ID_user, String username, String password) {
-		ArrayList<String> replay = new ArrayList<>();
-		if (credentialsDAO.checkUniqueUserame(username)) {
-			if (credentialsDAO
-					.insert(new Credentials(ID_user, ID_user, username, HashHandler.createHash(password))) != 0) {
-				replay.add("NEW CREDENTIALS OK");
-			} else {
-				replay.add("NEW CREDENTIALS FAILED");
-			}
-		} else {
-			replay.add("USERNAME TAKEN");
-		}
-		return replay;
-
+		return UserControl.newCredentials(ID_user, username, password, credentialsDAO);
 	}
 
 	public ArrayList<String> updatePassword(int ID_user, String username, String password) {
-		ArrayList<String> reply = new ArrayList<>();
-		if (credentialsDAO.update(new Credentials(ID_user, ID_user, username, HashHandler.createHash(password))) != 0) {
-			reply.add("UPDATE PASSWORD OK");
-		} else {
-			reply.add("UPDATE PASSWORD FAILED");
-		}
-		return reply;
+		return UserControl.updatePassword(ID_user, username, password, credentialsDAO);
 	}
 
 	public ArrayList<String> deleteCredentials(int ID_user) {
-		ArrayList<String> reply = new ArrayList<>();
-		if (credentialsDAO.delete(ID_user) != 0) {
-			reply.add("DELETE CREDENTIALS OK");
-		} else {
-			reply.add("DELETE CREDENTIALS FAILED");
-		}
-		return reply;
+		return UserControl.deleteCredentials(ID_user, credentialsDAO);
 	}
 
 	// public void viewUsers(String param){}
 
 	public ArrayList<String> addUser(String name, String surname, String date_of_birth, String type,
 			String qualification) {
-		ArrayList<String> reply = new ArrayList<>();
-		User user = new User(name, surname, TimeUtility.stringToLocalDate(date_of_birth), type, qualification);
-		if (userDAO.insert(user) != 0) {
-			reply.add("ADD USER OK");
-		} else {
-			reply.add("ADD USER FAILED");
-		}
-		return reply;
+		return UserControl.addUser(name, surname, date_of_birth, type, qualification, userDAO);
 	}
 
 	public ArrayList<String> updateUser(int ID_user, String name, String surname, String date_of_birth, String type,
 			String qualification) {
-		ArrayList<String> reply = new ArrayList<>();
-		User user = new User(ID_user, name, surname, TimeUtility.stringToLocalDate(date_of_birth), type, qualification);
-		if (userDAO.update(user) != 0) {
-			reply.add("UPDATE USER OK");
-		} else {
-			reply.add("UPDATE USER FAILED");
-		}
-		return reply;
+		return UserControl.updateUser(ID_user, name, surname, date_of_birth, type, qualification, userDAO);
 	}
 
 	public ArrayList<String> deleteUser(int userID) {
-		ArrayList<String> reply = new ArrayList<>();
-		if ((credentialsDAO.delete(userID) != 0) && (userDAO.delete(userID) != 0)) {
-			reply.add("DELETE USER OK");
-		} else {
-			reply.add("DELETE USER FAILED");
-		}
-		return reply;
+		return UserControl.deleteUser(userID, userDAO, credentialsDAO);
 	}
 
 	public ArrayList<String> viewUserSession(int ID_session) {
@@ -168,37 +127,15 @@ public class ClientControllerFacade {
 	}
 
 	public ArrayList<String> newClient(String name, String surname, String phone_number) {
-		ArrayList<String> reply = new ArrayList<>();
-		Client client = new Client(name, surname, phone_number);
-
-		if (clientDAO.insert(client) != 0) {
-			reply.add("NEW CLIENT OK");
-		} else {
-			reply.add("NEW CLIENT FAILED");
-		}
-		return reply;
+		return ClientControl.newClient(name, surname, phone_number, clientDAO);
 	}
 
 	public ArrayList<String> updateClient(String client_ID, String name, String surname, String phone_number) {
-		ArrayList<String> reply = new ArrayList<>();
-		Client client = new Client(Integer.parseInt(client_ID), name, surname, phone_number);
-		if (clientDAO.update(client) != 0) {
-			reply.add("UPDATE CLIENT OK");
-		} else {
-			reply.add("UPDATE CLIENT FAILED");
-		}
-		return reply;
-
+		return ClientControl.updateClient(client_ID, name, surname, phone_number, clientDAO);
 	}
 
 	public ArrayList<String> deleteClient(String client_ID) {
-		ArrayList<String> reply = new ArrayList<>();
-		if (clientDAO.delete(Integer.parseInt(client_ID)) != 0) {
-			reply.add("DELETE CLIENT OK");
-		} else {
-			reply.add("DELETE CLIENT FAILED");
-		}
-		return reply;
+		return ClientControl.deleteClient(client_ID, clientDAO);
 	}
 
 	// public void viewClients(String param){}
@@ -358,39 +295,24 @@ public class ClientControllerFacade {
 	// public void accessMapFieldTechnician(int intervention ID){}
 	// public void accessMapOperator(){}
 	public ArrayList<String> viewOnlineUsers() {
-		ArrayList<String> reply = new ArrayList<>();
-		reply.add("VIEW ONLINE USERS");
-		reply.addAll(ActiveUsersWatch.getActiveUsers());
-		return reply;
+		return UserControl.viewOnlineUsers();
 	}
 
 	// public void viewStatesFieldTechnitians(String param){}
 	public ArrayList<String> viewStatesFieldTechnitians() {
-		ArrayList<String> reply = new ArrayList<>();
-		reply.add("VIEW FIELD TECHNITIANS STATE");
-		reply.addAll(ActiveUsersWatch.getOnlineFieldTechnitians());
-		return reply;
+		return UserControl.viewStatesFieldTechnitians();
 	}
 
 	public ArrayList<String> viewAvailableFieldTechnitians() {
-		ArrayList<String> reply = new ArrayList<>();
-		reply.add("VIEW AVAILABLE FIELD TECHNITIANS");
-		reply.addAll(ActiveUsersWatch.getAvailableFieldTechnitians());
-		return reply;
+		return UserControl.viewAvailableFieldTechnitians();
 	}
 
 	public ArrayList<String> changeStateFieldTechnitian(int user_ID, String state) {
-		ArrayList<String> reply = new ArrayList<>();
-		reply.add("CHANGE FIELD TECHNITIAN STATE");
-		ActiveUsersWatch.changeFieldTechnitianState(user_ID, state);
-		return reply;
+		return UserControl.changeStateFieldTechnitian(user_ID, state);
 	}
 
 	public ArrayList<String> viewFieldTechnitianState(int user_ID) {
-		ArrayList<String> reply = new ArrayList<>();
-		reply.add("VIEW FIELD TECHNITIAN STATE");
-		reply.add(ActiveUsersWatch.getFieldTechnitianState(user_ID));
-		return reply;
+		return UserControl.viewFieldTechnitianState(user_ID);
 	}
 
 	public ArrayList<String> unexistingRequest() {
