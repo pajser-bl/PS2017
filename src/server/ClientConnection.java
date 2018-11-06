@@ -50,7 +50,7 @@ public class ClientConnection extends Thread {
 					reply.addAll(ClientRequestHandler.handle(request));
 					if (request.getRequestType().equals("LOGIN") && reply.get(0).equals("LOGIN OK")) {
 						ID_user = Integer.parseInt(reply.get(1));
-						ID_session = Integer.parseInt(reply.get(5));
+						//ID_session = Integer.parseInt(reply.get(5));
 					}
 					if (request.getRequestType().equals("LOGOUT")) {
 						logoutCheck = true;
