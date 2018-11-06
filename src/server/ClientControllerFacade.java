@@ -20,20 +20,16 @@ import DAO.MySQL.MySQLRoadReportDAO;
 import DAO.MySQL.MySQLSessionDAO;
 import DAO.MySQL.MySQLSubscriptionDAO;
 import DAO.MySQL.MySQLUserDAO;
+import controller.AccessControl;
+import controller.ClientControl;
+import controller.SubscriptionControl;
+import controller.UserControl;
 import model.users.Client;
 import model.interventions.Intervention;
 import model.interventions.Report;
 import model.interventions.RoadReport;
-import model.users.Credentials;
 import model.users.Event;
 import model.users.Session;
-import model.users.Subscription;
-import model.users.User;
-import server.controller.AccessControl;
-import server.controller.ClientControl;
-import server.controller.SubscriptionControl;
-import server.controller.UserControl;
-import utility.HashHandler;
 import utility.TimeUtility;
 
 public class ClientControllerFacade {
