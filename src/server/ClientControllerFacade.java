@@ -78,8 +78,8 @@ public class ClientControllerFacade {
 	// public void viewUsers(String param){}
 
 	public ArrayList<String> addUser(String name, String surname, String date_of_birth, String type,
-			String qualification) {
-		return UserControl.addUser(name, surname, date_of_birth, type, qualification, userDAO);
+			String qualification,String username,String password) {
+		return UserControl.addUser(name, surname, date_of_birth, type, qualification,username,password, userDAO,credentialsDAO);
 	}
 
 	public ArrayList<String> updateUser(int ID_user, String name, String surname, String date_of_birth, String type,
