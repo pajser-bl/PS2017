@@ -32,7 +32,8 @@ public class ClientRequestHandler {
 		}
 		case "NEW USER": {
 			return clientControllerFacade.addUser(request.getRequest().get(0), request.getRequest().get(1),
-					request.getRequest().get(2), request.getRequest().get(3), request.getRequest().get(4),request.getRequest().get(5),request.getRequest().get(6));
+					request.getRequest().get(2), request.getRequest().get(3), request.getRequest().get(4),
+					request.getRequest().get(5), request.getRequest().get(6));
 		}
 		case "UPDATE USER": {
 			return clientControllerFacade.updateUser(Integer.parseInt(request.getRequest().get(0)),
@@ -46,9 +47,8 @@ public class ClientRequestHandler {
 		}
 			break;
 		case "VIEW USERS": {
+			return clientControllerFacade.viewUsers(request.getRequest().get(0));
 		}
-			break;
-
 		case "ACCESS MAP FIELD TECHNITIAN": {
 		}
 			break;
