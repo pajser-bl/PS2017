@@ -59,8 +59,8 @@ public class ClientControllerFacade {
 		return AccessControl.login(username, password, credentialsDAO, userDAO, sessionDAO, eventDAO);
 	}
 
-	public ArrayList<String> logout(int user_ID) {
-		return AccessControl.logout(user_ID, eventDAO);
+	public void logout(int user_ID) {
+		AccessControl.logout(user_ID, eventDAO);
 	}
 
 	public ArrayList<String> newCredentials(int ID_user, String username, String password) {

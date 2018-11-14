@@ -47,15 +47,18 @@ public class ClientConnection extends Thread {
 					}.getType());
 					// JA BIH BEZ OVOGA TJ DA SERVERA ZABOLE KO JE KLIJENT
 					reply.clear();
-					reply.addAll(ClientRequestHandler.handle(request));
-					if (request.getRequestType().equals("LOGIN") && reply.get(0).equals("LOGIN OK")) {
-						ID_user = Integer.parseInt(reply.get(1));
-						//ID_session = Integer.parseInt(reply.get(5));
-					}
 					if (request.getRequestType().equals("LOGOUT")) {
 						logoutCheck = true;
+						ClientRequestHandler.handle(request);
+						this.socket.close();
+					} else {
+						reply.addAll(ClientRequestHandler.handle(request));
+						if (request.getRequestType().equals("LOGIN") && reply.get(0).equals("LOGIN OK")) {
+							ID_user = Integer.parseInt(reply.get(1));
+							// ID_session = Integer.parseInt(reply.get(5));
+						}
+						sendReply(new Gson().toJson(reply));
 					}
-					sendReply(new Gson().toJson(reply));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

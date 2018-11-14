@@ -15,7 +15,9 @@ public class ClientRequestHandler {
 			return clientControllerFacade.login(request.getRequest().get(0), request.getRequest().get(1));
 		}
 		case "LOGOUT": {
-			return clientControllerFacade.logout(Integer.parseInt(request.getRequest().get(0)));
+			clientControllerFacade.logout(Integer.parseInt(request.getRequest().get(0)));
+			System.out.println("Logout zatrazern-test");
+			return null;
 		}
 		case "NEW CREDENTIALS": {
 			return clientControllerFacade.newCredentials(Integer.parseInt(request.getRequest().get(0)),
