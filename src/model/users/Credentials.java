@@ -39,4 +39,11 @@ public class Credentials {
 	public void setHash(String hash) {
 		this.hash = hash;
 	}
+	public boolean equals(Object o) {
+		if(!o.getClass().equals(this.getClass()))
+			return false;
+		if(((Credentials)o).ID_credentials==this.ID_credentials)
+			return true;
+		return false;
+	}
 }
