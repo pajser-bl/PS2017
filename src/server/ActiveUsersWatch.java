@@ -2,6 +2,7 @@ package server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import model.users.User;
@@ -25,14 +26,25 @@ public class ActiveUsersWatch {
 		return false;
 	}
 	
-	public static void removeActiveUser(int user_ID) {
-		for (User u : activeUsersList) {
+	public static void removeActiveUser(int user_ID) {                 
+		for (Iterator<User> userIterator= activeUsersList.iterator();userIterator.hasNext();) {
+			User u=userIterator.next();
 			if (u.getID_user() == user_ID) {
 				if (u.getType().equals("terenski radnik"))
 					roadAssistentStates.remove(u);
-				activeUsersList.remove(u);
+				userIterator.remove();
 			}
 		}
+		
+		
+//		for (Iterator<DrugStrength> it = aDrugStrengthList.iterator(); it.hasNext(); ) {
+//		    DrugStrength aDrugStrength = it.next();
+//		    if (!aDrugStrength.isValidDrugDescription()) {
+//		        it.remove();
+//		    }
+//		}
+		
+		
 	}
 
 	public static String getFieldTechnitianState(int user_ID) {

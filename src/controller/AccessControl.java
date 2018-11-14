@@ -51,15 +51,13 @@ public class AccessControl {
 		}
 		return reply;
 	}
-	public static ArrayList<String> logout(int user_ID,EventDAO eventDAO) {
-		ArrayList<String> reply = new ArrayList<>();
-		ActiveUsersWatch.removeActiveUser(user_ID);
+	public static void logout(int user_ID,EventDAO eventDAO) {
 		if(ActiveUsersWatch.userHasSession(user_ID)) {
-			Event event=new Event(user_ID,LocalDateTime.now(),"Korisnik se odjavio.");
-			eventDAO.insert(event);
+			//Event event=new Event(user_ID,LocalDateTime.now(),"Korisnik se odjavio.");
+			//eventDAO.insert(event);
 			ActiveUsersWatch.removeUserSession(user_ID);
 		}
-		reply.add("LOGOUT OK");
-		return reply;
+		ActiveUsersWatch.removeActiveUser(user_ID);
+		
 	}
 }
