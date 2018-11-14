@@ -52,7 +52,7 @@ public class UserControl {
 	public static ArrayList<String> addUser(String name, String surname, String date_of_birth, String type,
 			String qualification, String username, String password, UserDAO userDAO, CredentialsDAO credentialsDAO) {
 		ArrayList<String> reply = new ArrayList<>();
-		if (credentialsDAO.checkUniqueUserame(username)) {
+		if (!credentialsDAO.checkUniqueUserame(username)) {
 			reply.add("ADD USER NOT OK");
 			reply.add("Korisnicko ime vec zauzeto.");
 			return reply;
