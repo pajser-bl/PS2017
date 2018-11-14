@@ -18,8 +18,8 @@ public class ClientConnection extends Thread {
 	private Socket socket;
 	private BufferedReader input;
 	private PrintWriter output;
-	private int ID_user;
-	private int ID_session;
+	//private int ID_user;
+	//private int ID_session;
 	private boolean logoutCheck = false;
 	ArrayList<String> reply;
 
@@ -49,7 +49,7 @@ public class ClientConnection extends Thread {
 					reply.clear();
 					reply.addAll(ClientRequestHandler.handle(request));
 					if (request.getRequestType().equals("LOGIN") && reply.get(0).equals("LOGIN OK")) {
-						ID_user = Integer.parseInt(reply.get(1));
+						//ID_user = Integer.parseInt(reply.get(1));
 						//ID_session = Integer.parseInt(reply.get(5));
 					}
 					if (request.getRequestType().equals("LOGOUT")) {

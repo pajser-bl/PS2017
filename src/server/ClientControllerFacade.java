@@ -29,7 +29,6 @@ import model.interventions.Intervention;
 import model.interventions.Report;
 import model.interventions.RoadReport;
 import model.users.Event;
-import model.users.Session;
 import utility.TimeUtility;
 
 public class ClientControllerFacade {
@@ -76,7 +75,7 @@ public class ClientControllerFacade {
 	}
 
 	public ArrayList<String> viewUsers(String param){
-		return UserControl.viewUsers(param,userDAO);
+		return UserControl.viewUsers(param,userDAO, credentialsDAO);
 	}
 
 	public ArrayList<String> addUser(String name, String surname, String date_of_birth, String type,
@@ -96,8 +95,8 @@ public class ClientControllerFacade {
 	public ArrayList<String> viewUserSession(int ID_session) {
 		// ID_session,ID_user,start,end
 		ArrayList<String> reply = new ArrayList<>();
-		Session session = sessionDAO.select(ID_session);
-		int ID_user = session.getUserID();
+		//Session session = sessionDAO.select(ID_session);
+		//int ID_user = session.getUserID();
 		// LocalDateTime start = session.getStart();
 		// LocalDateTime end = session.getEnd();
 		// reply.add();
@@ -161,7 +160,7 @@ public class ClientControllerFacade {
 		// new Intervention(int iD_client, int iD_vehicle,
 		// int iD_user_opened, LocalDateTime opened_on)
 		ArrayList<String> reply = new ArrayList<>();
-		Event event = new Event();
+		//Event event = new Event();
 		if (interventionDAO.insert(intervention) != 0) {
 			reply.add("NEW INTERVENTION OK");
 		} else {
@@ -240,9 +239,9 @@ public class ClientControllerFacade {
 
 	public ArrayList<String> viewReport(int report_ID) {
 		ArrayList<String> reply = new ArrayList<>();
-		Intervention intervention = interventionDAO.select(report_ID);
-		RoadReport roadReport = roadReportDAO.select(report_ID);
-		Report report = reportDAO.select(report_ID);
+		//Intervention intervention = interventionDAO.select(report_ID);
+		//RoadReport roadReport = roadReportDAO.select(report_ID);
+		//Report report = reportDAO.select(report_ID);
 
 		return reply;
 	}
