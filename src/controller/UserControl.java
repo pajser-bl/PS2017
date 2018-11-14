@@ -128,4 +128,17 @@ public class UserControl {
 		reply.add(ActiveUsersWatch.getFieldTechnitianState(user_ID));
 		return reply;
 	}
+
+	public static ArrayList<String> viewUsers(String param, UserDAO userDAO) {
+		ArrayList<String> reply = new ArrayList<>();
+		reply.add("VIEW USERS OK");
+		ArrayList<User> users= (ArrayList<User>)userDAO.selectAll();
+		reply.add(""+users.size());
+		for(User u:users) {
+			String userString=u.getID_user()+":"+u.getName()+":"+u.getSurname();
+			userString+=":"+u.getType();
+			reply.add(userString);
+		}
+		return reply;
+	}
 }

@@ -75,7 +75,9 @@ public class ClientControllerFacade {
 		return UserControl.deleteCredentials(ID_user, credentialsDAO);
 	}
 
-	// public void viewUsers(String param){}
+	public ArrayList<String> viewUsers(String param){
+		return UserControl.viewUsers(param,userDAO);
+	}
 
 	public ArrayList<String> addUser(String name, String surname, String date_of_birth, String type,
 			String qualification,String username,String password) {
