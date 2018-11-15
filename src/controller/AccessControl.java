@@ -34,6 +34,7 @@ public class AccessControl {
 				reply.add(user.getName());
 				reply.add(user.getSurname());
 				reply.add(user.getType());
+				reply.add(username);
 				if(user.getType()=="Terenski radnik"|| user.getType()=="Operater") {
 					int ID_session = sessionDAO.insert(new Session(user.getID_user(), LocalDateTime.now()));
 					ActiveUsersWatch.addUserSession(user.getID_user(),ID_session);
