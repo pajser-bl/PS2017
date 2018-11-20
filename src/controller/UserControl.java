@@ -129,16 +129,25 @@ public class UserControl {
 		return reply;
 	}
 
-	public static ArrayList<String> viewUsers(String param, UserDAO userDAO,CredentialsDAO credentialsDAO) {
+	public static ArrayList<String> viewUsers(String param, UserDAO userDAO, CredentialsDAO credentialsDAO) {
 		ArrayList<String> reply = new ArrayList<>();
-		reply.add("VIEW USERS OK");
-		ArrayList<User> users= (ArrayList<User>)userDAO.selectAll();
-		ArrayList<Credentials> credentials=(ArrayList<Credentials>) credentialsDAO.selectAll();
-		reply.add(""+users.size());
-		for(User u:users) {
-			String userString=u.getID_user()+":"+u.getName()+":"+u.getSurname();
-			userString+=":"+u.getType()+":"+credentials.get(credentials.indexOf(new Credentials(u.getID_user(),u.getID_user(),null,null))).getUsername();
-			reply.add(userString);
+		try {
+			reply.add("VIEW USERS OK");
+			ArrayList<User> users = (ArrayList<User>) userDAO.selectAll();
+			ArrayList<Credentials> credentials = (ArrayList<Credentials>) credentialsDAO.selectAll();
+			reply.add("" + users.size());
+			for (User u : users) {
+				String userString = u.getID_user() + ":" + u.getName() + ":" + u.getSurname();
+				userString += ":" + u.getType() + ":"
+						+ credentials
+								.get(credentials.indexOf(new Credentials(u.getID_user(), u.getID_user(), null, null)))
+								.getUsername();
+				reply.add(userString);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			reply.add("VIEW USERS NOT OK.");
+			reply.add("Greska u koracima.");
 		}
 		return reply;
 	}
