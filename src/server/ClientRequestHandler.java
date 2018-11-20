@@ -43,9 +43,12 @@ public class ClientRequestHandler {
 		case "DELETE USER": {
 			return clientControllerFacade.deleteUser(Integer.parseInt(request.getRequest().get(0)));
 		}
-		case "VIEW USER": {
+		case "CHANGE PASSWORD":{
+			return clientControllerFacade.changePassword(Integer.parseInt(request.getRequest().get(0)),request.getRequest().get(1));
 		}
-			break;
+		case "VIEW USER": {
+			return clientControllerFacade.viewUser(Integer.parseInt(request.getRequest().get(0)));
+		}
 		case "VIEW USERS": {
 			return clientControllerFacade.viewUsers(request.getRequest().get(0));
 		}

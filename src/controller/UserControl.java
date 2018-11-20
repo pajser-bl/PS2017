@@ -84,9 +84,23 @@ public class UserControl {
 		return reply;
 	}
 
+	public static ArrayList<String> changePassword(int userID, String password, CredentialsDAO credentialsDAO) {
+		ArrayList<String> reply = new ArrayList<>();
+		String hashedPassword = HashHandler.createHash(password);
+		if (credentialsDAO.changePassword(userID, hashedPassword) != 0) {
+			reply.add("CHANGE PASSWORD OK");
+		} else {
+			reply.add("CHANGE PASSWORD FAILED");
+		}
+		return reply;
+	}
+
 	public static ArrayList<String> deleteUser(int userID, UserDAO userDAO, CredentialsDAO credentialsDAO) {
 		ArrayList<String> reply = new ArrayList<>();
-		if ((credentialsDAO.delete(userID) != 0) && (userDAO.delete(userID) != 0)) {
+		if (ActiveUsersWatch.isAlredyLoggedIn(userID)) {
+			reply.add("DELETE USER FAILED");
+			reply.add("Korisnik je trenutno prijavljen na sistem.");
+		} else if ((credentialsDAO.delete(userID) != 0) && (userDAO.delete(userID) != 0)) {
 			reply.add("DELETE USER OK");
 		} else {
 			reply.add("DELETE USER FAILED");
@@ -126,6 +140,26 @@ public class UserControl {
 		ArrayList<String> reply = new ArrayList<>();
 		reply.add("VIEW FIELD TECHNITIAN STATE");
 		reply.add(ActiveUsersWatch.getFieldTechnitianState(user_ID));
+		return reply;
+	}
+
+	public static ArrayList<String> viewUser(int user_ID, UserDAO userDAO, CredentialsDAO credentialsDAO) {
+		ArrayList<String> reply = new ArrayList<>();
+		try {
+			reply.add("VIEW USER OK");
+			User user = userDAO.select(user_ID);
+			Credentials credentials = credentialsDAO.select(user_ID);
+			reply.add("" + user.getID_user());
+			reply.add(user.getName());
+			reply.add(user.getType());
+			reply.add(TimeUtility.localDateToString(user.getDate_of_birth()));
+			reply.add(user.getQualification());
+			reply.add(credentials.getUsername());
+		} catch (Exception e) {
+			e.printStackTrace();
+			reply.add("VIEW USER NOT OK");
+			reply.add("Greska kod pregleda korisnika.");
+		}
 		return reply;
 	}
 

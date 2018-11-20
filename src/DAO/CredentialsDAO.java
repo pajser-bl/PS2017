@@ -13,4 +13,5 @@ public interface CredentialsDAO {
 	public boolean checkUniqueUserame(String username);
 	public Credentials select(String username);
 	public boolean exists(String username);
+	public int changePassword(int ID_credentials,String hashedPassword);
 }
