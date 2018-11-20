@@ -74,6 +74,10 @@ public class ClientControllerFacade {
 		return UserControl.deleteCredentials(ID_user, credentialsDAO);
 	}
 
+	public ArrayList<String> viewUser(int user_ID) {
+		return UserControl.viewUser(user_ID, userDAO, credentialsDAO);
+	}
+	
 	public ArrayList<String> viewUsers(String param){
 		return UserControl.viewUsers(param,userDAO, credentialsDAO);
 	}
@@ -83,6 +87,9 @@ public class ClientControllerFacade {
 		return UserControl.addUser(name, surname, date_of_birth, type, qualification,username,password, userDAO,credentialsDAO);
 	}
 
+	public ArrayList<String> changePassword(int ID_user,String password){
+		return UserControl.changePassword(ID_user, password, credentialsDAO);
+	}
 	public ArrayList<String> updateUser(int ID_user, String name, String surname, String date_of_birth, String type,
 			String qualification) {
 		return UserControl.updateUser(ID_user, name, surname, date_of_birth, type, qualification, userDAO);
@@ -285,5 +292,7 @@ public class ClientControllerFacade {
 		reply.add("UNEXISTING FUNCTION REQUEST");
 		return reply;
 	}
+
+	
 
 }

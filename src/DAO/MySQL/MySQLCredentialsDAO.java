@@ -24,6 +24,7 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 	private static final String SQL_SELECT_BY_USERNAME = "SELECT * FROM credentials WHERE username=?";
 	private static final String SQL_EXISTS = "SELECT EXISTS(SELECT 1 FROM credentials WHERE username=? limit 1)AS _exists";
 //	private static final String SQL_EXISTS = "SELECT count(*) as count FROM credentials WHERE username =?";
+	private static final String SQL_CHANGE_PASSWORD = "UPDATE credentials SET hash=? WHERE ID_credentials=?";
 	
 	@Override
 	public Credentials select(int ID_credentials) {
@@ -204,6 +205,25 @@ public class MySQLCredentialsDAO implements CredentialsDAO{
 			try{rs.close();ps.close();c.close();}catch(SQLException e){}
 		}
 		return false;
+	}
+
+	@Override
+	public int changePassword(int ID_credentials, String hashedPassword) {
+		int retVal=0;
+		Connection c = null;
+		PreparedStatement ps = null;
+		try {
+			c = DataSourceFactory.getMySQLDataSource().getConnection();
+			ps =c.prepareStatement(SQL_CHANGE_PASSWORD, Statement.NO_GENERATED_KEYS);
+			ps.setObject(1, hashedPassword);
+			ps.setObject(2, ID_credentials);
+			retVal = ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {ps.close();c.close();}catch(SQLException e) {}
+		}
+		return retVal;
 	}
 
 }
