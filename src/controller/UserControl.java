@@ -81,6 +81,7 @@ public class UserControl {
 			reply.add("UPDATE USER OK");
 		} else {
 			reply.add("UPDATE USER FAILED");
+			
 		}
 		return reply;
 	}
@@ -92,6 +93,7 @@ public class UserControl {
 			reply.add("CHANGE PASSWORD OK");
 		} else {
 			reply.add("CHANGE PASSWORD FAILED");
+			reply.add("Promjena lozinke nije moguca.");
 		}
 		return reply;
 	}
