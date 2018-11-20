@@ -64,6 +64,7 @@ public class UserControl {
 			Credentials credentials = new Credentials(id_user, id_user, username, HashHandler.createHash(password));
 			if (credentialsDAO.insert(credentials) != 0) {
 				reply.add("ADD USER OK");
+				reply.add(""+id_user);
 				return reply;
 			}
 		}
