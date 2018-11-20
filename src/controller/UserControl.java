@@ -58,7 +58,7 @@ public class UserControl {
 			return reply;
 		}
 		User user = new User(name, surname, TimeUtility.stringToLocalDate(date_of_birth), type, qualification);
-		System.out.println(TimeUtility.stringToLocalDate(date_of_birth).toString());
+		//System.out.println(TimeUtility.stringToLocalDate(date_of_birth).toString());
 		int id_user;
 		if ((id_user = userDAO.insert(user)) != 0) {
 			Credentials credentials = new Credentials(id_user, id_user, username, HashHandler.createHash(password));
