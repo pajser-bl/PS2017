@@ -45,10 +45,12 @@ public class AccessControl {
 			} else {
 				// neuspjesan login
 				reply.add("LOGIN NOT OK");
+				reply.add("Neispravna lozinka.");
 			}
 		} else {
 			// ne postoje kredencijali sa username-om
 			reply.add("LOGIN USERNAME NOT OK");
+			reply.add("Nepostojece korisnicko ime.");
 		}
 		return reply;
 	}
