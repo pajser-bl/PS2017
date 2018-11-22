@@ -18,8 +18,8 @@ public class ClientConnection extends Thread {
 	private Socket socket;
 	private BufferedReader input;
 	private PrintWriter output;
-	//private int ID_user;
-	//private int ID_session;
+	// private int ID_user;
+	// private int ID_session;
 	private boolean logoutCheck = false;
 	ArrayList<String> reply;
 
@@ -54,7 +54,7 @@ public class ClientConnection extends Thread {
 					} else {
 						reply.addAll(ClientRequestHandler.handle(request));
 						if (request.getRequestType().equals("LOGIN") && reply.get(0).equals("LOGIN OK")) {
-							//ID_user = Integer.parseInt(reply.get(1));
+							// ID_user = Integer.parseInt(reply.get(1));
 							// ID_session = Integer.parseInt(reply.get(5));
 						}
 						sendReply(new Gson().toJson(reply));
@@ -65,7 +65,6 @@ public class ClientConnection extends Thread {
 				System.out.println("Porslo nesto ali ne valja");
 			}
 		}
-
 	}
 
 	public void sendReply(String reply) {

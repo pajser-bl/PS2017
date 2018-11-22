@@ -59,6 +59,5 @@ public class AccessControl {
 			ActiveUsersWatch.removeUserSession(user_ID);
 		}
 		ActiveUsersWatch.removeActiveUser(user_ID);
-		
 	}
 }
