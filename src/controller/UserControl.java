@@ -107,6 +107,7 @@ public class UserControl {
 			reply.add("DELETE USER OK");
 		} else {
 			reply.add("DELETE USER FAILED");
+			reply.add("Neuspjesno brisanje korisnika.");
 		}
 		return reply;
 	}
