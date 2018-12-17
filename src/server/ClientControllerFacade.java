@@ -22,6 +22,7 @@ import DAO.MySQL.MySQLSubscriptionDAO;
 import DAO.MySQL.MySQLUserDAO;
 import controller.AccessControl;
 import controller.ClientControl;
+import controller.SessionControl;
 import controller.SubscriptionControl;
 import controller.UserControl;
 import model.users.Client;
@@ -100,18 +101,11 @@ public class ClientControllerFacade {
 	}
 
 	public ArrayList<String> viewUserSession(int ID_session) {
-		// ID_session,ID_user,start,end
-		ArrayList<String> reply = new ArrayList<>();
-		//Session session = sessionDAO.select(ID_session);
-		//int ID_user = session.getUserID();
-		// LocalDateTime start = session.getStart();
-		// LocalDateTime end = session.getEnd();
-		// reply.add();
-		for (Event e : eventDAO.selectBySession(ID_session))
-			reply.add(e.toString());
-		return reply;
+		return SessionControl.viewUserSession(ID_session,sessionDAO,eventDAO);
 	}
-	// public void viewUserSessions(String param){}
+	public ArrayList<String> viewUserSessions(int ID_user) {
+		return SessionControl.viewUserSessions(ID_user,sessionDAO);
+	}
 
 	public ArrayList<String> viewClient(int clientID) {
 
@@ -293,6 +287,10 @@ public class ClientControllerFacade {
 		reply.add(string);
 		return reply;
 	}
+
+	
+
+	
 
 	
 
