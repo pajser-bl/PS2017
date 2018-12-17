@@ -51,6 +51,9 @@ public class ClientRequestHandler {
 		case "VIEW USERS": {
 			return clientControllerFacade.viewUsers(request.getRequest().get(0));
 		}
+		case "VIEW ACTIVE USERS": {
+			return clientControllerFacade.viewOnlineUsers();
+		}
 		case "ACCESS MAP FIELD TECHNITIAN": {
 		}
 			break;
@@ -168,6 +171,6 @@ public class ClientRequestHandler {
 		}
 		}
 		System.out.println("Unexisting function requested");
-		return clientControllerFacade.unexistingRequest();
+		return clientControllerFacade.unexistingRequest(request.getRequestType());
 	}
 }

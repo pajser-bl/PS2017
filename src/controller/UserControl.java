@@ -112,10 +112,10 @@ public class UserControl {
 		return reply;
 	}
 
-	public static ArrayList<String> viewOnlineUsers() {
+	public static ArrayList<String> viewOnlineUsers(CredentialsDAO credentialsDAO) {
 		ArrayList<String> reply = new ArrayList<>();
-		reply.add("VIEW ONLINE USERS");
-		reply.addAll(ActiveUsersWatch.getActiveUsers());
+		reply.add("VIEW ONLINE USERS OK");
+		reply.addAll(ActiveUsersWatch.getActiveUsers(credentialsDAO));
 		return reply;
 	}
 
@@ -155,6 +155,7 @@ public class UserControl {
 			Credentials credentials = credentialsDAO.select(user_ID);
 			reply.add("" + user.getID_user());
 			reply.add(user.getName());
+			reply.add(user.getSurname());
 			reply.add(user.getType());
 			reply.add(TimeUtility.localDateToString(user.getDate_of_birth()));
 			reply.add(user.getQualification());

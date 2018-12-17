@@ -267,7 +267,7 @@ public class ClientControllerFacade {
 	// public void accessMapFieldTechnician(int intervention ID){}
 	// public void accessMapOperator(){}
 	public ArrayList<String> viewOnlineUsers() {
-		return UserControl.viewOnlineUsers();
+		return UserControl.viewOnlineUsers(credentialsDAO);
 	}
 
 	// public void viewStatesFieldTechnitians(String param){}
@@ -287,9 +287,10 @@ public class ClientControllerFacade {
 		return UserControl.viewFieldTechnitianState(user_ID);
 	}
 
-	public ArrayList<String> unexistingRequest() {
+	public ArrayList<String> unexistingRequest(String string) {
 		ArrayList<String> reply = new ArrayList<>();
 		reply.add("UNEXISTING FUNCTION REQUEST");
+		reply.add(string);
 		return reply;
 	}
 

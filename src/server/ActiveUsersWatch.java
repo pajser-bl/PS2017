@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import DAO.CredentialsDAO;
+import model.users.Credentials;
 import model.users.User;
 
 public class ActiveUsersWatch {
@@ -65,11 +67,14 @@ public class ActiveUsersWatch {
 	}
 
 	// vrate sve korisnike koji su povezani na server
-	public static ArrayList<String> getActiveUsers() {
+	public static ArrayList<String> getActiveUsers(CredentialsDAO credentialsDAO) {
 		ArrayList<String> reply = new ArrayList<>();
+		ArrayList<Credentials> credentials = (ArrayList<Credentials>) credentialsDAO.selectAll();
 		String tempUserString;
+		reply.add(""+activeUsersList.size());
 		for (User u : activeUsersList) {
-			tempUserString = u.getID_user() + ":" + u.getName() + ":" + u.getSurname() + ":" + u.getType();
+			String username=credentials.get(credentials.indexOf(new Credentials(u.getID_user(), u.getID_user(), null, null))).getUsername();
+			tempUserString = u.getID_user() + ":" + u.getName() + ":" + u.getSurname() + ":" + u.getType()+":"+username;
 			reply.add(tempUserString);
 		}
 		return reply;
