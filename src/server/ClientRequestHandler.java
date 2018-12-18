@@ -63,12 +63,14 @@ public class ClientRequestHandler {
 		case "CHANGE STATE FIELD TECHNITIAN": {
 		}
 			break;
-		case "VIEW STATE FIELD TECHNITIAN": {
+		//pogledaj stanje jednog terenskog radnika
+		case "VIEW FIELD TECHNITIAN STATE ": {
+			return clientControllerFacade.viewFieldTechnitianState(Integer.parseInt(request.getRequest().get(0)));
 		}
-			break;
-		case "VIEW STATES FIELD TECHNITIAN": {
+		//pregledaj stanja svih onlajn terenskih radnika
+		case "VIEW FIELD TECHNITIANS": {
+			return clientControllerFacade.viewFieldTechnitians();
 		}
-			break;
 		case "VIEW ONLINE USERS": {
 			return clientControllerFacade.viewOnlineUsers();
 		}

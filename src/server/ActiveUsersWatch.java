@@ -83,6 +83,7 @@ public class ActiveUsersWatch {
 		ArrayList<String> reply = new ArrayList<>();
 		String tempRoadAssistentString;
 		String tempStateString;
+		reply.add(""+roadAssistentStates.size());
 		for (User u : roadAssistentStates.keySet()) {
 			tempStateString = roadAssistentStates.get(u);
 			tempRoadAssistentString = u.getID_user() + ":" + u.getName() + ":" + u.getSurname() + ":" + tempStateString;
@@ -115,5 +116,8 @@ public class ActiveUsersWatch {
 	}
 	public static boolean userHasSession(int ID_user) {
 		return activeUsersSession.containsKey(ID_user);
+	}
+	public static int getUserSession(int ID_user) {
+		return activeUsersSession.get(ID_user);
 	}
 }

@@ -22,6 +22,8 @@ import DAO.MySQL.MySQLSubscriptionDAO;
 import DAO.MySQL.MySQLUserDAO;
 import controller.AccessControl;
 import controller.ClientControl;
+import controller.EventControl;
+import controller.InterventionControl;
 import controller.SessionControl;
 import controller.SubscriptionControl;
 import controller.UserControl;
@@ -158,16 +160,7 @@ public class ClientControllerFacade {
 	}
 
 	public ArrayList<String> newIntervention(Intervention intervention) {
-		// new Intervention(int iD_client, int iD_vehicle,
-		// int iD_user_opened, LocalDateTime opened_on)
-		ArrayList<String> reply = new ArrayList<>();
-		//Event event = new Event();
-		if (interventionDAO.insert(intervention) != 0) {
-			reply.add("NEW INTERVENTION OK");
-		} else {
-			reply.add("NEW INTERVENTION FAILED");
-		}
-		return reply;
+		return InterventionControl.newIntervention(intervention,interventionDAO,eventDAO);
 	}
 
 	public ArrayList<String> viewIntervention(int ID_intervention) {
@@ -216,13 +209,7 @@ public class ClientControllerFacade {
 
 	public ArrayList<String> closeIntervention(int intervention_ID, int user_ID, LocalDateTime closed_on, String remark,
 			boolean closed) {
-		ArrayList<String> reply = new ArrayList<>();
-		if (interventionDAO.close(intervention_ID, remark, user_ID, closed_on, closed) != 0) {
-			reply.add("CLOSE INTERVENTION OK");
-		} else {
-			reply.add("CLOSE INTERVENTION FAILED");
-		}
-		return reply;
+		return InterventionControl.closeIntervention(intervention_ID,user_ID,closed_on,remark,closed,interventionDAO,eventDAO);
 	}
 
 	public ArrayList<String> newRoadReport(int fieldreport_ID, int intervention_ID, int user_ID, String assistance,
@@ -265,8 +252,8 @@ public class ClientControllerFacade {
 	}
 
 	// public void viewStatesFieldTechnitians(String param){}
-	public ArrayList<String> viewStatesFieldTechnitians() {
-		return UserControl.viewStatesFieldTechnitians();
+	public ArrayList<String> viewFieldTechnitians() {
+		return UserControl.viewFieldTechnitians();
 	}
 
 	public ArrayList<String> viewAvailableFieldTechnitians() {

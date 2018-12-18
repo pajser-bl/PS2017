@@ -119,9 +119,9 @@ public class UserControl {
 		return reply;
 	}
 
-	public static ArrayList<String> viewStatesFieldTechnitians() {
+	public static ArrayList<String> viewFieldTechnitians() {
 		ArrayList<String> reply = new ArrayList<>();
-		reply.add("VIEW FIELD TECHNITIANS STATE");
+		reply.add("VIEW FIELD TECHNITIANS");
 		reply.addAll(ActiveUsersWatch.getOnlineFieldTechnitians());
 		return reply;
 	}
