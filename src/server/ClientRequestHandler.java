@@ -85,6 +85,7 @@ public class ClientRequestHandler {
 			return clientControllerFacade.viewClient(Integer.parseInt(request.getRequest().get(0)));
 		}
 		case "VIEW CLIENTS": {
+			return clientControllerFacade.viewClients();
 		}
 		case "NEW CLIENT": {
 			return clientControllerFacade.newClient(request.getRequest().get(0), request.getRequest().get(1),
@@ -102,6 +103,7 @@ public class ClientRequestHandler {
 			return clientControllerFacade.viewSubscription(Integer.parseInt(request.getRequest().get(0)));
 		}
 		case "VIEW SUBSCRIPTIONS": {
+			return clientControllerFacade.viewSubscriptions();
 		}
 		case "NEW SUBSCRIPTION": {
 			return clientControllerFacade.newSubscription(request.getRequest().get(0), request.getRequest().get(1),

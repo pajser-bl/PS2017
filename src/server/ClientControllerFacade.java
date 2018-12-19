@@ -2,6 +2,8 @@ package server;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
+
 import DAO.ClientDAO;
 import DAO.CredentialsDAO;
 import DAO.EventDAO;
@@ -32,6 +34,7 @@ import model.interventions.Intervention;
 import model.interventions.Report;
 import model.interventions.RoadReport;
 import model.users.Event;
+import model.users.Subscription;
 import utility.TimeUtility;
 
 public class ClientControllerFacade {
@@ -273,6 +276,15 @@ public class ClientControllerFacade {
 		reply.add("UNEXISTING FUNCTION REQUEST");
 		reply.add(string);
 		return reply;
+	}
+
+	public ArrayList<String> viewSubscriptions() {
+		return SubscriptionControl.viewSubscriptions(subscriptionDAO); // treba testirati
+	}
+
+	public ArrayList<String> viewClients() {
+		return ClientControl.viewClients(clientDAO);
+
 	}
 
 	

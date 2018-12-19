@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import DAO.EventDAO;
 import DAO.SessionDAO;
@@ -28,9 +29,19 @@ public class SessionControl {
 		return reply;
 	}
 
-	public static ArrayList<String> viewUserSessions(int iD_user, SessionDAO sessionDAO) {
+	public static ArrayList<String> viewUserSessions(int ID_user, SessionDAO sessionDAO) { // treba testiratiS
 		ArrayList<String> reply = new ArrayList<>();
-		
+		List<Session> sessions = sessionDAO.viewUserSessions(ID_user);
+		for(Session s :sessions) {
+			int ID_session= s.getSessionID();
+			String start = TimeUtility.localDateTimeToString(s.getStart());
+			String end = TimeUtility.localDateTimeToString(s.getEnd());
+			reply.add(""+ID_session);
+			reply.add(""+ID_user);
+			reply.add(start);
+			reply.add(end);
+			
+		}
 		return reply;
 	}
 

@@ -19,7 +19,7 @@ public class MySQLSessionDAO implements SessionDAO {
 	private static final String SQL_INSERT = "INSERT INTO session (ID_session, ID_user, start, end)  VALUES (null,?,?,null)";
 	private static final String SQL_UPDATE = "UPDATE session SET ID_user=?, start=?, end=?  WHERE ID_session = ?";
 	private static final String SQL_DELETE = "DELETE FROM session WHERE ID_session=?";
-	
+	private static final String SQL_SELECT_USER_SESSIONS="SELECT * FROM sesion where ID_user=?";
 	
 	@Override
 	public Session select(int sessionID) {
@@ -44,7 +44,29 @@ public class MySQLSessionDAO implements SessionDAO {
 		}
 		return returnValue;
 	}
-	
+	@Override
+	public List<Session> viewUserSessions(int ID_user){ // Treba testirati
+		List<Session> returnValue= new ArrayList<>();
+		Connection c=null;
+		PreparedStatement ps=null;
+		ResultSet rs = null;
+		try {
+			c = DataSourceFactory.getMySQLDataSource().getConnection();
+			ps = c.prepareStatement( SQL_SELECT_USER_SESSIONS);
+			ps.setInt(2,ID_user);
+			rs= ps.executeQuery();
+			while(rs.next()) {
+						returnValue.add(new Session(rs.getInt("ID_session"), rs.getInt("ID_user"), 
+						TimeUtility.stringToLocalDateTime(rs.getString("start")), 
+						TimeUtility.stringToLocalDateTime(rs.getString("end"))));
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {rs.close();ps.close();	c.close();}catch(SQLException e) {}
+		}
+		return returnValue;
+	}
 	@Override
 	public List<Session> selectAll() {
 		List<Session> returnValue = new ArrayList<>();
