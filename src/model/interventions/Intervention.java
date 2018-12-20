@@ -4,7 +4,21 @@ import java.time.LocalDateTime;
 
 public class Intervention {
 	
-    int ID_intervention;
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Intervention other = (Intervention) obj;
+		if (ID_intervention != other.ID_intervention)
+			return false;
+		return true;
+	}
+	int ID_intervention;
 	int ID_client;
 	int ID_vehicle;
 	int ID_user_opened;

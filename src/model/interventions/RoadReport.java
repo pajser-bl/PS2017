@@ -10,6 +10,19 @@ public class RoadReport {
 	LocalDateTime time_of_assistance;
 	String remark;
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RoadReport other = (RoadReport) obj;
+		if (ID_road_report != other.ID_road_report)
+			return false;
+		return true;
+	}
 	
 	public RoadReport(int iD_road_report,  int iD_intervention,int iD_user, String assistance,
 			LocalDateTime time_of_assistance, String remark) {

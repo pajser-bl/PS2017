@@ -3,6 +3,21 @@ package model.interventions;
 import java.time.LocalDateTime;
 
 public class Report {
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Report other = (Report) obj;
+		if (ID_report != other.ID_report)
+			return false;
+		return true;
+	}
+
 	int ID_report;
 	int ID_user;
 	int ID_intervention;

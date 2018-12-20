@@ -2,8 +2,6 @@ package server;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
-
 import DAO.ClientDAO;
 import DAO.CredentialsDAO;
 import DAO.EventDAO;
@@ -13,6 +11,7 @@ import DAO.RoadReportDAO;
 import DAO.SessionDAO;
 import DAO.SubscriptionDAO;
 import DAO.UserDAO;
+import DAO.VehicleDAO;
 import DAO.MySQL.MySQLClientDAO;
 import DAO.MySQL.MySQLCredentialsDAO;
 import DAO.MySQL.MySQLEventDAO;
@@ -22,19 +21,18 @@ import DAO.MySQL.MySQLRoadReportDAO;
 import DAO.MySQL.MySQLSessionDAO;
 import DAO.MySQL.MySQLSubscriptionDAO;
 import DAO.MySQL.MySQLUserDAO;
+import DAO.MySQL.MySQLVehicleDAO;
 import controller.AccessControl;
 import controller.ClientControl;
-import controller.EventControl;
 import controller.InterventionControl;
+import controller.ReportControl;
+import controller.RoadReportControl;
 import controller.SessionControl;
 import controller.SubscriptionControl;
 import controller.UserControl;
 import model.users.Client;
 import model.interventions.Intervention;
-import model.interventions.Report;
 import model.interventions.RoadReport;
-import model.users.Event;
-import model.users.Subscription;
 import utility.TimeUtility;
 
 public class ClientControllerFacade {
@@ -43,6 +41,7 @@ public class ClientControllerFacade {
 	SessionDAO sessionDAO;
 	EventDAO eventDAO;
 	ClientDAO clientDAO;
+	VehicleDAO vehicleDAO;
 	InterventionDAO interventionDAO;
 	SubscriptionDAO subscriptionDAO;
 	RoadReportDAO roadReportDAO;
@@ -54,10 +53,12 @@ public class ClientControllerFacade {
 		sessionDAO = new MySQLSessionDAO();
 		eventDAO = new MySQLEventDAO();
 		clientDAO = new MySQLClientDAO();
+		vehicleDAO=new MySQLVehicleDAO();
 		interventionDAO = new MySQLInterventionDAO();
 		subscriptionDAO = new MySQLSubscriptionDAO();
 		roadReportDAO = new MySQLRoadReportDAO();
 		reportDAO = new MySQLReportDAO();
+		
 	}
 
 	public ArrayList<String> login(String username, String password) {
@@ -229,21 +230,11 @@ public class ClientControllerFacade {
 	}
 
 	public ArrayList<String> viewReport(int report_ID) {
-		ArrayList<String> reply = new ArrayList<>();
-		//Intervention intervention = interventionDAO.select(report_ID);
-		//RoadReport roadReport = roadReportDAO.select(report_ID);
-		//Report report = reportDAO.select(report_ID);
-
-		return reply;
+		return ReportControl.viewReport(report_ID,interventionDAO, roadReportDAO, reportDAO, clientDAO, userDAO, vehicleDAO);
 	}
 
-	public void newReport(int iD_report, int iD_intervention, int iD_user, String remark, LocalDateTime closed_on) {
-		ArrayList<String> reply = new ArrayList<>();
-		if (reportDAO.insert(new Report(iD_report, iD_intervention, iD_user, remark, closed_on)) != 0) {
-			reply.add("NEW ROADREPORT OK");
-		} else {
-			reply.add("NEW ROADREPORT FAILED");
-		}
+	public ArrayList<String> newReport(int ID_report, int ID_intervention, int ID_user, String remark, LocalDateTime closed_on) {
+		return ReportControl.newReport(ID_report,ID_intervention,ID_user,remark,closed_on,reportDAO);
 	}
 
 	// public void viewReports(String param){}
@@ -287,10 +278,15 @@ public class ClientControllerFacade {
 
 	}
 
-	
+	public ArrayList<String> deleteRoadReport(String ID_road_report) { // treba testirati
+		return RoadReportControl.deleteRoadReport( ID_road_report,roadReportDAO);
+	}
 
-	
+	public ArrayList<String> viewRoadReport(String ID_road_report) { // treba testirati
+		return RoadReportControl.viewRoadReport(ID_road_report,roadReportDAO);
+	}
 
-	
-
+	public ArrayList<String> viewReports() {
+		return ReportControl.viewReports(interventionDAO, roadReportDAO, reportDAO, clientDAO, userDAO);
+	}
 }
