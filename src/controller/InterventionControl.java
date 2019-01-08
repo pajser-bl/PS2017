@@ -18,7 +18,6 @@ public class InterventionControl {
 		
 		if (interventionDAO.insert(intervention) != 0) {
 			event=new Event(ID_session,LocalDateTime.now(),"Uspjesno otvorena nova intervencija ID: "+intervention.getID_intervention()+" .");
-			eventDAO.insert(event);
 			reply.add("NEW INTERVENTION OK");
 		} else {
 			event=new Event(intervention.getID_user_opened(),ID_session,LocalDateTime.now(),"Otvaranje intervencije nije uspjelo.");

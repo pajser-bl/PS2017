@@ -30,7 +30,6 @@ public class AccessControl {
 				if (!alredyLoggedIn) {
 					// uspjesan login
 					User user = userDAO.select(credentials.getID_user());
-
 					reply.add("LOGIN OK");
 					reply.add(String.valueOf(user.getID_user()));
 					reply.add(user.getName());
