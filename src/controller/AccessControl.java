@@ -37,7 +37,8 @@ public class AccessControl {
 					reply.add(user.getSurname());
 					reply.add(user.getType());
 					reply.add(username);
-					if (user.getType() == "Terenski radnik" || user.getType() == "Operater") {
+					System.out.println(user.getType());
+					if (user.getType().equals("Terenski radnik") || user.getType().equals("Operater")) {
 						int ID_session = sessionDAO.insert(new Session(user.getID_user(), LocalDateTime.now()));
 						ActiveUsersWatch.addUserSession(user.getID_user(), ID_session);
 						Event event = new Event(ID_session, LocalDateTime.now(),
@@ -64,8 +65,8 @@ public class AccessControl {
 
 	public static void logout(int user_ID, EventDAO eventDAO) {
 		if (ActiveUsersWatch.userHasSession(user_ID)) {
-			// Event event=new Event(user_ID,LocalDateTime.now(),"Korisnik se odjavio.");
-			// eventDAO.insert(event);
+			Event event=new Event(ActiveUsersWatch.getUserSession(user_ID),LocalDateTime.now(),"Korisnik se odjavio.");
+			 eventDAO.insert(event);
 			ActiveUsersWatch.removeUserSession(user_ID);
 		}
 		ActiveUsersWatch.removeActiveUser(user_ID);

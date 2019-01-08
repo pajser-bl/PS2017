@@ -62,9 +62,8 @@ public class ClientRequestHandler {
 			}
 				break;
 			case "CHANGE STATE FIELD TECHNITIAN": {
+				return clientControllerFacade.changeStateFieldTechnitian(Integer.parseInt(request.getRequest().get(1)), request.getRequest().get(2));
 			}
-				break;
-			// pogledaj stanje jednog terenskog radnika
 			case "VIEW FIELD TECHNITIAN STATE ": {
 				return clientControllerFacade.viewFieldTechnitianState(Integer.parseInt(request.getRequest().get(0)));
 			}
