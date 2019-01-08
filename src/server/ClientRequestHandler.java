@@ -121,6 +121,7 @@ public class ClientRequestHandler {
 				return clientControllerFacade.viewIntervention(Integer.parseInt(request.getRequest().get(0)));
 			}
 			case "VIEW INTERVENTIONS": {
+				return clientControllerFacade.viewInterventions();
 			}
 			case "NEW INTERVENTION": {
 				return clientControllerFacade.newIntervention(new Intervention(

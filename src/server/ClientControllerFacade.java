@@ -66,7 +66,7 @@ public class ClientControllerFacade {
 	}
 
 	public void logout(int user_ID) {
-		AccessControl.logout(user_ID, eventDAO);
+		AccessControl.logout(user_ID, eventDAO,credentialsDAO);
 	}
 
 	public ArrayList<String> newCredentials(int ID_user, String username, String password) {
@@ -168,29 +168,12 @@ public class ClientControllerFacade {
 	}
 
 	public ArrayList<String> viewIntervention(int ID_intervention) {
-		ArrayList<String> reply = new ArrayList<>();
-		Intervention intervention = interventionDAO.select(ID_intervention);
-		// if(interventionDAO.exists(ID_intervention)) {
-		// reply.add("VIEW INTERVENTION OK");
-		reply.add("" + intervention.getID_intervention());
-		reply.add("" + intervention.getID_client());
-		reply.add("" + intervention.getID_vehicle());
-		reply.add("" + intervention.getID_user_opened());
-		reply.add("" + intervention.getID_user_closed());
-		reply.add(TimeUtility.localDateTimeToString(intervention.getOpened_on()));
-		reply.add(TimeUtility.localDateTimeToString(intervention.getClosed_on()));
-		reply.add(intervention.getRemark());
-		if (intervention.isClosed())
-			reply.add("CLOSED");
-		else
-			reply.add("OPEN");
-		// }else{
-		// reply.add("VIEW INTERVENTION FAILED");
-		// }
-		return reply;
+		return InterventionControl.viewIntervention(ID_intervention,interventionDAO, userDAO, clientDAO, roadReportDAO,vehicleDAO);
 	}
-	// public void viewInterventions(String param){}
-
+	
+	public ArrayList<String> viewInterventions() {
+		return InterventionControl.viewInterventions(interventionDAO,userDAO,clientDAO,roadReportDAO);
+	}
 	public ArrayList<String> updateIntervention(Intervention intervention) {
 		ArrayList<String> reply = new ArrayList<>();
 		if (interventionDAO.update(intervention) != 0) {
@@ -255,7 +238,7 @@ public class ClientControllerFacade {
 	}
 
 	public ArrayList<String> changeStateFieldTechnitian(int user_ID, String state) {
-		return UserControl.changeStateFieldTechnitian(user_ID, state);
+		return UserControl.changeStateFieldTechnitian(user_ID, state,eventDAO);
 	}
 
 	public ArrayList<String> viewFieldTechnitianState(int user_ID) {
@@ -289,4 +272,6 @@ public class ClientControllerFacade {
 	public ArrayList<String> viewReports() {
 		return ReportControl.viewReports(interventionDAO, roadReportDAO, reportDAO, clientDAO, userDAO);
 	}
+
+	
 }

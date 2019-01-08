@@ -1,10 +1,13 @@
 package controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import DAO.CredentialsDAO;
+import DAO.EventDAO;
 import DAO.UserDAO;
 import model.users.Credentials;
+import model.users.Event;
 import model.users.User;
 import server.ActiveUsersWatch;
 import utility.HashHandler;
@@ -133,10 +136,12 @@ public class UserControl {
 		return reply;
 	}
 
-	public static ArrayList<String> changeStateFieldTechnitian(int user_ID, String state) {
+	public static ArrayList<String> changeStateFieldTechnitian(int user_ID, String state,EventDAO eventDAO) {
 		ArrayList<String> reply = new ArrayList<>();
 		reply.add("CHANGE FIELD TECHNITIAN STATE");
 		ActiveUsersWatch.changeFieldTechnitianState(user_ID, state);
+		Event event=new Event(ActiveUsersWatch.getUserSession(user_ID),LocalDateTime.now(),"Korisnik je promjenio stanje u "+state);
+		eventDAO.insert(event);
 		return reply;
 	}
 

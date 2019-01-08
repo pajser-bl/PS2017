@@ -13,6 +13,7 @@ import model.users.Session;
 import model.users.User;
 import server.ActiveUsersWatch;
 import utility.HashHandler;
+import utility.TimeUtility;
 
 public class AccessControl {
 	public static ArrayList<String> login(String username, String password, CredentialsDAO credentialsDAO,
@@ -36,7 +37,6 @@ public class AccessControl {
 					reply.add(user.getSurname());
 					reply.add(user.getType());
 					reply.add(username);
-					System.out.println(user.getType());
 					if (user.getType().equals("Terenski radnik") || user.getType().equals("Operater")) {
 						int ID_session = sessionDAO.insert(new Session(user.getID_user(), LocalDateTime.now()));
 						ActiveUsersWatch.addUserSession(user.getID_user(), ID_session);
@@ -45,29 +45,35 @@ public class AccessControl {
 						eventDAO.insert(event);
 					}
 					ActiveUsersWatch.addActiveUser(user);
+					System.out.println("["+TimeUtility.getStringTimeNow()+"]User "+user.getName()+" "+user.getSurname()+" ("+credentials.getUsername()+") has successfully logged in.");
 				} else {
 					reply.add("LOGIN NOT OK");
 					reply.add("Korisnik vec prijavljen.");
+					System.out.println("["+TimeUtility.getStringTimeNow()+"]Unsuccessful login(user alredy logged in) request from "+username+" .");
 				}
 			} else {
 				// neuspjesan login
 				reply.add("LOGIN NOT OK");
 				reply.add("Neispravna lozinka.");
+				System.out.println("["+TimeUtility.getStringTimeNow()+"]Unsuccessful login(wrong password) request from "+username+" .");
 			}
 		} else {
 			// ne postoje kredencijali sa username-om
 			reply.add("LOGIN USERNAME NOT OK");
 			reply.add("Nepostojece korisnicko ime.");
+			System.out.println("["+TimeUtility.getStringTimeNow()+"]Unsuccessful login(unexisting user) request from "+username+" .");
 		}
 		return reply;
 	}
 
-	public static void logout(int user_ID, EventDAO eventDAO) {
+	public static void logout(int user_ID, EventDAO eventDAO,CredentialsDAO credentialsDAO) {
 		if (ActiveUsersWatch.userHasSession(user_ID)) {
 			Event event=new Event(ActiveUsersWatch.getUserSession(user_ID),LocalDateTime.now(),"Korisnik se odjavio.");
 			 eventDAO.insert(event);
 			ActiveUsersWatch.removeUserSession(user_ID);
 		}
+
+		System.out.println("["+TimeUtility.getStringTimeNow()+"]User "+credentialsDAO.select(user_ID).getUsername()+" has logged out.");
 		ActiveUsersWatch.removeActiveUser(user_ID);
 	}
 }

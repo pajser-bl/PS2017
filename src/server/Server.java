@@ -40,7 +40,7 @@ public class Server {
 				SERVER_CONNECTION_COUNTER++;
 				ClientConnection connection = new ClientConnection(socket);
 				connection.start();
-				System.out.println("Connection enstablished");
+				System.out.println("[" +TimeUtility.getStringTimeNow() + "]Connection enstablished");
 			}
 			serverSocket.close();
 		} catch (IOException e) {
