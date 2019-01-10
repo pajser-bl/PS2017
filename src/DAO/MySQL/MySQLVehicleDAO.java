@@ -19,8 +19,34 @@ public class MySQLVehicleDAO implements VehicleDAO{
 	private static final String SQL_INSERT = "INSERT INTO vehicle (ID_vehicle,registration,manufacturer,model, year) VALUES (null,?, ?, ?, ?)";
 	private static final String SQL_UPDATE = "UPDATE vehicle SET registration=?, manufacturer=?, model=?, year=? WHERE ID_vehicle=?";
 	private static final String SQL_DELETE = "DELETE FROM vehicle WHERE ID_vehicle=?";
+	private static final String SQL_EXIST = "SELECT * FROM vehicle where registration=?, manufacturer=?, model=?, year=?";
 	
 	
+	@Override
+	public int exist(Vehicle vehicle) {
+		int returnValue=0;
+		Connection c=null;
+		ResultSet rs=null;
+		PreparedStatement ps = null;
+		
+		try {
+			c = DataSourceFactory.getMySQLDataSource().getConnection();
+			ps = c.prepareStatement(SQL_EXIST);
+			ps.setString(1, vehicle.getRegistration());
+			ps.setString(2, vehicle.getManufacturer());
+			ps.setString(3, vehicle.getModel());
+			ps.setString(4, ""+vehicle.getYear());
+			rs = ps.executeQuery();
+			while (rs.next())
+				returnValue++;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {rs.close();ps.close();	c.close();} catch(SQLException e) {}
+		}
+		return returnValue;
+	}
+
 	
 	@Override
 	public Vehicle select(int ID_vehicle) {
@@ -134,4 +160,5 @@ public class MySQLVehicleDAO implements VehicleDAO{
 		return retVal;
 	}
 
+	
 }

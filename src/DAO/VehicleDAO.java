@@ -10,4 +10,5 @@ public interface VehicleDAO {
 	int insert(Vehicle vehicle);
 	public int update(Vehicle vehicle);
 	public int delete(int ID_vehicle);
+	public int exist(Vehicle vehicle);
 }

@@ -31,6 +31,7 @@ import controller.SessionControl;
 import controller.SubscriptionControl;
 import controller.UserControl;
 import model.users.Client;
+import model.Vehicle;
 import model.interventions.Intervention;
 import model.interventions.RoadReport;
 import utility.TimeUtility;
@@ -163,8 +164,8 @@ public class ClientControllerFacade {
 		return SubscriptionControl.deleteSubscription(subscription_ID, subscriptionDAO);
 	}
 
-	public ArrayList<String> newIntervention(Intervention intervention) {
-		return InterventionControl.newIntervention(intervention,interventionDAO,eventDAO);
+	public ArrayList<String> newIntervention(Intervention intervention,Client client, Vehicle vehicle) {
+		return InterventionControl.newIntervention(intervention,client,vehicle,interventionDAO,eventDAO,clientDAO, vehicleDAO);
 	}
 
 	public ArrayList<String> viewIntervention(int ID_intervention) {

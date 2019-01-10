@@ -9,24 +9,39 @@ import DAO.InterventionDAO;
 import DAO.RoadReportDAO;
 import DAO.UserDAO;
 import DAO.VehicleDAO;
+import model.Vehicle;
 import model.interventions.Intervention;
+import model.users.Client;
 import model.users.Event;
 import server.ActiveUsersWatch;
 import utility.TimeUtility;
 
 public class InterventionControl {
 
-	public static ArrayList<String> newIntervention(Intervention intervention, InterventionDAO interventionDAO, EventDAO eventDAO) {
+	public static ArrayList<String> newIntervention(Intervention intervention, Client client, Vehicle vehicle, InterventionDAO interventionDAO, EventDAO eventDAO,ClientDAO clientDAO,VehicleDAO vehicleDAO) {
 		ArrayList<String> reply = new ArrayList<>();
 		Event event;
 		int ID_session=ActiveUsersWatch.getUserSession(intervention.getID_user_opened());
-		
+		int client_ID=clientDAO.exist(client);
+		int vehicle_ID=vehicleDAO.exist(vehicle);
+		if(client_ID!=0) {
+			intervention.setID_client(client_ID);
+		}else {
+			intervention.setID_client(clientDAO.insert(client));
+		}
+		if(vehicle_ID!=0) {
+			intervention.setID_client(vehicle_ID);
+		}else {
+			intervention.setID_vehicle(vehicleDAO.insert(vehicle));
+		}
 		if (interventionDAO.insert(intervention) != 0) {
+			
 			event=new Event(ID_session,LocalDateTime.now(),"Uspjesno otvorena nova intervencija ID: "+intervention.getID_intervention()+" .");
 			reply.add("NEW INTERVENTION OK");
 		} else {
 			event=new Event(intervention.getID_user_opened(),ID_session,LocalDateTime.now(),"Otvaranje intervencije nije uspjelo.");
 			reply.add("NEW INTERVENTION FAILED");
+			reply.add("Otvaranje intervencije nije uspjelo.");
 		}
 		eventDAO.insert(event);
 		return reply;

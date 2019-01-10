@@ -10,4 +10,5 @@ public interface ClientDAO {
 	int insert(Client client);
 	public int update(Client user);
 	public int delete(int ID_client);
+	public int exist(Client client);
 }
