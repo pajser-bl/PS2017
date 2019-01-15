@@ -38,7 +38,7 @@ public class MySQLVehicleDAO implements VehicleDAO{
 			ps.setString(4, ""+vehicle.getYear());
 			rs = ps.executeQuery();
 			while (rs.next())
-				returnValue++;
+				returnValue=rs.getInt(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {

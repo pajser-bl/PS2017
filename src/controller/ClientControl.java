@@ -13,11 +13,14 @@ public class ClientControl {
 	public static ArrayList<String> newClient(String name, String surname, String phone_number, ClientDAO clientDAO) {
 		ArrayList<String> reply = new ArrayList<>();
 		Client client = new Client(name, surname, phone_number);
-
-		if (clientDAO.insert(client) != 0) {
+		if(clientDAO.exist(client)!=0) {
+			reply.add("NEW CLIENT FAILED");
+			reply.add("Klijent vec postoji.");
+		}else if (clientDAO.insert(client) != 0) {
 			reply.add("NEW CLIENT OK");
 		} else {
 			reply.add("NEW CLIENT FAILED");
+			reply.add("Dodavanje klijenta nije uspjelo.");
 		}
 		return reply;
 	}
