@@ -274,5 +274,9 @@ public class ClientControllerFacade {
 		return ReportControl.viewReports(interventionDAO, roadReportDAO, reportDAO, clientDAO, userDAO);
 	}
 
+	public void connectionLost(int ID_user) {
+		AccessControl.connectionLost(ID_user,eventDAO);
+	}
+
 	
 }

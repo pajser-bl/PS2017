@@ -20,6 +20,9 @@ public class ClientRequestHandler {
 			clientControllerFacade.logout(Integer.parseInt(request.getRequest().get(0)));
 			return null;
 		}
+		case "CONNECTION LOST": {
+			clientControllerFacade.connectionLost(Integer.parseInt(request.getRequest().get(0)));
+		}
 		case "NEW CREDENTIALS": {
 			return clientControllerFacade.newCredentials(Integer.parseInt(request.getRequest().get(0)),
 					request.getRequest().get(1), request.getRequest().get(2));
@@ -73,6 +76,9 @@ public class ClientRequestHandler {
 		// pregledaj stanja svih onlajn terenskih radnika
 		case "VIEW FIELD TECHNITIANS": {
 			return clientControllerFacade.viewFieldTechnitians();
+		}
+		case "VIEW AVAILABLE FIELD TECHNITIANS": {
+			return clientControllerFacade.viewAvailableFieldTechnitians();
 		}
 		case "VIEW ONLINE USERS": {
 			return clientControllerFacade.viewOnlineUsers();
@@ -130,10 +136,11 @@ public class ClientRequestHandler {
 		case "NEW INTERVENTION": {
 			// opened_ID,timestamp,client_name,client_surname,client_phonenumber,registration,model,manufacturer,year
 			return clientControllerFacade.newIntervention(
-					new Intervention(0,0,Integer.parseInt(request.getRequest().get(0)),
+					new Intervention(0, 0, Integer.parseInt(request.getRequest().get(0)),
 							TimeUtility.stringToLocalDateTime(request.getRequest().get(1))),
 					new Client(request.getRequest().get(2), request.getRequest().get(3), request.getRequest().get(4)),
-					new Vehicle(request.getRequest().get(5), request.getRequest().get(6),request.getRequest().get(7),Integer.parseInt(request.getRequest().get(8))));
+					new Vehicle(request.getRequest().get(5), request.getRequest().get(6), request.getRequest().get(7),
+							Integer.parseInt(request.getRequest().get(8))));
 		}
 		case "UPDATE INTERVENTION": {
 			return clientControllerFacade.updateIntervention(new Intervention(

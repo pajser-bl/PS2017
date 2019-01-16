@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import server.Request;
+import utility.TimeUtility;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -18,8 +19,11 @@ public class ClientConnection extends Thread {
 	private Socket socket;
 	private BufferedReader input;
 	private PrintWriter output;
-	// private int ID_user;
-	// private int ID_session;
+	private int ID_user;
+	private String username;
+	private String userName;
+	private String userSurname;
+	private String userType;
 	private boolean logoutCheck = false;
 	ArrayList<String> reply;
 
@@ -27,7 +31,7 @@ public class ClientConnection extends Thread {
 		try {
 			this.socket = socket;
 		} catch (Exception e) {
-			System.out.println("Veza nije uspostavljena !");
+			System.out.println("Connection not established!");
 		}
 	}
 
@@ -37,32 +41,46 @@ public class ClientConnection extends Thread {
 			output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 			reply = new ArrayList<>();
 		} catch (Exception e) {
-			System.out.println("Otvaranje input/outpu streama nije uspjelo !");
+			System.out.println("Unsuccessfull opening of input/output stream!");
+			e.printStackTrace();
 		}
 
 		while (!logoutCheck) {
 			try {
+				if(this.output.checkError()&&!logoutCheck) {
+					System.out.println("["+TimeUtility.getStringTimeNow()+"]Connection lost to "+this.username+"("+this.userName+" "+this.userSurname+").");
+					ArrayList<String> temp=new ArrayList<String>();temp.add(""+ID_user);
+					ClientRequestHandler.handle(new Request("CONNECTION LOST",temp));
+				}
 				if (input.ready()) {
 					Request request = new Gson().fromJson(input.readLine(), new TypeToken<Request>() {
 					}.getType());
-					// JA BIH BEZ OVOGA TJ DA SERVERA ZABOLE KO JE KLIJENT
 					reply.clear();
 					if (request.getRequestType().equals("LOGOUT")) {
 						logoutCheck = true;
 						ClientRequestHandler.handle(request);
+						System.out.println("["+TimeUtility.getStringTimeNow()+"]User "+this.username+" ("+this.userName+" "+this.userSurname+") has logged out.");
 						this.socket.close();
+					} else if (request.getRequestType().equals("LOGIN")) {
+						reply.addAll(ClientRequestHandler.handle(request));
+						if(reply.get(0).equals("LOGIN OK")) {
+							this.ID_user=Integer.parseInt(reply.get(1));
+							this.userName=reply.get(2);
+							this.userSurname=reply.get(3);
+							this.userType=reply.get(4);
+							this.username=reply.get(5);
+						}else {
+							logoutCheck=true;
+						}
+						sendReply(new Gson().toJson(reply));
 					} else {
 						reply.addAll(ClientRequestHandler.handle(request));
-						if (request.getRequestType().equals("LOGIN") && reply.get(0).equals("LOGIN OK")) {
-							// ID_user = Integer.parseInt(reply.get(1));
-							// ID_session = Integer.parseInt(reply.get(5));
-						}
 						sendReply(new Gson().toJson(reply));
 					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.out.println("Porslo nesto ali ne valja");
+				System.out.println("Exception happened durig communication with user: "+this.username+" ("+this.userName+" "+this.userSurname+").");
 			}
 		}
 	}

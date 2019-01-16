@@ -1,5 +1,6 @@
 package controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -60,7 +61,8 @@ public class UserControl {
 			reply.add("Korisnicko ime vec zauzeto.");
 			return reply;
 		}
-		User user = new User(name, surname, TimeUtility.stringToLocalDate(date_of_birth), type, qualification);
+		//User user = new User(name, surname, TimeUtility.stringToLocalDate(date_of_birth), type, qualification);
+		User user = new User(name, surname, LocalDate.parse(date_of_birth), type, qualification);
 		//System.out.println(TimeUtility.stringToLocalDate(date_of_birth).toString());
 		int id_user;
 		if ((id_user = userDAO.insert(user)) != 0) {
@@ -84,7 +86,7 @@ public class UserControl {
 			reply.add("UPDATE USER OK");
 		} else {
 			reply.add("UPDATE USER FAILED");
-			
+			reply.add("Izmjena podataka korisnika nije uspjela.");
 		}
 		return reply;
 	}
@@ -131,7 +133,7 @@ public class UserControl {
 
 	public static ArrayList<String> viewAvailableFieldTechnitians() {
 		ArrayList<String> reply = new ArrayList<>();
-		reply.add("VIEW AVAILABLE FIELD TECHNITIANS");
+		reply.add("VIEW AVAILABLE FIELD TECHNITIANS OK");
 		reply.addAll(ActiveUsersWatch.getAvailableFieldTechnitians());
 		return reply;
 	}

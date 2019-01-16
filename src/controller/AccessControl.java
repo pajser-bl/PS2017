@@ -45,35 +45,47 @@ public class AccessControl {
 						eventDAO.insert(event);
 					}
 					ActiveUsersWatch.addActiveUser(user);
-					System.out.println("["+TimeUtility.getStringTimeNow()+"]User "+user.getName()+" "+user.getSurname()+" ("+credentials.getUsername()+") has successfully logged in.");
+					System.out.println("[" + TimeUtility.getStringTimeNow() + "]User " + credentials.getUsername()
+							+ " (" + user.getName() + " " + user.getSurname() + ") has successfully logged in.");
 				} else {
 					reply.add("LOGIN NOT OK");
 					reply.add("Korisnik vec prijavljen.");
-					System.out.println("["+TimeUtility.getStringTimeNow()+"]Unsuccessful login(user alredy logged in) request from "+username+" .");
+					System.out.println("[" + TimeUtility.getStringTimeNow()
+							+ "]Unsuccessful login(user alredy logged in) request from " + username + " .");
 				}
 			} else {
 				// neuspjesan login
 				reply.add("LOGIN NOT OK");
 				reply.add("Neispravna lozinka.");
-				System.out.println("["+TimeUtility.getStringTimeNow()+"]Unsuccessful login(wrong password) request from "+username+" .");
+				System.out.println("[" + TimeUtility.getStringTimeNow()
+						+ "]Unsuccessful login(wrong password) request from " + username + " .");
 			}
 		} else {
 			// ne postoje kredencijali sa username-om
 			reply.add("LOGIN USERNAME NOT OK");
 			reply.add("Nepostojece korisnicko ime.");
-			System.out.println("["+TimeUtility.getStringTimeNow()+"]Unsuccessful login(unexisting user) request from "+username+" .");
+			System.out.println("[" + TimeUtility.getStringTimeNow()
+					+ "]Unsuccessful login(unexisting user) request from " + username + " .");
 		}
 		return reply;
 	}
 
-	public static void logout(int user_ID, EventDAO eventDAO,CredentialsDAO credentialsDAO) {
+	public static void logout(int user_ID, EventDAO eventDAO, CredentialsDAO credentialsDAO) {
 		if (ActiveUsersWatch.userHasSession(user_ID)) {
-			Event event=new Event(ActiveUsersWatch.getUserSession(user_ID),LocalDateTime.now(),"Korisnik se odjavio.");
-			 eventDAO.insert(event);
+			Event event = new Event(ActiveUsersWatch.getUserSession(user_ID), LocalDateTime.now(),
+					"Korisnik se odjavio.");
+			eventDAO.insert(event);
 			ActiveUsersWatch.removeUserSession(user_ID);
 		}
-
-		System.out.println("["+TimeUtility.getStringTimeNow()+"]User "+credentialsDAO.select(user_ID).getUsername()+" has logged out.");
 		ActiveUsersWatch.removeActiveUser(user_ID);
+	}
+
+	public static void connectionLost(int iD_user, EventDAO eventDAO) {
+		Event event = new Event(iD_user, LocalDateTime.now(), "Konekcija izgubljena.");
+		eventDAO.insert(event);
+		if (ActiveUsersWatch.userHasSession(iD_user))
+			ActiveUsersWatch.removeUserSession(iD_user);
+		ActiveUsersWatch.removeActiveUser(iD_user);
+
 	}
 }

@@ -31,6 +31,7 @@ import model.users.User;
 import utility.HashHandler;
 import utility.TimeUtility;
 
+import java.time.LocalDate;
 import java.time.Year;
 import java.util.Scanner;
 
@@ -41,18 +42,8 @@ import DAO.InterventionCoordinateDAO;
 import DAO.InterventionDAO;
 
 @SuppressWarnings("unused")
-public class MySQLTest {
+public class Test {
 	public static void main(String[] args) {
-		UserDAO userDAO=new MySQLUserDAO();
-		CredentialsDAO credentialsDAO=new MySQLCredentialsDAO();
 		
-		String admin_username="admin";
-		String admin_password="admin";
-		
-		//User user=new User("a","a",TimeUtility.stringToLocalDate("1990-09-09"),"administrator","vss");
-//		int id_admin=userDAO.insert(user);
-		Credentials credentials= new Credentials(2,2,"admin",HashHandler.createHash("admin"));
-		credentialsDAO.update(credentials);
-
 	}
 }
