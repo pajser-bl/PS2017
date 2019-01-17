@@ -22,6 +22,7 @@ public class ClientRequestHandler {
 		}
 		case "CONNECTION LOST": {
 			clientControllerFacade.connectionLost(Integer.parseInt(request.getRequest().get(0)));
+			return null;
 		}
 		case "NEW CREDENTIALS": {
 			return clientControllerFacade.newCredentials(Integer.parseInt(request.getRequest().get(0)),
@@ -89,7 +90,6 @@ public class ClientRequestHandler {
 		case "VIEW USER SESSIONS": {// supervizor zove
 			return clientControllerFacade.viewUserSessions(Integer.parseInt((request.getRequest().get(0))));
 		}
-
 		case "VIEW CLIENT": {
 			return clientControllerFacade.viewClient(Integer.parseInt(request.getRequest().get(0)));
 		}
