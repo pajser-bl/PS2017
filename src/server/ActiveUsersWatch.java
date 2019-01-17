@@ -99,7 +99,7 @@ public class ActiveUsersWatch {
 				count++;
 			}
 		}
-		reply.add(0, ""+count);
+		reply.add(1, ""+count);
 		return reply;
 	}
 
