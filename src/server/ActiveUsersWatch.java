@@ -30,7 +30,7 @@ public class ActiveUsersWatch {
 		for (Iterator<User> userIterator = activeUsersList.iterator(); userIterator.hasNext();) {
 			User u = userIterator.next();
 			if (u.getID_user() == user_ID) {
-				if (u.getType().equals("terenski radnik"))
+				if (u.getType().equals("Terenski Radnik"))
 					roadAssistentStates.remove(u);
 				userIterator.remove();
 			}
