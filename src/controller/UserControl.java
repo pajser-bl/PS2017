@@ -131,7 +131,7 @@ public class UserControl {
 
 	public static ArrayList<String> changeStateFieldTechnician(int user_ID, String state,EventDAO eventDAO) {
 		ArrayList<String> reply = new ArrayList<>();
-		reply.add("CHANGE FIELD TECHNICIAN STATE");
+		reply.add("CHANGE FIELD TECHNICIAN STATE OK");
 		ActiveUsersWatch.changeFieldTechnicianState(user_ID, state);
 		Event event=new Event(ActiveUsersWatch.getUserSession(user_ID),LocalDateTime.now(),"Korisnik je promjenio stanje u "+state);
 		eventDAO.insert(event);

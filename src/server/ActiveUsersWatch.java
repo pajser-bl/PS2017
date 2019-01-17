@@ -15,8 +15,7 @@ public class ActiveUsersWatch {
 	public static void addActiveUser(User user) {
 		activeUsersList.add(user);
 		if (user.getType().toLowerCase().equals("terenski radnik")) {
-			roadAssistentStates.put(user, "slobodan");
-			//roadAssistentStates.put(user, "zauzet");
+			roadAssistentStates.put(user, "neaktivan");
 		}
 	}
 
@@ -93,7 +92,7 @@ public class ActiveUsersWatch {
 		reply.add("VIEW AVAILABLE FIELD TECHNICIANS OK");
 		for (User u : roadAssistentStates.keySet()) {
 			tempStateString = roadAssistentStates.get(u);
-			if (tempStateString.equals("slobodan")) {
+			if (tempStateString.equals("aktivan")) {
 				tempRoadAssistentString = u.getID_user() + ":" + u.getName() + ":" + u.getSurname() + ":"
 						+ tempStateString;
 				reply.add(tempRoadAssistentString);

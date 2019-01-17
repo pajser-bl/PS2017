@@ -5,8 +5,10 @@ import java.util.List;
 
 import DAO.EventDAO;
 import DAO.SessionDAO;
+import DAO.UserDAO;
 import model.users.Event;
 import model.users.Session;
+import model.users.User;
 import utility.TimeUtility;
 
 public class SessionControl {
@@ -40,9 +42,20 @@ public class SessionControl {
 			reply.add(""+ID_user);
 			reply.add(start);
 			reply.add(end);
-			
 		}
 		return reply;
 	}
-
+	public static ArrayList<String> viewSessions( SessionDAO sessionDAO,UserDAO userDAO){
+		ArrayList<String> reply = new ArrayList<>();
+		String tempString="";
+		List<Session> sessions = sessionDAO.selectAll();
+		reply.add("VIEW SESSIONS OK");
+		reply.add(""+sessions.size());
+		for(Session s :sessions) {
+			User user=userDAO.select(s.getUserID());
+			tempString=s.getSessionID()+":"+user.getName()+":"+user.getSurname()+":"+TimeUtility.localDateTimeToString(s.getStart())+":"+TimeUtility.localDateTimeToString(s.getEnd());
+			reply.add(tempString);
+		}
+		return reply;
+	}
 }
