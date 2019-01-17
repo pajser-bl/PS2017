@@ -122,10 +122,7 @@ public class UserControl {
 	}
 
 	public static ArrayList<String> viewFieldTechnitians() {
-		ArrayList<String> reply = new ArrayList<>();
-		reply.add("VIEW FIELD TECHNITIANS");
-		reply.addAll(ActiveUsersWatch.getOnlineFieldTechnitians());
-		return reply;
+		return ActiveUsersWatch.getOnlineFieldTechnitians();
 	}
 
 	public static ArrayList<String> viewAvailableFieldTechnitians() {

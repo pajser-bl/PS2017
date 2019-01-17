@@ -59,6 +59,7 @@ public class ActiveUsersWatch {
 	public static ArrayList<String> getActiveUsers(CredentialsDAO credentialsDAO) {
 		ArrayList<String> reply = new ArrayList<>();
 		String tempUserString;
+		reply.add("VIEW ACTIVE USERS OK");
 		reply.add("" + activeUsersList.size());
 		for (User u : activeUsersList) {
 			tempUserString = u.getID_user() + ":" + u.getName() + ":" + u.getSurname() + ":" + u.getType();
