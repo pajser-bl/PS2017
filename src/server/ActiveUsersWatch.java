@@ -72,6 +72,7 @@ public class ActiveUsersWatch {
 		ArrayList<String> reply = new ArrayList<>();
 		String tempRoadAssistentString;
 		String tempStateString;
+		reply.add("VIEW FIELD TECHNICIANS OK");
 		reply.add("" + roadAssistentStates.size());
 		for (User u : roadAssistentStates.keySet()) {
 			tempStateString = roadAssistentStates.get(u);
@@ -88,6 +89,7 @@ public class ActiveUsersWatch {
 		String tempRoadAssistentString;
 		String tempStateString;
 		int count=0;
+		reply.add("VIEW AVAILABLE FIELD TECHNITIANS OK");
 		for (User u : roadAssistentStates.keySet()) {
 			tempStateString = roadAssistentStates.get(u);
 			if (tempStateString.equals("slobodan")) {

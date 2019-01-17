@@ -118,10 +118,7 @@ public class UserControl {
 	}
 
 	public static ArrayList<String> viewOnlineUsers(CredentialsDAO credentialsDAO) {
-		ArrayList<String> reply = new ArrayList<>();
-		reply.add("VIEW ONLINE USERS OK");
-		reply.addAll(ActiveUsersWatch.getActiveUsers(credentialsDAO));
-		return reply;
+		return ActiveUsersWatch.getActiveUsers(credentialsDAO);
 	}
 
 	public static ArrayList<String> viewFieldTechnitians() {
@@ -132,11 +129,8 @@ public class UserControl {
 	}
 
 	public static ArrayList<String> viewAvailableFieldTechnitians() {
-		ArrayList<String> reply = new ArrayList<>();
-		reply.add("VIEW AVAILABLE FIELD TECHNITIANS OK");
-		reply.addAll(ActiveUsersWatch.getAvailableFieldTechnitians());
-		return reply;
-	}
+		return ActiveUsersWatch.getAvailableFieldTechnitians();
+		}
 
 	public static ArrayList<String> changeStateFieldTechnitian(int user_ID, String state,EventDAO eventDAO) {
 		ArrayList<String> reply = new ArrayList<>();
