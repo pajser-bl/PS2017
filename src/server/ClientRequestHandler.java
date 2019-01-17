@@ -60,25 +60,25 @@ public class ClientRequestHandler {
 		case "VIEW ACTIVE USERS": {
 			return clientControllerFacade.viewOnlineUsers();
 		}
-		case "ACCESS MAP FIELD TECHNITIAN": {
+		case "ACCESS MAP FIELD TECHNICIAN": {
 		}
 			break;
 		case "ACCESS MAP OPERATOR": {
 		}
 			break;
-		case "CHANGE STATE FIELD TECHNITIAN": {
-			return clientControllerFacade.changeStateFieldTechnitian(Integer.parseInt(request.getRequest().get(1)),
+		case "CHANGE STATE FIELD TECHNICIAN": {
+			return clientControllerFacade.changeStateFieldTechnician(Integer.parseInt(request.getRequest().get(1)),
 					request.getRequest().get(2));
 		}
-		case "VIEW FIELD TECHNITIAN STATE ": {
-			return clientControllerFacade.viewFieldTechnitianState(Integer.parseInt(request.getRequest().get(0)));
+		case "VIEW FIELD TECHNICIAN STATE ": {
+			return clientControllerFacade.viewFieldTechnicianState(Integer.parseInt(request.getRequest().get(0)));
 		}
 		// pregledaj stanja svih onlajn terenskih radnika
-		case "VIEW FIELD TECHNITIANS": {
-			return clientControllerFacade.viewFieldTechnitians();
+		case "VIEW FIELD TECHNICIANS": {
+			return clientControllerFacade.viewFieldTechnicians();
 		}
-		case "VIEW AVAILABLE FIELD TECHNITIANS": {
-			return clientControllerFacade.viewAvailableFieldTechnitians();
+		case "VIEW AVAILABLE FIELD TECHNICIANS": {
+			return clientControllerFacade.viewAvailableFieldTechnicians();
 		}
 		case "VIEW ONLINE USERS": {
 			return clientControllerFacade.viewOnlineUsers();

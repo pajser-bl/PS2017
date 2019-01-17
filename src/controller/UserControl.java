@@ -121,27 +121,27 @@ public class UserControl {
 		return ActiveUsersWatch.getActiveUsers(credentialsDAO);
 	}
 
-	public static ArrayList<String> viewFieldTechnitians() {
-		return ActiveUsersWatch.getOnlineFieldTechnitians();
+	public static ArrayList<String> viewFieldTechnicians() {
+		return ActiveUsersWatch.getOnlineFieldTechnicians();
 	}
 
-	public static ArrayList<String> viewAvailableFieldTechnitians() {
-		return ActiveUsersWatch.getAvailableFieldTechnitians();
+	public static ArrayList<String> viewAvailableFieldTechnicians() {
+		return ActiveUsersWatch.getAvailableFieldTechnicians();
 		}
 
-	public static ArrayList<String> changeStateFieldTechnitian(int user_ID, String state,EventDAO eventDAO) {
+	public static ArrayList<String> changeStateFieldTechnician(int user_ID, String state,EventDAO eventDAO) {
 		ArrayList<String> reply = new ArrayList<>();
-		reply.add("CHANGE FIELD TECHNITIAN STATE");
-		ActiveUsersWatch.changeFieldTechnitianState(user_ID, state);
+		reply.add("CHANGE FIELD TECHNICIAN STATE");
+		ActiveUsersWatch.changeFieldTechnicianState(user_ID, state);
 		Event event=new Event(ActiveUsersWatch.getUserSession(user_ID),LocalDateTime.now(),"Korisnik je promjenio stanje u "+state);
 		eventDAO.insert(event);
 		return reply;
 	}
 
-	public static ArrayList<String> viewFieldTechnitianState(int user_ID) {
+	public static ArrayList<String> viewFieldTechnicianState(int user_ID) {
 		ArrayList<String> reply = new ArrayList<>();
-		reply.add("VIEW FIELD TECHNITIAN STATE");
-		reply.add(ActiveUsersWatch.getFieldTechnitianState(user_ID));
+		reply.add("VIEW FIELD TECHNICIAN STATE");
+		reply.add(ActiveUsersWatch.getFieldTechnicianState(user_ID));
 		return reply;
 	}
 

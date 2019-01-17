@@ -34,7 +34,6 @@ import model.users.Client;
 import model.Vehicle;
 import model.interventions.Intervention;
 import model.interventions.RoadReport;
-import utility.TimeUtility;
 
 public class ClientControllerFacade {
 	CredentialsDAO credentialsDAO;
@@ -229,21 +228,21 @@ public class ClientControllerFacade {
 		return UserControl.viewOnlineUsers(credentialsDAO);
 	}
 
-	// public void viewStatesFieldTechnitians(String param){}
-	public ArrayList<String> viewFieldTechnitians() {
-		return UserControl.viewFieldTechnitians();
+	// public void viewStatesFieldTechnicians(String param){}
+	public ArrayList<String> viewFieldTechnicians() {
+		return UserControl.viewFieldTechnicians();
 	}
 
-	public ArrayList<String> viewAvailableFieldTechnitians() {
-		return UserControl.viewAvailableFieldTechnitians();
+	public ArrayList<String> viewAvailableFieldTechnicians() {
+		return UserControl.viewAvailableFieldTechnicians();
 	}
 
-	public ArrayList<String> changeStateFieldTechnitian(int user_ID, String state) {
-		return UserControl.changeStateFieldTechnitian(user_ID, state,eventDAO);
+	public ArrayList<String> changeStateFieldTechnician(int user_ID, String state) {
+		return UserControl.changeStateFieldTechnician(user_ID, state,eventDAO);
 	}
 
-	public ArrayList<String> viewFieldTechnitianState(int user_ID) {
-		return UserControl.viewFieldTechnitianState(user_ID);
+	public ArrayList<String> viewFieldTechnicianState(int user_ID) {
+		return UserControl.viewFieldTechnicianState(user_ID);
 	}
 
 	public ArrayList<String> unexistingRequest(String string) {

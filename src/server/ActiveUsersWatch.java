@@ -38,7 +38,7 @@ public class ActiveUsersWatch {
 		}
 	}
 
-	public static String getFieldTechnitianState(int user_ID) {
+	public static String getFieldTechnicianState(int user_ID) {
 		for (User u : roadAssistentStates.keySet()) {
 			if (user_ID == u.getID_user()) {
 				String tempStateString = roadAssistentStates.get(u);
@@ -48,7 +48,7 @@ public class ActiveUsersWatch {
 		return null;
 	}
 
-	public static void changeFieldTechnitianState(int user_ID, String state) {
+	public static void changeFieldTechnicianState(int user_ID, String state) {
 		for (User u : roadAssistentStates.keySet()) {
 			if (u.getID_user() == user_ID)
 				roadAssistentStates.replace(u, state);
@@ -69,7 +69,7 @@ public class ActiveUsersWatch {
 	}
 
 	// promjeni ine funkcije ako je drugaciji naziv tipa korisnika
-	public static ArrayList<String> getOnlineFieldTechnitians() {
+	public static ArrayList<String> getOnlineFieldTechnicians() {
 		ArrayList<String> reply = new ArrayList<>();
 		String tempRoadAssistentString;
 		String tempStateString;
@@ -85,12 +85,12 @@ public class ActiveUsersWatch {
 
 	// ovo je za terenske radnike
 
-	public static ArrayList<String> getAvailableFieldTechnitians() {
+	public static ArrayList<String> getAvailableFieldTechnicians() {
 		ArrayList<String> reply = new ArrayList<>();
 		String tempRoadAssistentString;
 		String tempStateString;
 		int count=0;
-		reply.add("VIEW AVAILABLE FIELD TECHNITIANS OK");
+		reply.add("VIEW AVAILABLE FIELD TECHNICIANS OK");
 		for (User u : roadAssistentStates.keySet()) {
 			tempStateString = roadAssistentStates.get(u);
 			if (tempStateString.equals("slobodan")) {
