@@ -68,8 +68,8 @@ public class ClientRequestHandler {
 		}
 			break;
 		case "CHANGE STATE FIELD TECHNICIAN": {
-			return clientControllerFacade.changeStateFieldTechnician(Integer.parseInt(request.getRequest().get(1)),
-					request.getRequest().get(2));
+			return clientControllerFacade.changeStateFieldTechnician(Integer.parseInt(request.getRequest().get(0)),
+					request.getRequest().get(1));
 		}
 		case "VIEW FIELD TECHNICIAN STATE ": {
 			return clientControllerFacade.viewFieldTechnicianState(Integer.parseInt(request.getRequest().get(0)));
@@ -134,13 +134,13 @@ public class ClientRequestHandler {
 		}
 
 		case "NEW INTERVENTION": {
-			// opened_ID,timestamp,client_name,client_surname,client_phonenumber,registration,model,manufacturer,year
+			// opened_ID,timestamp,client_name,client_surname,client_phonenumber,registration,model,manufacturer,year,field_technician_ID
 			return clientControllerFacade.newIntervention(
 					new Intervention(0, 0, Integer.parseInt(request.getRequest().get(0)),
 							TimeUtility.stringToLocalDateTime(request.getRequest().get(1))),
 					new Client(request.getRequest().get(2), request.getRequest().get(3), request.getRequest().get(4)),
 					new Vehicle(request.getRequest().get(5), request.getRequest().get(6), request.getRequest().get(7),
-							Integer.parseInt(request.getRequest().get(8))));
+							Integer.parseInt(request.getRequest().get(8))),Integer.parseInt(request.getRequest().get(9)));
 		}
 		case "UPDATE INTERVENTION": {
 			return clientControllerFacade.updateIntervention(new Intervention(

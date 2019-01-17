@@ -1,4 +1,4 @@
-package server;
+package controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +11,14 @@ public class ActiveUsersWatch {
 	public static ArrayList<User> activeUsersList = new ArrayList<>();
 	public static Map<User, String> roadAssistentStates = new HashMap<User, String>();
 	public static Map<Integer, Integer> activeUsersSession = new HashMap<Integer, Integer>();
+	//public static Map<Integer, PrintWriter> activeUsersPrintWriters=new HashMap<Integer,PrintWriter>();
 
+	
+//	public static void add
+//	
+//	
+//	
+	
 	public static void addActiveUser(User user) {
 		activeUsersList.add(user);
 		if (user.getType().toLowerCase().equals("terenski radnik")) {
@@ -83,7 +90,6 @@ public class ActiveUsersWatch {
 	}
 
 	// ovo je za terenske radnike
-
 	public static ArrayList<String> getAvailableFieldTechnicians() {
 		ArrayList<String> reply = new ArrayList<>();
 		String tempRoadAssistentString;

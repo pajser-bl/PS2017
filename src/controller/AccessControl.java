@@ -11,7 +11,6 @@ import model.users.Credentials;
 import model.users.Event;
 import model.users.Session;
 import model.users.User;
-import server.ActiveUsersWatch;
 import utility.HashHandler;
 import utility.TimeUtility;
 
@@ -37,7 +36,7 @@ public class AccessControl {
 					reply.add(user.getSurname());
 					reply.add(user.getType());
 					reply.add(username);
-					if (user.getType().equals("Terenski radnik") || user.getType().equals("Operater")) {
+					if (user.getType().toLowerCase().equals("terenski radnik") || user.getType().toLowerCase().equals("operater")) {
 						int ID_session = sessionDAO.insert(new Session(user.getID_user(), LocalDateTime.now()));
 						ActiveUsersWatch.addUserSession(user.getID_user(), ID_session);
 						Event event = new Event(ID_session, LocalDateTime.now(),
@@ -70,22 +69,29 @@ public class AccessControl {
 		return reply;
 	}
 
-	public static void logout(int user_ID, EventDAO eventDAO, CredentialsDAO credentialsDAO) {
+	public static void logout(int user_ID, EventDAO eventDAO, CredentialsDAO credentialsDAO, SessionDAO sessionDAO) {
 		if (ActiveUsersWatch.userHasSession(user_ID)) {
-			Event event = new Event(ActiveUsersWatch.getUserSession(user_ID), LocalDateTime.now(),
-					"Korisnik se odjavio.");
+			int sessionID = ActiveUsersWatch.getUserSession(user_ID);
+			Event event = new Event(sessionID, LocalDateTime.now(), "Korisnik se odjavio.");
 			eventDAO.insert(event);
+			Session session = sessionDAO.select(sessionID);
+			session.setEnd(LocalDateTime.now());
+			sessionDAO.update(session);
 			ActiveUsersWatch.removeUserSession(user_ID);
 		}
 		ActiveUsersWatch.removeActiveUser(user_ID);
 	}
 
-	public static void connectionLost(int iD_user, EventDAO eventDAO) {
-		Event event = new Event(iD_user, LocalDateTime.now(), "Konekcija izgubljena.");
-		eventDAO.insert(event);
-		if (ActiveUsersWatch.userHasSession(iD_user))
+	public static void connectionLost(int iD_user, EventDAO eventDAO,SessionDAO sessionDAO) {
+		if (ActiveUsersWatch.userHasSession(iD_user)) {
+			int iD_session=ActiveUsersWatch.getUserSession(iD_user);
+			Event event = new Event(iD_session, LocalDateTime.now(), "Konekcija izgubljena.");
+			eventDAO.insert(event);
+			Session session = sessionDAO.select(iD_session);
+			session.setEnd(LocalDateTime.now());
+			sessionDAO.update(session);
 			ActiveUsersWatch.removeUserSession(iD_user);
+		}
 		ActiveUsersWatch.removeActiveUser(iD_user);
-
 	}
 }

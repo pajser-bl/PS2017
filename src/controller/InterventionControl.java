@@ -13,14 +13,14 @@ import model.Vehicle;
 import model.interventions.Intervention;
 import model.users.Client;
 import model.users.Event;
-import server.ActiveUsersWatch;
 import utility.TimeUtility;
 
 public class InterventionControl {
 
-	public static ArrayList<String> newIntervention(Intervention intervention, Client client, Vehicle vehicle, InterventionDAO interventionDAO, EventDAO eventDAO,ClientDAO clientDAO,VehicleDAO vehicleDAO) {
+	public static ArrayList<String> newIntervention(Intervention intervention, Client client, Vehicle vehicle,int fieldTechnician_ID, InterventionDAO interventionDAO, EventDAO eventDAO,ClientDAO clientDAO,VehicleDAO vehicleDAO) {
 		ArrayList<String> reply = new ArrayList<>();
 		Event event;
+		int ID_intervention;
 		int ID_session=ActiveUsersWatch.getUserSession(intervention.getID_user_opened());
 		int client_ID=clientDAO.exist(client);
 		int vehicle_ID=vehicleDAO.exist(vehicle);
@@ -34,10 +34,11 @@ public class InterventionControl {
 		}else {
 			intervention.setID_vehicle(vehicleDAO.insert(vehicle));
 		}
-		if (interventionDAO.insert(intervention) != 0) {
+		if ((ID_intervention=interventionDAO.insert(intervention) )!= 0) {
 			
 			event=new Event(ID_session,LocalDateTime.now(),"Uspjesno otvorena nova intervencija ID: "+intervention.getID_intervention()+" .");
 			reply.add("NEW INTERVENTION OK");
+			notifyFieldTechnician(fieldTechnician_ID,ID_intervention);
 		} else {
 			event=new Event(intervention.getID_user_opened(),ID_session,LocalDateTime.now(),"Otvaranje intervencije nije uspjelo.");
 			reply.add("NEW INTERVENTION FAILED");
@@ -45,6 +46,10 @@ public class InterventionControl {
 		}
 		eventDAO.insert(event);
 		return reply;
+	}
+
+	private static void notifyFieldTechnician(int fieldTechnician_ID, int iD_intervention) {
+		
 	}
 
 	public static ArrayList<String> closeIntervention(int intervention_ID, int user_ID, LocalDateTime closed_on,

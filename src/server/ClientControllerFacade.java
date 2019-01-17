@@ -66,7 +66,7 @@ public class ClientControllerFacade {
 	}
 
 	public void logout(int user_ID) {
-		AccessControl.logout(user_ID, eventDAO,credentialsDAO);
+		AccessControl.logout(user_ID, eventDAO,credentialsDAO,sessionDAO);
 	}
 
 	public ArrayList<String> newCredentials(int ID_user, String username, String password) {
@@ -163,8 +163,8 @@ public class ClientControllerFacade {
 		return SubscriptionControl.deleteSubscription(subscription_ID, subscriptionDAO);
 	}
 
-	public ArrayList<String> newIntervention(Intervention intervention,Client client, Vehicle vehicle) {
-		return InterventionControl.newIntervention(intervention,client,vehicle,interventionDAO,eventDAO,clientDAO, vehicleDAO);
+	public ArrayList<String> newIntervention(Intervention intervention,Client client, Vehicle vehicle,int fieldTechnician_ID) {
+		return InterventionControl.newIntervention(intervention,client,vehicle,fieldTechnician_ID,interventionDAO,eventDAO,clientDAO, vehicleDAO);
 	}
 
 	public ArrayList<String> viewIntervention(int ID_intervention) {
@@ -274,7 +274,7 @@ public class ClientControllerFacade {
 	}
 
 	public void connectionLost(int ID_user) {
-		AccessControl.connectionLost(ID_user,eventDAO);
+		AccessControl.connectionLost(ID_user,eventDAO,sessionDAO);
 	}
 
 	

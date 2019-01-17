@@ -20,6 +20,7 @@ public class SessionControl {
 		int ID_user = session.getUserID();
 		String start = TimeUtility.localDateTimeToString(session.getStart());
 		String end = TimeUtility.localDateTimeToString(session.getEnd());
+		reply.add("VIEW USER SESSION OK");
 		reply.add(""+ID_session);
 		reply.add(""+ID_user);
 		reply.add(start);

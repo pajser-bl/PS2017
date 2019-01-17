@@ -10,7 +10,6 @@ import DAO.UserDAO;
 import model.users.Credentials;
 import model.users.Event;
 import model.users.User;
-import server.ActiveUsersWatch;
 import utility.HashHandler;
 import utility.TimeUtility;
 
@@ -131,7 +130,7 @@ public class UserControl {
 
 	public static ArrayList<String> changeStateFieldTechnician(int user_ID, String state,EventDAO eventDAO) {
 		ArrayList<String> reply = new ArrayList<>();
-		reply.add("CHANGE FIELD TECHNICIAN STATE OK");
+		reply.add("CHANGE STATE OK");
 		ActiveUsersWatch.changeFieldTechnicianState(user_ID, state);
 		Event event=new Event(ActiveUsersWatch.getUserSession(user_ID),LocalDateTime.now(),"Korisnik je promjenio stanje u "+state);
 		eventDAO.insert(event);
