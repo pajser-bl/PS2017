@@ -11,13 +11,28 @@ public class ActiveUsersWatch {
 	public static ArrayList<User> activeUsersList = new ArrayList<>();
 	public static Map<User, String> roadAssistentStates = new HashMap<User, String>();
 	public static Map<Integer, Integer> activeUsersSession = new HashMap<Integer, Integer>();
-	//public static Map<Integer, PrintWriter> activeUsersPrintWriters=new HashMap<Integer,PrintWriter>();
+	public static Map<Integer, Integer> fieldTechniciansInterventions=new HashMap<Integer,Integer>();
 
 	
-//	public static void add
-//	
-//	
-//	
+	public static void assignIntervention(int fieldTechnician_ID, int intervention_ID) {
+		changeFieldTechnicianState(fieldTechnician_ID, "zauzet");
+		fieldTechniciansInterventions.put(fieldTechnician_ID,intervention_ID);
+	}
+	public static void deassignjIntervention(int fieldTechnician_ID) {
+		changeFieldTechnicianState(fieldTechnician_ID, "neaktivan");
+		fieldTechniciansInterventions.remove(fieldTechnician_ID);
+	}
+	public static ArrayList<String> checkFieldTechnicianAssignement(int fieldTechnician_ID) {
+		ArrayList<String> reply=new ArrayList<String>();
+		if(fieldTechniciansInterventions.containsKey(fieldTechnician_ID)) {
+			reply.add("CHECK FIELD TECHNICIAN ASSIGNMENT OK");
+			reply.add(""+fieldTechniciansInterventions.get(fieldTechnician_ID));
+		}else {
+			reply.add("CHECK FIELD TECHNICIAN ASSIGNMENT OK");
+			reply.add("0");
+		}
+		return reply;
+	}
 	
 	public static void addActiveUser(User user) {
 		activeUsersList.add(user);

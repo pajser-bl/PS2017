@@ -37,10 +37,11 @@ public class TimeUtility {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		return LocalDate.parse(stringDate, formatter);
 	}
+
 	public static String localDateToString(LocalDate localDate) {
-		DateTimeFormatter formatter=DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		return formatter.format(localDate);
-		
+
 	}
-	
+
 }

@@ -48,21 +48,21 @@ public class AccessControl {
 					reply.add("LOGIN NOT OK");
 					reply.add("Korisnik vec prijavljen.");
 					System.out.println("[" + TimeUtility.getStringTimeNow()
-							+ "]Unsuccessful login(user alredy logged in) request from " + username + " .");
+							+ "]Unsuccessful login(user alredy logged in) request from " + username + ".");
 				}
 			} else {
 				// neuspjesan login
 				reply.add("LOGIN NOT OK");
 				reply.add("Neispravna lozinka.");
 				System.out.println("[" + TimeUtility.getStringTimeNow()
-						+ "]Unsuccessful login(wrong password) request from " + username + " .");
+						+ "]Unsuccessful login(wrong password) request from " + username + ".");
 			}
 		} else {
 			// ne postoje kredencijali sa username-om
 			reply.add("LOGIN USERNAME NOT OK");
 			reply.add("Nepostojece korisnicko ime.");
 			System.out.println("[" + TimeUtility.getStringTimeNow()
-					+ "]Unsuccessful login(unexisting user) request from " + username + " .");
+					+ "]Unsuccessful login(unexisting user) request from " + username + ".");
 		}
 		return reply;
 	}

@@ -1,4 +1,5 @@
 package model.users;
+
 import java.time.LocalDate;
 
 public class User {
@@ -9,7 +10,7 @@ public class User {
 	private LocalDate date_of_birth;
 	private String type;
 	private String qualification;
-	
+
 	public User(int iD_user, String name, String surname, LocalDate date_of_birth, String type, String qualification) {
 		super();
 		this.ID_user = iD_user;
@@ -19,7 +20,8 @@ public class User {
 		this.setType(type);
 		this.qualification = qualification;
 	}
-	public User( String name, String surname, LocalDate date_of_birth, String type, String qualification) {
+
+	public User(String name, String surname, LocalDate date_of_birth, String type, String qualification) {
 		super();
 		this.name = name;
 		this.surname = surname;
@@ -32,11 +34,10 @@ public class User {
 	public String toString() {
 		String s = "";
 		s += "Ime: " + name + "\nPrezime: " + surname;
-		s += "\nKorisnicki ID: " + ID_user + "\nTip: " + type +  "\nStrucna sprema: " + qualification;
+		s += "\nKorisnicki ID: " + ID_user + "\nTip: " + type + "\nStrucna sprema: " + qualification;
 		return s;
 	}
-	
-	
+
 	public String getName() {
 		return name;
 	}
@@ -57,7 +58,7 @@ public class User {
 		this.qualification = qualification;
 	}
 
-	public String getQualification( ) {
+	public String getQualification() {
 		return qualification;
 	}
 
@@ -68,21 +69,20 @@ public class User {
 	public int getID_user() {
 		return ID_user;
 	}
+
 	public LocalDate getDate_of_birth() {
 		return date_of_birth;
 	}
+
 	public void setDate_of_birth(LocalDate date_of_birth) {
 		this.date_of_birth = date_of_birth;
 	}
-
 
 	public String getType() {
 		return type;
 	}
 
-
 	public void setType(String type) {
 		this.type = type;
 	}
-	
 }

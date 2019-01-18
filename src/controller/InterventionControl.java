@@ -38,7 +38,7 @@ public class InterventionControl {
 			
 			event=new Event(ID_session,LocalDateTime.now(),"Uspjesno otvorena nova intervencija ID: "+intervention.getID_intervention()+" .");
 			reply.add("NEW INTERVENTION OK");
-			notifyFieldTechnician(fieldTechnician_ID,ID_intervention);
+			ActiveUsersWatch.assignIntervention(fieldTechnician_ID,ID_intervention);
 		} else {
 			event=new Event(intervention.getID_user_opened(),ID_session,LocalDateTime.now(),"Otvaranje intervencije nije uspjelo.");
 			reply.add("NEW INTERVENTION FAILED");
@@ -46,10 +46,6 @@ public class InterventionControl {
 		}
 		eventDAO.insert(event);
 		return reply;
-	}
-
-	private static void notifyFieldTechnician(int fieldTechnician_ID, int iD_intervention) {
-		
 	}
 
 	public static ArrayList<String> closeIntervention(int intervention_ID, int user_ID, LocalDateTime closed_on,
@@ -75,22 +71,41 @@ public class InterventionControl {
 		String openedOperater;
 		String closedOperater="";
 		String tempString;
-		String fieldTechnitian="";
-		reply.add("VIEW INTERVENTIONS");
+		String fieldTechnician="";
+		reply.add("VIEW INTERVENTIONS OK");
 		reply.add(""+interventions.size());
 		for(Intervention i : interventions) {
 			clientFullName=clientDAO.select(i.getID_client()).getName()+" "+clientDAO.select(i.getID_client()).getSurname();
 			openedOperater=userDAO.select(i.getID_user_opened()).getName()+" "+userDAO.select(i.getID_user_opened()).getSurname();
 			if(i.getID_user_closed()!=0)
 				closedOperater=userDAO.select(i.getID_user_closed()).getName()+" "+userDAO.select(i.getID_user_closed()).getSurname();
-			fieldTechnitian=userDAO.select(roadReportDAO.select(i.getID_intervention()).getID_user()).getName()+" "+userDAO.select(roadReportDAO.select(i.getID_intervention()).getID_user()).getSurname();
+			fieldTechnician=userDAO.select(roadReportDAO.select(i.getID_intervention()).getID_user()).getName()+" "+userDAO.select(roadReportDAO.select(i.getID_intervention()).getID_user()).getSurname();
 			//ovo je sto se sve salje a aplikatovno sa strane klijenta se bira u obziru da li je supervizor ili operater
-			tempString=i.getID_intervention()+":"+clientFullName+":"+openedOperater+":"+i.getOpened_on()+":"+fieldTechnitian+":"+closedOperater+":"+i.getClosed_on()+":"+i.isClosed();
+			tempString=i.getID_intervention()+":"+clientFullName+":"+openedOperater+":"+i.getOpened_on()+":"+fieldTechnician+":"+closedOperater+":"+i.getClosed_on()+":"+i.isClosed();
 			reply.add(tempString);
 		}
 		return reply;
 	}
-
+	public static ArrayList<String> viewOpenedInterventions(InterventionDAO interventionDAO, UserDAO userDAO,ClientDAO clientDAO,RoadReportDAO roadReportDAO) {
+		ArrayList<String> reply = new ArrayList<>();
+		ArrayList<Intervention> interventions = (ArrayList<Intervention>) interventionDAO.selectAllOpen();
+		String clientFullName;
+		String openedOperater;
+		String closedOperater="";
+		String tempString;
+		String fieldTechnician="";
+		reply.add("VIEW OPENED INTERVENTIONS OK");
+		reply.add(""+interventions.size());
+		for(Intervention i : interventions) {
+			clientFullName=clientDAO.select(i.getID_client()).getName()+" "+clientDAO.select(i.getID_client()).getSurname();
+			openedOperater=userDAO.select(i.getID_user_opened()).getName()+" "+userDAO.select(i.getID_user_opened()).getSurname();
+			//fieldTechnician=userDAO.select(roadReportDAO.select(i.getID_intervention()).getID_user()).getName()+" "+userDAO.select(roadReportDAO.select(i.getID_intervention()).getID_user()).getSurname();
+			//ovo je sto se sve salje a aplikatovno sa strane klijenta se bira u obziru da li je supervizor ili operater
+			tempString=i.getID_intervention()+":"+clientFullName+":"+openedOperater+":"+i.getOpened_on()+":"+fieldTechnician;
+			reply.add(tempString);
+		}
+		return reply;
+	}
 	public static ArrayList<String> viewIntervention(int ID_intervention,InterventionDAO interventionDAO, UserDAO userDAO,
 			ClientDAO clientDAO, RoadReportDAO roadReportDAO, VehicleDAO vehicleDAO) {
 		ArrayList<String> reply = new ArrayList<>();

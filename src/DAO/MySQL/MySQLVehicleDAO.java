@@ -19,7 +19,7 @@ public class MySQLVehicleDAO implements VehicleDAO{
 	private static final String SQL_INSERT = "INSERT INTO vehicle (ID_vehicle,registration,manufacturer,model, year) VALUES (null,?, ?, ?, ?)";
 	private static final String SQL_UPDATE = "UPDATE vehicle SET registration=?, manufacturer=?, model=?, year=? WHERE ID_vehicle=?";
 	private static final String SQL_DELETE = "DELETE FROM vehicle WHERE ID_vehicle=?";
-	private static final String SQL_EXIST = "SELECT * FROM vehicle where registration=?, manufacturer=?, model=?, year=?";
+	private static final String SQL_EXIST = "SELECT * FROM vehicle where registration=? and manufacturer=? and model=? and year=?";
 	
 	
 	@Override

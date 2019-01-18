@@ -1,5 +1,6 @@
 package server;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import model.Vehicle;
@@ -129,18 +130,30 @@ public class ClientRequestHandler {
 		case "VIEW INTERVENTION": {
 			return clientControllerFacade.viewIntervention(Integer.parseInt(request.getRequest().get(0)));
 		}
+		
+		case "VIEW OPENED INTERVENTIONS": {
+			return clientControllerFacade.viewOpenedInterventions();
+		}
+		
 		case "VIEW INTERVENTIONS": {
 			return clientControllerFacade.viewInterventions();
 		}
 
 		case "NEW INTERVENTION": {
 			// opened_ID,timestamp,client_name,client_surname,client_phonenumber,registration,model,manufacturer,year,field_technician_ID
-			return clientControllerFacade.newIntervention(
-					new Intervention(0, 0, Integer.parseInt(request.getRequest().get(0)),
-							TimeUtility.stringToLocalDateTime(request.getRequest().get(1))),
-					new Client(request.getRequest().get(2), request.getRequest().get(3), request.getRequest().get(4)),
-					new Vehicle(request.getRequest().get(5), request.getRequest().get(6), request.getRequest().get(7),
-							Integer.parseInt(request.getRequest().get(8))),Integer.parseInt(request.getRequest().get(9)));
+			try {
+				System.out.println(request.getRequest());
+				return clientControllerFacade.newIntervention(
+						new Intervention( 0,0,Integer.parseInt(request.getRequest().get(0)),
+								TimeUtility.stringToLocalDateTime(request.getRequest().get(1))),
+						new Client(request.getRequest().get(2), request.getRequest().get(3),
+								request.getRequest().get(4)),
+						new Vehicle(request.getRequest().get(5), request.getRequest().get(6),
+								request.getRequest().get(7), Integer.parseInt(request.getRequest().get(8))),
+						Integer.parseInt(request.getRequest().get(9)));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		case "UPDATE INTERVENTION": {
 			return clientControllerFacade.updateIntervention(new Intervention(
@@ -184,8 +197,11 @@ public class ClientRequestHandler {
 					Integer.parseInt(request.getRequest().get(1)), Integer.parseInt(request.getRequest().get(2)),
 					request.getRequest().get(3), TimeUtility.stringToLocalDateTime(request.getRequest().get(4)));
 		}
+		case "CHECK FIELD TECHNICIAN INTERVENTION": {
+			return clientControllerFacade
+					.checkFieldTechnicianIntervention(Integer.parseInt(request.getRequest().get(0)));
 		}
-		System.out.println("Unexisting function requested");
+		}
 		return clientControllerFacade.unexistingRequest(request.getRequestType());
 	}
 }

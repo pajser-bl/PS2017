@@ -78,6 +78,8 @@ public class ClientConnection extends Thread {
 						sendReply(new Gson().toJson(reply));
 					} else {
 						reply.addAll(ClientRequestHandler.handle(request));
+						if(reply.get(0).equals("UNEXISTING FUNCTION REQUEST"))
+							System.out.println("Unexisting function requested by "+this.username+" ("+this.userName+" "+this.userSurname+")["+this.userType+"], request: "+reply.get(1));	
 						sendReply(new Gson().toJson(reply));
 					}
 				}

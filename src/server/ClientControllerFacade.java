@@ -23,6 +23,7 @@ import DAO.MySQL.MySQLSubscriptionDAO;
 import DAO.MySQL.MySQLUserDAO;
 import DAO.MySQL.MySQLVehicleDAO;
 import controller.AccessControl;
+import controller.ActiveUsersWatch;
 import controller.ClientControl;
 import controller.InterventionControl;
 import controller.ReportControl;
@@ -206,6 +207,7 @@ public class ClientControllerFacade {
 		if (roadReportDAO
 				.insert(new RoadReport(fieldreport_ID, intervention_ID, user_ID, assistance, time, remark)) != 0) {
 			reply.add("NEW ROADREPORT OK");
+			ActiveUsersWatch.deassignjIntervention(user_ID);
 		} else {
 			reply.add("NEW ROADREPORT FAILED");
 		}
@@ -275,6 +277,14 @@ public class ClientControllerFacade {
 
 	public void connectionLost(int ID_user) {
 		AccessControl.connectionLost(ID_user,eventDAO,sessionDAO);
+	}
+
+	public ArrayList<String> checkFieldTechnicianIntervention(int user_ID) {
+		return ActiveUsersWatch.checkFieldTechnicianAssignement(user_ID);
+	}
+
+	public ArrayList<String> viewOpenedInterventions() {
+		return InterventionControl.viewOpenedInterventions(interventionDAO, userDAO, clientDAO, roadReportDAO);
 	}
 
 	

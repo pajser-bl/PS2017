@@ -22,7 +22,38 @@ public class MySQLInterventionDAO implements InterventionDAO {
 	private static final String SQL_UPDATE = "UPDATE intervention SET ID_client=?,ID_vehicle=?,ID_user_opened=?,ID_user_closed=?,opened_on=?,closed_on=?,closed=?,remark=? WHERE ID_intervention=?";
 	private static final String SQL_DELETE = "DELETE FROM intervention WHERE ID_intervention=?";
 	private static final String SQL_CLOSE = "UPDATE intervention SET ID_user_closed=?,closed_on=?,closed=?,remark=? WHERE ID_intervention=?";
+	private static final String SQL_SELECT_ALL_OPENED = "SELECT * FROM intervention where closed=0";
+	@Override
+	public List<Intervention> selectAllOpen() {
+		List<Intervention> returnValue = new ArrayList<>();
 
+		Connection c = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			c = DataSourceFactory.getMySQLDataSource().getConnection();
+			ps = c.prepareStatement(SQL_SELECT_ALL_OPENED);
+			rs = ps.executeQuery();
+			while (rs.next())
+				returnValue.add(new Intervention(rs.getInt("ID_intervention"), rs.getInt("ID_client"),
+						rs.getInt("ID_vehicle"), rs.getInt("ID_user_opened"), rs.getInt("ID_user_closed"),
+						TimeUtility.stringToLocalDateTime(rs.getString("opened_on")),
+						TimeUtility.stringToLocalDateTime(rs.getString("closed_on")), rs.getString("remark"),
+						rs.getBoolean("closed")));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				ps.close();
+				c.close();
+			} catch (SQLException e) {
+			}
+		}
+		return returnValue;
+	}
+	
+	
 	@Override
 	public Intervention select(int ID_intervention) {
 		Intervention returnValue = null;

@@ -18,9 +18,30 @@ public class MySQLClientDAO implements ClientDAO {
 	private static final String SQL_INSERT = "INSERT INTO client (ID_client, name, surname, phone_number) VALUES (null,?, ?, ?)";
 	private static final String SQL_UPDATE = "UPDATE client SET name=?, surname=? , phone_number=?  WHERE ID_client=?";
 	private static final String SQL_DELETE = "DELETE FROM client WHERE ID_client=?";
-	private static final String SQL_EXIST = "SELECT * FROM client where name=? surname=? phone_number=?";
+	private static final String SQL_EXIST = "SELECT * FROM client where name=? and surname=? and phone_number=?";
 	
-	
+	@Override
+	public int exist(Client client) {
+		int returnValue=0;
+		Connection c=null;
+		ResultSet rs=null;
+		PreparedStatement ps = null;
+		try {
+			c = DataSourceFactory.getMySQLDataSource().getConnection();
+			ps = c.prepareStatement(SQL_EXIST);
+			ps.setString(1, client.getName());
+			ps.setString(2, client.getSurname());
+			ps.setString(3, client.getPhone_number());
+			rs = ps.executeQuery();
+			while (rs.next())
+				returnValue = rs.getInt("ID_client");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {rs.close();ps.close();	c.close();} catch(SQLException e) {}
+		}
+		return returnValue;
+	}
 	
 	@Override
 	public Client select(int ID_client) {
@@ -130,27 +151,5 @@ public class MySQLClientDAO implements ClientDAO {
 		return retVal;
 	}
 
-	@Override
-	public int exist(Client client) {
-		int returnValue=0;
-		Connection c=null;
-		ResultSet rs=null;
-		PreparedStatement ps = null;
-		
-		try {
-			c = DataSourceFactory.getMySQLDataSource().getConnection();
-			ps = c.prepareStatement(SQL_EXIST);
-			ps.setString(1, client.getName());
-			ps.setString(2, client.getSurname());
-			ps.setString(3, client.getPhone_number());
-			rs = ps.executeQuery();
-			while (rs.next())
-				returnValue = rs.getInt("ID_client");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			try {rs.close();ps.close();	c.close();} catch(SQLException e) {}
-		}
-		return returnValue;
-	}
+	
 }
