@@ -111,6 +111,4 @@ public class InterventionControl {
 		return reply;
 	}
 	
-	
-
 }

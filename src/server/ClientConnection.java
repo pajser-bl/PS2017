@@ -26,6 +26,7 @@ public class ClientConnection extends Thread {
 	private String userType;
 	private boolean logoutCheck = false;
 	ArrayList<String> reply;
+	
 
 	public ClientConnection(Socket socket) {
 		try {
@@ -48,7 +49,7 @@ public class ClientConnection extends Thread {
 		while (!logoutCheck) {
 			try {
 				if(this.output.checkError()&&!logoutCheck) {
-					System.out.println("["+TimeUtility.getStringTimeNow()+"]Connection lost to "+this.username+"("+this.userName+" "+this.userSurname+").");
+					System.out.println("["+TimeUtility.getStringTimeNow()+"]Connection lost to "+this.username+"("+this.userName+" "+this.userSurname+")["+this.userType+"].");
 					ArrayList<String> temp=new ArrayList<String>();temp.add(""+ID_user);
 					ClientRequestHandler.handle(new Request("CONNECTION LOST",temp));
 				}
@@ -59,7 +60,7 @@ public class ClientConnection extends Thread {
 					if (request.getRequestType().equals("LOGOUT")) {
 						logoutCheck = true;
 						ClientRequestHandler.handle(request);
-						System.out.println("["+TimeUtility.getStringTimeNow()+"]User "+this.username+" ("+this.userName+" "+this.userSurname+") has logged out.");
+						System.out.println("["+TimeUtility.getStringTimeNow()+"]User "+this.username+" ("+this.userName+" "+this.userSurname+")["+this.userType+"] has logged out.");
 						this.socket.close();
 					} else if (request.getRequestType().equals("LOGIN")) {
 						reply.addAll(ClientRequestHandler.handle(request));
@@ -69,6 +70,8 @@ public class ClientConnection extends Thread {
 							this.userSurname=reply.get(3);
 							this.userType=reply.get(4);
 							this.username=reply.get(5);
+							System.out.println("[" + TimeUtility.getStringTimeNow() + "]User " + this.username
+							+ " (" + this.userName + " " + this.userSurname + ")["+this.userType+"] has successfully logged in.");
 						}else {
 							logoutCheck=true;
 						}
@@ -80,7 +83,7 @@ public class ClientConnection extends Thread {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.out.println("Exception happened durig communication with user: "+this.username+" ("+this.userName+" "+this.userSurname+").");
+				System.out.println("Exception happened durig communication with user: "+this.username+" ("+this.userName+" "+this.userSurname+")["+this.userType+"].");
 			}
 		}
 	}

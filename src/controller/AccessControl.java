@@ -44,8 +44,6 @@ public class AccessControl {
 						eventDAO.insert(event);
 					}
 					ActiveUsersWatch.addActiveUser(user);
-					System.out.println("[" + TimeUtility.getStringTimeNow() + "]User " + credentials.getUsername()
-							+ " (" + user.getName() + " " + user.getSurname() + ") has successfully logged in.");
 				} else {
 					reply.add("LOGIN NOT OK");
 					reply.add("Korisnik vec prijavljen.");
