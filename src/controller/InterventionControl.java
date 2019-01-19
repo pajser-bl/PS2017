@@ -91,7 +91,6 @@ public class InterventionControl {
 		ArrayList<Intervention> interventions = (ArrayList<Intervention>) interventionDAO.selectAllOpen();
 		String clientFullName;
 		String openedOperater;
-		String closedOperater="";
 		String tempString;
 		String fieldTechnician="";
 		reply.add("VIEW OPENED INTERVENTIONS OK");
@@ -99,9 +98,7 @@ public class InterventionControl {
 		for(Intervention i : interventions) {
 			clientFullName=clientDAO.select(i.getID_client()).getName()+" "+clientDAO.select(i.getID_client()).getSurname();
 			openedOperater=userDAO.select(i.getID_user_opened()).getName()+" "+userDAO.select(i.getID_user_opened()).getSurname();
-			//fieldTechnician=userDAO.select(roadReportDAO.select(i.getID_intervention()).getID_user()).getName()+" "+userDAO.select(roadReportDAO.select(i.getID_intervention()).getID_user()).getSurname();
-			//ovo je sto se sve salje a aplikatovno sa strane klijenta se bira u obziru da li je supervizor ili operater
-			tempString=i.getID_intervention()+":"+clientFullName+":"+openedOperater+":"+i.getOpened_on()+":"+fieldTechnician;
+			tempString=i.getID_intervention()+":"+clientFullName+":"+openedOperater+":"+TimeUtility.localDateTimeToString(i.getOpened_on()).replace(":",";")+":"+fieldTechnician;
 			reply.add(tempString);
 		}
 		return reply;
