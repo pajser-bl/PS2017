@@ -77,6 +77,7 @@ create table intervention(
     ID_vehicle int(11)not null,
     ID_user_opened int(11)not null,
     ID_user_closed int(11),
+    ID_field_technician int(11),
     opened_on datetime not null,
     closed_on datetime,
     remark tinytext,

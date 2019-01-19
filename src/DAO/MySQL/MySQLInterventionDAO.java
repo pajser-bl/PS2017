@@ -18,11 +18,58 @@ public class MySQLInterventionDAO implements InterventionDAO {
 
 	private static final String SQL_SELECT = "SELECT * FROM intervention WHERE ID_intervention=?";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM intervention";
-	private static final String SQL_INSERT = "INSERT INTO intervention (ID_intervention,ID_client,ID_vehicle,ID_user_opened,ID_user_closed,opened_on,closed_on,closed, remark) VALUES (null,?,?,?,null,?,null,false,null)";
-	private static final String SQL_UPDATE = "UPDATE intervention SET ID_client=?,ID_vehicle=?,ID_user_opened=?,ID_user_closed=?,opened_on=?,closed_on=?,closed=?,remark=? WHERE ID_intervention=?";
+	private static final String SQL_INSERT = "INSERT INTO intervention (ID_intervention,ID_client,ID_vehicle,ID_user_opened,ID_user_closed,ID_field_technician,opened_on,closed_on,closed, remark) VALUES (null,?,?,?,null,?,?,null,false,null)";
+	private static final String SQL_UPDATE = "UPDATE intervention SET ID_client=?,ID_vehicle=?,ID_user_opened=?,ID_user_closed=?,ID_field_technician=?,opened_on=?,closed_on=?,closed=?,remark=? WHERE ID_intervention=?";
 	private static final String SQL_DELETE = "DELETE FROM intervention WHERE ID_intervention=?";
 	private static final String SQL_CLOSE = "UPDATE intervention SET ID_user_closed=?,closed_on=?,closed=?,remark=? WHERE ID_intervention=?";
 	private static final String SQL_SELECT_ALL_OPENED = "SELECT * FROM intervention where closed=0";
+	private static final String SQL_GET_FIELD_TECHNICIAN_ID="SELECT ID_field_technician FROM intervention where ID_intervention=?";
+	private static final String SQL_GET_INTERVENTION_BY_FIELD_TECHNICIAN="SELECT ID_intervention FROM intervention where ID_field_technician=?";
+	
+	
+	@Override
+	public int getInterventionByFieldTechnician(int user_ID) {
+		int returnValue = 0;
+		Connection c = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			c = DataSourceFactory.getMySQLDataSource().getConnection();
+			ps = c.prepareStatement(SQL_GET_INTERVENTION_BY_FIELD_TECHNICIAN);
+			ps.setInt(1, user_ID);
+			rs = ps.executeQuery();
+			while (rs.next())
+				returnValue = rs.getInt("ID_intervention");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {rs.close();ps.close();c.close();} catch (SQLException e) {}
+		}
+		return returnValue;
+	}
+	
+	@Override
+	public int getFieldTechnicianID(int ID_intervention) {
+		int returnValue = 0;
+		Connection c = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			c = DataSourceFactory.getMySQLDataSource().getConnection();
+			ps = c.prepareStatement(SQL_GET_FIELD_TECHNICIAN_ID);
+			ps.setInt(1, ID_intervention);
+			rs = ps.executeQuery();
+			while (rs.next())
+				returnValue = rs.getInt("ID_field_technician");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {rs.close();ps.close();c.close();} catch (SQLException e) {}
+		}
+		return returnValue;
+	}
+	
+	
 	@Override
 	public List<Intervention> selectAllOpen() {
 		List<Intervention> returnValue = new ArrayList<>();
@@ -36,7 +83,7 @@ public class MySQLInterventionDAO implements InterventionDAO {
 			rs = ps.executeQuery();
 			while (rs.next())
 				returnValue.add(new Intervention(rs.getInt("ID_intervention"), rs.getInt("ID_client"),
-						rs.getInt("ID_vehicle"), rs.getInt("ID_user_opened"), rs.getInt("ID_user_closed"),
+						rs.getInt("ID_vehicle"), rs.getInt("ID_user_opened"), rs.getInt("ID_user_closed"),rs.getInt("ID_field_technician"),
 						TimeUtility.stringToLocalDateTime(rs.getString("opened_on")),
 						TimeUtility.stringToLocalDateTime(rs.getString("closed_on")), rs.getString("remark"),
 						rs.getBoolean("closed")));
@@ -68,7 +115,7 @@ public class MySQLInterventionDAO implements InterventionDAO {
 			rs = ps.executeQuery();
 			while (rs.next())
 				returnValue = new Intervention(rs.getInt("ID_intervention"), rs.getInt("ID_client"),
-						rs.getInt("ID_vehicle"), rs.getInt("ID_user_opened"), rs.getInt("ID_user_closed"),
+						rs.getInt("ID_vehicle"), rs.getInt("ID_user_opened"), rs.getInt("ID_user_closed"),rs.getInt("ID_field_technician"),
 						TimeUtility.stringToLocalDateTime(rs.getString("opened_on")),
 						TimeUtility.stringToLocalDateTime(rs.getString("closed_on")), rs.getString("remark"),
 						rs.getBoolean("closed"));
@@ -93,7 +140,7 @@ public class MySQLInterventionDAO implements InterventionDAO {
 			rs = ps.executeQuery();
 			while (rs.next())
 				returnValue.add(new Intervention(rs.getInt("ID_intervention"), rs.getInt("ID_client"),
-						rs.getInt("ID_vehicle"), rs.getInt("ID_user_opened"), rs.getInt("ID_user_closed"),
+						rs.getInt("ID_vehicle"), rs.getInt("ID_user_opened"), rs.getInt("ID_user_closed"),rs.getInt("ID_field_technician"),
 						TimeUtility.stringToLocalDateTime(rs.getString("opened_on")),
 						TimeUtility.stringToLocalDateTime(rs.getString("closed_on")), rs.getString("remark"),
 						rs.getBoolean("closed")));
@@ -122,7 +169,8 @@ public class MySQLInterventionDAO implements InterventionDAO {
 			ps.setObject(1, intervention.getID_client());
 			ps.setObject(2, intervention.getID_vehicle());
 			ps.setObject(3, intervention.getID_user_opened());
-			ps.setObject(4, intervention.getOpened_on());
+			ps.setObject(4, intervention.getID_field_technician());
+			ps.setObject(5, intervention.getOpened_on());
 			ps.executeUpdate();
 			rs=ps.getGeneratedKeys();
 			if(rs.next())
@@ -148,11 +196,12 @@ public class MySQLInterventionDAO implements InterventionDAO {
 			ps.setObject(2, intervention.getID_vehicle());
 			ps.setObject(3, intervention.getID_user_opened());
 			ps.setObject(4, intervention.getID_user_closed());
-			ps.setObject(5, intervention.getOpened_on());
-			ps.setObject(6, intervention.getClosed_on());
-			ps.setObject(7, intervention.isClosed());
-			ps.setObject(8, intervention.getRemark());
-			ps.setObject(9, intervention.getID_intervention());
+			ps.setObject(5, intervention.getID_field_technician());
+			ps.setObject(6, intervention.getOpened_on());
+			ps.setObject(7, intervention.getClosed_on());
+			ps.setObject(8, intervention.isClosed());
+			ps.setObject(9, intervention.getRemark());
+			ps.setObject(10, intervention.getID_intervention());
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -203,5 +252,11 @@ public class MySQLInterventionDAO implements InterventionDAO {
 		}
 		return retVal;
 	}
+
+
+	
+
+
+	
 
 }

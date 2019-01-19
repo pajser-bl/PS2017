@@ -207,7 +207,6 @@ public class ClientControllerFacade {
 		if (roadReportDAO
 				.insert(new RoadReport(fieldreport_ID, intervention_ID, user_ID, assistance, time, remark)) != 0) {
 			reply.add("NEW ROADREPORT OK");
-			ActiveUsersWatch.deassignjIntervention(user_ID);
 		} else {
 			reply.add("NEW ROADREPORT FAILED");
 		}
@@ -280,7 +279,7 @@ public class ClientControllerFacade {
 	}
 
 	public ArrayList<String> checkFieldTechnicianIntervention(int user_ID) {
-		return ActiveUsersWatch.checkFieldTechnicianAssignement(user_ID);
+		return InterventionControl.checkFieldTechnicianIntervention(user_ID, interventionDAO);
 	}
 
 	public ArrayList<String> viewOpenedInterventions() {

@@ -130,11 +130,11 @@ public class ClientRequestHandler {
 		case "VIEW INTERVENTION": {
 			return clientControllerFacade.viewIntervention(Integer.parseInt(request.getRequest().get(0)));
 		}
-		
+
 		case "VIEW OPENED INTERVENTIONS": {
 			return clientControllerFacade.viewOpenedInterventions();
 		}
-		
+
 		case "VIEW INTERVENTIONS": {
 			return clientControllerFacade.viewInterventions();
 		}
@@ -144,7 +144,8 @@ public class ClientRequestHandler {
 			try {
 				System.out.println(request.getRequest());
 				return clientControllerFacade.newIntervention(
-						new Intervention( 0,0,Integer.parseInt(request.getRequest().get(0)),
+						new Intervention(0, 0, Integer.parseInt(request.getRequest().get(0)),
+								Integer.parseInt(request.getRequest().get(9)),
 								TimeUtility.stringToLocalDateTime(request.getRequest().get(1))),
 						new Client(request.getRequest().get(2), request.getRequest().get(3),
 								request.getRequest().get(4)),

@@ -52,7 +52,7 @@ public class ReportControl {
 	//ko je terenski radnik, ko je napravio report
 	public static ArrayList<String> viewReports(InterventionDAO interventionDAO,RoadReportDAO roadReportDAO,ReportDAO reportDAO,ClientDAO clientDAO,UserDAO userDAO) {
 		ArrayList<String>reply = new ArrayList<>();
-		ArrayList<Intervention> interventions= (ArrayList<Intervention>) interventionDAO.selectAll();
+		/*ArrayList<Intervention> interventions= (ArrayList<Intervention>) interventionDAO.selectAll();
 		ArrayList<RoadReport> roadReports= (ArrayList<RoadReport>) roadReportDAO.selectAll();
 		ArrayList<Report> reports = (ArrayList<Report>) reportDAO.selectAll();
 		reply.add("VIEW REPORTS");
@@ -71,7 +71,7 @@ public class ReportControl {
 			String supervizorString=supervizor.getName()+" "+supervizor.getSurname();
 			String tempString=ID_report+":"+clientString+":"+i.getOpened_on()+":"+operaterString+":"+terenskiRadnikString+":"+supervizorString;
 			reply.add(tempString);
-		}
+		}*/
 		return reply;
 	}
 

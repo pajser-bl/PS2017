@@ -14,4 +14,6 @@ public interface InterventionDAO {
 	public int delete(int ID_intervention);
 	public int close(int ID_intervention,String remark,int ID_closed,LocalDateTime closed_on,boolean closed);
 	public List<Intervention> selectAllOpen();
+	public int getFieldTechnicianID(int ID_intervention);
+	public int getInterventionByFieldTechnician(int user_ID);
 }

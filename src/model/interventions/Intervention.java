@@ -23,12 +23,13 @@ public class Intervention {
 	int ID_vehicle;
 	int ID_user_opened;
 	int ID_user_closed;
+	int ID_field_technician;
 	LocalDateTime opened_on;
 	LocalDateTime closed_on;
 	boolean closed;
 	String remark;
 	
-	public Intervention(int iD_client, int iD_vehicle, int iD_user_opened, LocalDateTime opened_on) {
+	public Intervention(int iD_client, int iD_vehicle, int iD_user_opened,int ID_field_technician, LocalDateTime opened_on) {
 		super();
 		ID_client = iD_client;
 		ID_vehicle = iD_vehicle;
@@ -36,7 +37,7 @@ public class Intervention {
 		this.opened_on = opened_on;
 	}
 	
-	public Intervention(int iD_client, int iD_vehicle, int iD_user_opened, int iD_user_closed, LocalDateTime opened_on,
+	public Intervention(int iD_client, int iD_vehicle, int iD_user_opened, int iD_user_closed,int ID_field_technician, LocalDateTime opened_on,
 			LocalDateTime closed_on, String remark, boolean closed) {
 		super();
 		ID_client = iD_client;
@@ -47,7 +48,7 @@ public class Intervention {
 		this.remark = remark;
 	}
 
-	public Intervention(int iD_intervention, int iD_client, int iD_vehicle, int iD_user_opened, int iD_user_closed,
+	public Intervention(int iD_intervention, int iD_client, int iD_vehicle, int iD_user_opened, int iD_user_closed,int ID_field_technician,
 			LocalDateTime opened_on, LocalDateTime closed_on, String remark, boolean closed) {
 		super();
 		ID_intervention = iD_intervention;
@@ -115,6 +116,16 @@ public class Intervention {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+
+	public int getID_field_technician() {
+		return ID_field_technician;
+	}
+
+	public void setID_field_technician(int iD_field_technician) {
+		ID_field_technician = iD_field_technician;
+	}
+
+	
 	
 	
 	
