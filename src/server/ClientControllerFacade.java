@@ -279,7 +279,7 @@ public class ClientControllerFacade {
 	}
 
 	public ArrayList<String> checkFieldTechnicianIntervention(int user_ID) {
-		return InterventionControl.checkFieldTechnicianIntervention(user_ID, interventionDAO);
+		return InterventionControl.checkFieldTechnicianIntervention(user_ID, interventionDAO, userDAO, clientDAO, vehicleDAO);
 	}
 
 	public ArrayList<String> viewOpenedInterventions() {

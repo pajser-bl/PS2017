@@ -13,6 +13,7 @@ import model.Vehicle;
 import model.interventions.Intervention;
 import model.users.Client;
 import model.users.Event;
+import model.users.User;
 import utility.TimeUtility;
 
 public class InterventionControl {
@@ -144,14 +145,21 @@ public class InterventionControl {
 		return reply;
 	}
 
-	public static ArrayList<String> checkFieldTechnicianIntervention(int user_ID, InterventionDAO interventionDAO) {
+	public static ArrayList<String> checkFieldTechnicianIntervention(int user_ID, InterventionDAO interventionDAO,UserDAO userDAO,ClientDAO clientDAO,VehicleDAO vehicleDAO) {
 		ArrayList<String> reply = new ArrayList<>();
-		int ID_intervention = interventionDAO.getInterventionByFieldTechnician(user_ID);
+		int ID_intervention=interventionDAO.getInterventionByFieldTechnician(user_ID);
 		if (ID_intervention != 0) {
+			Intervention intervention = interventionDAO.select(ID_intervention);
+			User operator=userDAO.select(intervention.getID_user_opened());
+			Client client=clientDAO.select(intervention.getID_client());
+			Vehicle vehicle=vehicleDAO.select(intervention.getID_vehicle());
 			reply.add("CHECK FIELD TECHNICIAN INTERVENTION OK");
+			//intervention INFO, client INFO, vehicleINFO
 			reply.add("" + ID_intervention);
+			
+			
 		} else {
-			reply.add("CHECK FIELD TECHNICIAN INTERVENTION OK");
+			reply.add("CHECK FIELD TECHNICIAN INTERVENTION NOT OK");
 			reply.add("Terenski radnik nema zaduzenja.");
 		}
 		return reply;
