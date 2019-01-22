@@ -27,6 +27,32 @@ public class MySQLInterventionDAO implements InterventionDAO {
 	private static final String SQL_GET_INTERVENTION_BY_FIELD_TECHNICIAN = "SELECT ID_intervention FROM intervention where ID_field_technician=? and state=\"otvorena\"";
 
 	@Override
+	public int getInterventionByFieldTechnician(int user_ID) {
+		int returnValue = 0;
+		Connection c = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			c = DataSourceFactory.getMySQLDataSource().getConnection();
+			ps = c.prepareStatement(SQL_GET_INTERVENTION_BY_FIELD_TECHNICIAN);
+			ps.setInt(1, user_ID);
+			rs = ps.executeQuery();
+			while (rs.next())
+				returnValue = rs.getInt("ID_field_technician");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				ps.close();
+				c.close();
+			} catch (SQLException e) {
+			}
+		}
+		return returnValue;
+	}
+
+	@Override
 	public Intervention select(int ID_intervention) {
 		Intervention returnValue = null;
 
@@ -211,6 +237,7 @@ public class MySQLInterventionDAO implements InterventionDAO {
 			ps.setObject(3, intervention.getID_user_opened());
 			ps.setObject(4, intervention.getID_field_technician());
 			ps.setObject(5, intervention.getOpened_on());
+			ps.setObject(6, intervention.getState());
 			ps.executeUpdate();
 			rs = ps.getGeneratedKeys();
 			if (rs.next())
@@ -289,29 +316,4 @@ public class MySQLInterventionDAO implements InterventionDAO {
 		return retVal;
 	}
 
-	@Override
-	public int getInterventionByFieldTechnician(int user_ID) {
-		int returnValue = 0;
-		Connection c = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			c = DataSourceFactory.getMySQLDataSource().getConnection();
-			ps = c.prepareStatement(SQL_GET_INTERVENTION_BY_FIELD_TECHNICIAN);
-			ps.setInt(1, user_ID);
-			rs = ps.executeQuery();
-			while (rs.next())
-				returnValue = rs.getInt("ID_intervention");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				rs.close();
-				ps.close();
-				c.close();
-			} catch (SQLException e) {
-			}
-		}
-		return returnValue;
-	}
 }

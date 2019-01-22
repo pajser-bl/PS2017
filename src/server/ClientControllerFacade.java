@@ -254,7 +254,7 @@ public class ClientControllerFacade {
 	}
 
 	public ArrayList<String> checkFieldTechnicianIntervention(int user_ID) {
-		return InterventionControl.checkFieldTechnicianIntervention(user_ID, interventionDAO);
+		return InterventionControl.checkFieldTechnicianIntervention(user_ID, interventionDAO, clientDAO, vehicleDAO, userDAO);
 	}
 
 	public ArrayList<String> unexistingRequest(String string) {
@@ -294,5 +294,10 @@ public class ClientControllerFacade {
 	// return InterventionControl.viewOpenedInterventions(interventionDAO, userDAO,
 	// clientDAO, roadReportDAO);
 	// }
+
+
+	public ArrayList<String> viewOpenedInterventions() {
+		return InterventionControl.viewOpenedInterventions(interventionDAO, userDAO, clientDAO);
+	}
 
 }
