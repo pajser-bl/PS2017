@@ -9,11 +9,12 @@ public interface InterventionDAO {
 	
 	public Intervention select(int ID_intervention);
 	public List<Intervention> selectAll();
+	public List<Intervention> selectAllOpen();
+	public List<Intervention> selectAllClosed();
+	public List<Intervention> selectAllReports();
 	public int insert(Intervention intervention);
 	public int update(Intervention intervention);
 	public int delete(int ID_intervention);
-	public int close(int ID_intervention,String remark,int ID_closed,LocalDateTime closed_on,boolean closed);
-	public List<Intervention> selectAllOpen();
-	public int getFieldTechnicianID(int ID_intervention);
 	public int getInterventionByFieldTechnician(int user_ID);
+	
 }

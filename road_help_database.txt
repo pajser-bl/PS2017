@@ -4,8 +4,6 @@ use road_help_database;
 
 drop table if exists vehicle;
 drop table if exists coordinate;
-drop table if exists report;
-drop table if exists road_report;
 drop table if exists intervention;
 drop table if exists event;
 drop table if exists session;
@@ -76,36 +74,27 @@ create table intervention(
     ID_client int(11) not null,
     ID_vehicle int(11)not null,
     ID_user_opened int(11)not null,
-    ID_user_closed int(11),
-    ID_field_technician int(11),
+    ID_field_technician int(11)not null,
     opened_on datetime not null,
+    state varchar(25)not null,
+    
+    assistance varchar(25),
+    time_of_assistance datetime,
+    remark_field_technician tinytext,
+    
+    ID_user_closed int(11),
     closed_on datetime,
-    remark tinytext,
-    closed boolean default false,
+    remark_operator tinytext,
+    
+    ID_supervisor int(11),
+    remark_supervisor tinytext,
+    report_made datetime,
+    
     primary key(ID_intervention),
     constraint FK_intervention_user_opened foreign key(ID_user_opened)references user(ID_user)on delete no action on update no action,
-    constraint FK_intervention_user_closed foreign key(ID_user_closed)references user(ID_user)on delete no action on update no action
-);
-create table road_report(
-	ID_road_report int(11)not null,
-    ID_user int(11)not null,
-    ID_intervention int(11)not null,
-    assistance varchar(25)not null,
-    time_of_assistance datetime not null,
-    remark tinytext,
-    primary key(ID_road_report),
-    constraint FK_road_report_user foreign key(ID_user)references user(ID_user)on delete no action on update no action,
-    constraint FK_road_report_intervention foreign key(ID_intervention) references intervention(ID_intervention)on delete no action on update no action
-);
-create table report(
-	ID_report int(11)not null,
-    ID_user int(11)not null,
-    ID_intervention int(11)not null,
-    remark tinytext,
-    closed_on datetime not null,
-    primary key(ID_report),
-    constraint FK_report_user foreign key(ID_user)references user(ID_user)on delete no action on update no action,
-    constraint FK_report_intervention foreign key(ID_intervention)references intervention(ID_intervention)on delete no action on update no action
+    constraint FK_intervention_user_closed foreign key(ID_user_closed)references user(ID_user)on delete no action on update no action,
+	constraint FK_intervention_user_field_technician foreign key(ID_field_technician)references user(ID_user)on delete no action on update no action,
+	constraint FK_intervention_user_supervisor foreign key(ID_supervisor)references user(ID_user)on delete no action on update no action
 );
 create table coordinate(
 	ID_coordinate int(11) not null,

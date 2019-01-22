@@ -1,7 +1,5 @@
 package test;
 
-import DAO.ReportDAO;
-import DAO.RoadReportDAO;
 import DAO.SessionDAO;
 import DAO.SubscriptionDAO;
 import DAO.UserDAO;
@@ -11,8 +9,6 @@ import DAO.MySQL.MySQLCredentialsDAO;
 import DAO.MySQL.MySQLEventDAO;
 import DAO.MySQL.MySQLInterventionCoordinateDAO;
 import DAO.MySQL.MySQLInterventionDAO;
-import DAO.MySQL.MySQLReportDAO;
-import DAO.MySQL.MySQLRoadReportDAO;
 import DAO.MySQL.MySQLSessionDAO;
 import DAO.MySQL.MySQLSubscriptionDAO;
 import DAO.MySQL.MySQLUserDAO;
@@ -20,8 +16,6 @@ import DAO.MySQL.MySQLVehicleDAO;
 import model.Vehicle;
 import model.coordinates.InterventionCoordinate;
 import model.interventions.Intervention;
-import model.interventions.Report;
-import model.interventions.RoadReport;
 import model.users.Client;
 import model.users.Credentials;
 import model.users.Event;
