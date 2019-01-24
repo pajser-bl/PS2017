@@ -19,7 +19,6 @@ import DAO.MySQL.MySQLSubscriptionDAO;
 import DAO.MySQL.MySQLUserDAO;
 import DAO.MySQL.MySQLVehicleDAO;
 import controller.AccessControl;
-import controller.ActiveUsersWatch;
 import controller.ClientControl;
 import controller.InterventionControl;
 import controller.SessionControl;
@@ -161,20 +160,29 @@ public class ClientControllerFacade {
 		return SubscriptionControl.deleteSubscription(subscription_ID, subscriptionDAO);
 	}
 
-	public ArrayList<String> newIntervention(Intervention intervention, Client client, Vehicle vehicle) {
+	public ArrayList<String> newIntervention(Intervention intervention, Client client, Vehicle vehicle)
+			throws Exception {
 		return InterventionControl.newIntervention(intervention, client, vehicle, interventionDAO, eventDAO, clientDAO,
 				vehicleDAO);
 	}
 
-	// public ArrayList<String> viewIntervention(int ID_intervention) {
-	// return InterventionControl.viewIntervention(ID_intervention,interventionDAO,
-	// userDAO, clientDAO,vehicleDAO);
-	// }
+	public ArrayList<String> newRoadReport(int intervention_ID, String assistance, LocalDateTime time_of_assistance,
+			String remark) throws Exception {
+		return InterventionControl.newRoadReport(intervention_ID, assistance, time_of_assistance, remark,
+				interventionDAO, eventDAO);
+	}
 
-	// public ArrayList<String> viewInterventions() {
-	// return
-	// InterventionControl.viewInterventions(interventionDAO,userDAO,clientDAO);
-	// }
+	public ArrayList<String> closeIntervention(int intervention_ID, int operater_ID, LocalDateTime closed_on,
+			String remark) throws Exception {
+		return InterventionControl.closeIntervention(intervention_ID, operater_ID, closed_on, remark, interventionDAO,
+				eventDAO);
+	}
+
+	public ArrayList<String> newReport(int intervention_ID, int supervisor_ID, String remark, LocalDateTime report_made)
+			throws Exception {
+		return InterventionControl.newReport(intervention_ID, supervisor_ID, remark, report_made, interventionDAO);
+	}
+
 	public ArrayList<String> updateIntervention(Intervention intervention) {
 		ArrayList<String> reply = new ArrayList<>();
 		if (interventionDAO.update(intervention) != 0) {
@@ -195,28 +203,6 @@ public class ClientControllerFacade {
 		return reply;
 	}
 
-	// public ArrayList<String> closeIntervention(int intervention_ID, int user_ID,
-	// LocalDateTime closed_on, String remark,
-	// boolean closed) {
-	// return
-	// InterventionControl.closeIntervention(intervention_ID,user_ID,closed_on,remark,closed,interventionDAO,eventDAO);
-	// }
-	//
-	// public ArrayList<String> newRoadReport(int fieldreport_ID, int
-	// intervention_ID, int user_ID, String assistance,
-	// LocalDateTime time, String remark) {
-	// ArrayList<String> reply = new ArrayList<>();
-	//
-	// if (roadReportDAO
-	// .insert(new RoadReport(fieldreport_ID, intervention_ID, user_ID, assistance,
-	// time, remark)) != 0) {
-	// reply.add("NEW ROADREPORT OK");
-	// } else {
-	// reply.add("NEW ROADREPORT FAILED");
-	// }
-	// return reply;
-	// }
-
 	// public ArrayList<String> viewReport(int report_ID) {
 	// return ReportControl.viewReport(report_ID,interventionDAO, roadReportDAO,
 	// reportDAO, clientDAO, userDAO, vehicleDAO);
@@ -236,7 +222,6 @@ public class ClientControllerFacade {
 		return UserControl.viewOnlineUsers(credentialsDAO);
 	}
 
-	// public void viewStatesFieldTechnicians(String param){}
 	public ArrayList<String> viewFieldTechnicians() {
 		return UserControl.viewFieldTechnicians();
 	}
@@ -254,14 +239,8 @@ public class ClientControllerFacade {
 	}
 
 	public ArrayList<String> checkFieldTechnicianIntervention(int user_ID) {
-		return InterventionControl.checkFieldTechnicianIntervention(user_ID, interventionDAO, clientDAO, vehicleDAO, userDAO);
-	}
-
-	public ArrayList<String> unexistingRequest(String string) {
-		ArrayList<String> reply = new ArrayList<>();
-		reply.add("UNEXISTING FUNCTION REQUEST");
-		reply.add(string);
-		return reply;
+		return InterventionControl.checkFieldTechnicianIntervention(user_ID, interventionDAO, clientDAO, vehicleDAO,
+				userDAO);
 	}
 
 	public ArrayList<String> viewSubscriptions() {
@@ -273,31 +252,30 @@ public class ClientControllerFacade {
 
 	}
 
-	// public ArrayList<String> deleteRoadReport(String ID_road_report) { // treba
-	// testirati
-	// return RoadReportControl.deleteRoadReport( ID_road_report,roadReportDAO);
-	// }
-	//
-	// public ArrayList<String> viewRoadReport(String ID_road_report) { // treba
-	// testirati
-	// return RoadReportControl.viewRoadReport(ID_road_report,roadReportDAO);
-	// }
-	//
-	// public ArrayList<String> viewReports() {
-	// return ReportControl.viewReports(interventionDAO, roadReportDAO, reportDAO,
-	// clientDAO, userDAO);
-	// }
-	//
-
-	//
-	// public ArrayList<String> viewOpenedInterventions() {
-	// return InterventionControl.viewOpenedInterventions(interventionDAO, userDAO,
-	// clientDAO, roadReportDAO);
-	// }
-
-
-	public ArrayList<String> viewOpenedInterventions() {
+	public ArrayList<String> viewOpenedInterventions() throws Exception {
 		return InterventionControl.viewOpenedInterventions(interventionDAO, userDAO, clientDAO);
 	}
 
+	public ArrayList<String> viewOpenIntervention(int ID_intervention) throws Exception {
+		return InterventionControl.viewIntervention(ID_intervention, interventionDAO, userDAO, clientDAO, vehicleDAO);
+	}
+
+	public ArrayList<String> viewFieldReportIntervention(int ID_intervention) throws Exception {
+		return InterventionControl.viewIntervention(ID_intervention, interventionDAO, userDAO, clientDAO, vehicleDAO);
+	}
+
+	public ArrayList<String> viewClosedIntervention(int ID_intervention) throws Exception {
+		return InterventionControl.viewIntervention(ID_intervention, interventionDAO, userDAO, clientDAO, vehicleDAO);
+	}
+
+	public ArrayList<String> viewReport(int ID_intervention) throws Exception {
+		return InterventionControl.viewIntervention(ID_intervention, interventionDAO, userDAO, clientDAO, vehicleDAO);
+	}
+
+	public ArrayList<String> unexistingRequest(String string) {
+		ArrayList<String> reply = new ArrayList<>();
+		reply.add("UNEXISTING FUNCTION REQUEST");
+		reply.add(string);
+		return reply;
+	}
 }

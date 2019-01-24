@@ -127,26 +127,26 @@ public class ClientRequestHandler {
 					request.getRequest().get(2), request.getRequest().get(3));
 		}
 
-//		case "VIEW INTERVENTION": {
-//			return clientControllerFacade.viewIntervention(Integer.parseInt(request.getRequest().get(0)));
-//		}
-//
-//		case "VIEW OPENED INTERVENTIONS": {
-//			return clientControllerFacade.viewOpenedInterventions();
-//		}
-//
-//		case "VIEW INTERVENTIONS": {
-//			return clientControllerFacade.viewInterventions();
-//		}
-//		case "VIEW ROADREPORT": {
-//			return clientControllerFacade.viewRoadReport(request.getRequest().get(0));
-//		}
-//		case "VIEW REPORT": {
-//			return clientControllerFacade.viewReport(Integer.parseInt((request.getRequest().get(0))));
-//		}
-//		case "VIEW REPORTS": {
-//			return clientControllerFacade.viewReports();
-//		}
+		case "VIEW OPEN INTERVENTION": {
+			return clientControllerFacade.viewOpenIntervention(Integer.parseInt(request.getRequest().get(0)));
+		}
+
+		case "VIEW FIELD REPORT INTERVENTION": {
+			return clientControllerFacade.viewFieldReportIntervention(Integer.parseInt(request.getRequest().get(0)));
+		}
+
+		case "VIEW CLOSED INTERVENTION": {
+			return clientControllerFacade.viewClosedIntervention(Integer.parseInt(request.getRequest().get(0)));
+		}
+
+		case "VIEW REPORT": {
+			return clientControllerFacade.viewReport(Integer.parseInt(request.getRequest().get(0)));
+		}
+
+		case "VIEW OPENED INTERVENTIONS": {
+			return clientControllerFacade.viewOpenedInterventions();
+		}
+
 		case "NEW INTERVENTION": {
 			// opened_ID,timestamp,client_name,client_surname,client_phonenumber,registration,model,manufacturer,year,field_technician_ID
 			// new Intervention(int iD_user_opened, int iD_field_technician, LocalDateTime
@@ -159,26 +159,25 @@ public class ClientRequestHandler {
 					new Vehicle(request.getRequest().get(5), request.getRequest().get(6), request.getRequest().get(7),
 							Integer.parseInt(request.getRequest().get(8))));
 		}
-//		case "NEW  ROADREPORT": {
-//			return clientControllerFacade.newRoadReport(Integer.parseInt(request.getRequest().get(0)),
-//					Integer.parseInt(request.getRequest().get(0)), Integer.parseInt(request.getRequest().get(2)),
-//					request.getRequest().get(3), TimeUtility.stringToLocalDateTime(request.getRequest().get(4)),
-//					request.getRequest().get(5));
-//		}
-//		case "CLOSE INTERVENTION": {
-//			return clientControllerFacade.closeIntervention(Integer.parseInt(request.getRequest().get(0)),
-//					Integer.parseInt(request.getRequest().get(1)),
-//					TimeUtility.stringToLocalDateTime(request.getRequest().get(3)), request.getRequest().get(4),
-//					Boolean.parseBoolean(request.getRequest().get(5)));
-//		}
-//		case "NEW REPORT": {
-//			return clientControllerFacade.newReport(Integer.parseInt(request.getRequest().get(0)),
-//					Integer.parseInt(request.getRequest().get(1)), Integer.parseInt(request.getRequest().get(2)),
-//					request.getRequest().get(3), TimeUtility.stringToLocalDateTime(request.getRequest().get(4)));
-//		}
-//		case "DELETE INTERVENTION": {
-//			return clientControllerFacade.deleteIntervention(request.getRequest().get(0));
-//		}
+		case "NEW  ROADREPORT": {
+			// intervention_ID,assistance,time_of_assistance,remark_field_technician
+			return clientControllerFacade.newRoadReport(Integer.parseInt(request.getRequest().get(0)),
+					request.getRequest().get(1), TimeUtility.stringToLocalDateTime(request.getRequest().get(1)),
+					request.getRequest().get(2));
+		}
+		case "CLOSE INTERVENTION": {
+			// intervention_ID,iD_operater,closed_on,remark
+			return clientControllerFacade.closeIntervention(Integer.parseInt(request.getRequest().get(0)),
+					Integer.parseInt(request.getRequest().get(1)),
+					TimeUtility.stringToLocalDateTime(request.getRequest().get(2)), request.getRequest().get(3));
+		}
+
+		case "NEW REPORT": {
+			// ID_supervisor,remark_supervisor,report_made
+			return clientControllerFacade.newReport(Integer.parseInt(request.getRequest().get(0)),
+					Integer.parseInt(request.getRequest().get(1)), request.getRequest().get(2),
+					TimeUtility.stringToLocalDateTime(request.getRequest().get(3)));
+		}
 
 		case "CHECK FIELD TECHNICIAN INTERVENTION": {
 			return clientControllerFacade
