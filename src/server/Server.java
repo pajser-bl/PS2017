@@ -48,7 +48,9 @@ public class Server {
 					System.out.println("Server is shuting down...");
 				}
 			}
+			scan.close();
 			serverSocket.close();
+			System.out.println("Godbye.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
