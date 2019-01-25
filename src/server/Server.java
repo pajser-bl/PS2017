@@ -6,6 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.LocalDate;
 import java.util.Properties;
+import java.util.Scanner;
 
 import DAO.CredentialsDAO;
 import DAO.UserDAO;
@@ -35,12 +36,17 @@ public class Server {
 		try {
 			ServerSocket serverSocket=new ServerSocket(SERVER_PORT);
 			System.out.println("[" +TimeUtility.getStringTimeNow() + "]Server is online, awaiting incoming user connections");
+			Scanner scan=new Scanner(System.in);
 			while (SERVER_ONLINE && serverLimitNotReached()) {
 				Socket socket = serverSocket.accept();
 				SERVER_CONNECTION_COUNTER++;
 				ClientConnection connection = new ClientConnection(socket);
 				connection.start();
 				System.out.println("[" +TimeUtility.getStringTimeNow() + "]Connection enstablished");
+				if(scan.nextLine().equals("shutdown")) {
+					SERVER_ONLINE=false;
+					System.out.println("Server is shuting down...");
+				}
 			}
 			serverSocket.close();
 		} catch (IOException e) {

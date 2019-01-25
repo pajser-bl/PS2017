@@ -160,6 +160,7 @@ public class InterventionControl {
 		reply.add("VIEW INTERVENTION OK");
 		reply.add("" + intervention.getID_intervention());
 		reply.add(client.getName() + " " + client.getSurname());
+		reply.add(client.getPhone_number());
 		reply.add(vehicle.getRegistration());
 		reply.add(vehicle.getModel());
 		reply.add(vehicle.getManufacturer());
@@ -202,6 +203,7 @@ public class InterventionControl {
 			reply.add("CHECK FIELD TECHNICIAN INTERVENTION OK");
 			reply.add("" + intervention.getID_intervention());
 			reply.add(client.getName() + " " + client.getSurname());
+			reply.add(client.getPhone_number());
 			reply.add(vehicle.getRegistration());
 			reply.add(vehicle.getModel());
 			reply.add(vehicle.getManufacturer());
