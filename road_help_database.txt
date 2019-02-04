@@ -20,15 +20,10 @@ CREATE TABLE user (
     date_of_birth DATE NOT NULL,
     type VARCHAR(25)NOT NULL,
     qualification VARCHAR(255)NOT NULL,
-    PRIMARY KEY (ID_user)
-);
-CREATE TABLE credentials (
-    ID_credentials INT(11) NOT NULL,
-    ID_user INT(11) NOT NULL,
-    username VARCHAR(32) UNIQUE NOT NULL,
+    drivers_license VARCHAR(255)NOT NULL,
+    username VARCHAR(32) NOT NULL,
     hash VARCHAR(255) NOT NULL,
-    PRIMARY KEY (ID_credentials),
-    CONSTRAINT FK_credentials_user FOREIGN KEY (ID_user)REFERENCES user (ID_user)on delete cascade on action cascade
+    PRIMARY KEY (ID_user)
 );
 create table client(
 	ID_client int(11)not null auto_increment,
