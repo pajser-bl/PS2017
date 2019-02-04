@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import DAO.CredentialsDAO;
 import model.users.User;
 
 public class ActiveUsersWatch {
@@ -55,7 +54,7 @@ public class ActiveUsersWatch {
 	}
 
 	// vrate sve korisnike koji su povezani na server
-	public static ArrayList<String> getActiveUsers(CredentialsDAO credentialsDAO) {
+	public static ArrayList<String> getActiveUsers() {
 		ArrayList<String> reply = new ArrayList<>();
 		String tempUserString;
 		reply.add("VIEW ACTIVE USERS OK");

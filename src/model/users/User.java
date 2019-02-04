@@ -10,8 +10,20 @@ public class User {
 	private LocalDate date_of_birth;
 	private String type;
 	private String qualification;
+	private String drivers_license;
+	private String username;
+	private String hash;
 
-	public User(int iD_user, String name, String surname, LocalDate date_of_birth, String type, String qualification) {
+	
+	public boolean equals(Object o) {
+		if(!o.getClass().equals(this.getClass()))
+			return false;
+		if(((User)o).getID_user()==this.ID_user)
+			return true;
+		return false;
+	}
+	
+	public User(int iD_user, String name, String surname, LocalDate date_of_birth, String type, String qualification, String drivers_license) {
 		super();
 		this.ID_user = iD_user;
 		this.name = name;
@@ -19,24 +31,58 @@ public class User {
 		this.date_of_birth = date_of_birth;
 		this.setType(type);
 		this.qualification = qualification;
+		this.drivers_license = drivers_license;
 	}
 
-	public User(String name, String surname, LocalDate date_of_birth, String type, String qualification) {
+	public User(String name, String surname, LocalDate date_of_birth, String type, String qualification, String drivers_license) {
 		super();
 		this.name = name;
 		this.surname = surname;
 		this.date_of_birth = date_of_birth;
 		this.setType(type);
 		this.qualification = qualification;
+		this.drivers_license = drivers_license;
 	}
 
-	@Override
-	public String toString() {
-		String s = "";
-		s += "Ime: " + name + "\nPrezime: " + surname;
-		s += "\nKorisnicki ID: " + ID_user + "\nTip: " + type + "\nStrucna sprema: " + qualification;
-		return s;
+	public User(int iD_user, String name, String surname, LocalDate date_of_birth, String type, String qualification,
+			String drivers_license, String username, String hash) {
+		super();
+		ID_user = iD_user;
+		this.name = name;
+		this.surname = surname;
+		this.date_of_birth = date_of_birth;
+		this.type = type;
+		this.qualification = qualification;
+		this.drivers_license = drivers_license;
+		this.username = username;
+		this.hash = hash;
 	}
+	
+	public User( String name, String surname, LocalDate date_of_birth, String type, String qualification,
+			String drivers_license, String username, String hash) {
+		super();
+		this.name = name;
+		this.surname = surname;
+		this.date_of_birth = date_of_birth;
+		this.type = type;
+		this.qualification = qualification;
+		this.drivers_license = drivers_license;
+		this.username = username;
+		this.hash = hash;
+	}
+	public User(int iD_user, String name, String surname, LocalDate date_of_birth, String type, String qualification,
+			String drivers_license, String username) {
+		super();
+		ID_user = iD_user;
+		this.name = name;
+		this.surname = surname;
+		this.date_of_birth = date_of_birth;
+		this.type = type;
+		this.qualification = qualification;
+		this.drivers_license = drivers_license;
+		this.username = username;
+	}
+	
 
 	public String getName() {
 		return name;
@@ -84,5 +130,29 @@ public class User {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getDrivers_license() {
+		return drivers_license;
+	}
+
+	public void setDrivers_license(String drivers_license) {
+		this.drivers_license = drivers_license;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getHash() {
+		return hash;
+	}
+
+	public void setHash(String hash) {
+		this.hash = hash;
 	}
 }

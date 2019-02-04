@@ -3,7 +3,6 @@ package server;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import DAO.ClientDAO;
-import DAO.CredentialsDAO;
 import DAO.EventDAO;
 import DAO.InterventionDAO;
 import DAO.SessionDAO;
@@ -11,7 +10,6 @@ import DAO.SubscriptionDAO;
 import DAO.UserDAO;
 import DAO.VehicleDAO;
 import DAO.MySQL.MySQLClientDAO;
-import DAO.MySQL.MySQLCredentialsDAO;
 import DAO.MySQL.MySQLEventDAO;
 import DAO.MySQL.MySQLInterventionDAO;
 import DAO.MySQL.MySQLSessionDAO;
@@ -24,12 +22,11 @@ import controller.InterventionControl;
 import controller.SessionControl;
 import controller.SubscriptionControl;
 import controller.UserControl;
-import model.users.Client;
 import model.Vehicle;
+import model.client.Client;
 import model.interventions.Intervention;
 
 public class ClientControllerFacade {
-	CredentialsDAO credentialsDAO;
 	UserDAO userDAO;
 	SessionDAO sessionDAO;
 	EventDAO eventDAO;
@@ -39,7 +36,6 @@ public class ClientControllerFacade {
 	SubscriptionDAO subscriptionDAO;
 
 	public ClientControllerFacade() {
-		credentialsDAO = new MySQLCredentialsDAO();
 		userDAO = new MySQLUserDAO();
 		sessionDAO = new MySQLSessionDAO();
 		eventDAO = new MySQLEventDAO();
@@ -51,54 +47,41 @@ public class ClientControllerFacade {
 	}
 
 	public ArrayList<String> login(String username, String password) throws Exception {
-		return AccessControl.login(username, password, credentialsDAO, userDAO, sessionDAO, eventDAO);
+		return AccessControl.login(username, password, userDAO, sessionDAO, eventDAO);
 	}
 
 	public void logout(int user_ID) throws Exception {
-		AccessControl.logout(user_ID, eventDAO, credentialsDAO, sessionDAO);
+		AccessControl.logout(user_ID, eventDAO, sessionDAO);
 	}
 
 	public void connectionLost(int ID_user) throws Exception {
 		AccessControl.connectionLost(ID_user, eventDAO, sessionDAO);
 	}
 
-	public ArrayList<String> newCredentials(int ID_user, String username, String password) {
-		return UserControl.newCredentials(ID_user, username, password, credentialsDAO);
-	}
-
-	public ArrayList<String> updatePassword(int ID_user, String username, String password) {
-		return UserControl.updatePassword(ID_user, username, password, credentialsDAO);
-	}
-
-	public ArrayList<String> deleteCredentials(int ID_user) {
-		return UserControl.deleteCredentials(ID_user, credentialsDAO);
-	}
-
 	public ArrayList<String> viewUser(int user_ID) {
-		return UserControl.viewUser(user_ID, userDAO, credentialsDAO);
+		return UserControl.viewUser(user_ID, userDAO);
 	}
 
 	public ArrayList<String> viewUsers(String param) {
-		return UserControl.viewUsers(param, userDAO, credentialsDAO);
+		return UserControl.viewUsers(param, userDAO);
 	}
 
 	public ArrayList<String> addUser(String name, String surname, String date_of_birth, String type,
-			String qualification, String username, String password) {
-		return UserControl.addUser(name, surname, date_of_birth, type, qualification, username, password, userDAO,
-				credentialsDAO);
+			String qualification, String drivers_license, String username, String password) {
+		return UserControl.addUser(name, surname, date_of_birth, type, qualification,drivers_license, username, password, userDAO);
 	}
 
 	public ArrayList<String> changePassword(int ID_user, String password) {
-		return UserControl.changePassword(ID_user, password, credentialsDAO);
+		return UserControl.changePassword(ID_user, password,userDAO);
 	}
 
 	public ArrayList<String> updateUser(int ID_user, String name, String surname, String date_of_birth, String type,
-			String qualification) {
-		return UserControl.updateUser(ID_user, name, surname, date_of_birth, type, qualification, userDAO);
+			String qualification, String drivers_license) {
+		return UserControl.updateUser(ID_user, name, surname, date_of_birth, type, qualification, drivers_license, userDAO);
 	}
 
 	public ArrayList<String> deleteUser(int userID) {
-		return UserControl.deleteUser(userID, userDAO, credentialsDAO);
+		return UserControl.deleteUser(userID, userDAO);
 	}
 
 	public ArrayList<String> viewUserSession(int ID_session) {
@@ -110,14 +93,15 @@ public class ClientControllerFacade {
 	}
 
 	public ArrayList<String> viewClient(int clientID) throws Exception {
-		return ClientControl.viewClient(clientID,clientDAO);
+		return ClientControl.viewClient(clientID, clientDAO);
 	}
 
 	public ArrayList<String> newClient(String name, String surname, String phone_number) throws Exception {
 		return ClientControl.newClient(name, surname, phone_number, clientDAO);
 	}
 
-	public ArrayList<String> updateClient(String client_ID, String name, String surname, String phone_number) throws Exception {
+	public ArrayList<String> updateClient(String client_ID, String name, String surname, String phone_number)
+			throws Exception {
 		return ClientControl.updateClient(client_ID, name, surname, phone_number, clientDAO);
 	}
 
@@ -125,20 +109,20 @@ public class ClientControllerFacade {
 		return ClientControl.deleteClient(client_ID, clientDAO);
 	}
 
-	public ArrayList<String> viewClients() throws Exception{
+	public ArrayList<String> viewClients() throws Exception {
 		return ClientControl.viewClients(clientDAO);
 	}
 
-	public ArrayList<String> viewSubscription(int subscription_ID) throws Exception{
-		return SubscriptionControl.viewSubscription(subscription_ID, subscriptionDAO);
+	public ArrayList<String> viewSubscription(int subscription_ID) throws Exception {
+		return SubscriptionControl.viewSubscription(subscription_ID, subscriptionDAO, clientDAO);
 	}
-	
-	public ArrayList<String> viewSubscriptionsByUser(int client) throws Exception{
-		return SubscriptionControl.viewSubscriptionsByUser(client, subscriptionDAO);
+
+	public ArrayList<String> viewSubscriptionsByUser(int client) throws Exception {
+		return SubscriptionControl.viewSubscriptionsByUser(client, subscriptionDAO, clientDAO);
 	}
-	
-	public ArrayList<String> viewSubscriptions() throws Exception{
-		return SubscriptionControl.viewSubscriptions(subscriptionDAO);
+
+	public ArrayList<String> viewSubscriptions() throws Exception {
+		return SubscriptionControl.viewSubscriptions(subscriptionDAO, clientDAO);
 	}
 
 	public ArrayList<String> newSubscription(String client_ID, String start_date, String end_date) throws Exception {
@@ -201,7 +185,7 @@ public class ClientControllerFacade {
 	// public void accessMapFieldTechnician(int intervention ID){}
 	// public void accessMapOperator(){}
 	public ArrayList<String> viewOnlineUsers() {
-		return UserControl.viewOnlineUsers(credentialsDAO);
+		return UserControl.viewOnlineUsers(userDAO);
 	}
 
 	public ArrayList<String> viewFieldTechnicians() {

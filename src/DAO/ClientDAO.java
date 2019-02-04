@@ -2,7 +2,7 @@ package DAO;
 
 import java.util.List;
 
-import model.users.Client;
+import model.client.Client;
 
 public interface ClientDAO {
 	public Client select(int userID);

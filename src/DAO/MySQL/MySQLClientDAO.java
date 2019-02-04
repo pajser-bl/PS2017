@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import DAO.ClientDAO;
-import model.users.Client;
+import model.client.Client;
 import utility.DataSourceFactory;
 
 public class MySQLClientDAO implements ClientDAO {

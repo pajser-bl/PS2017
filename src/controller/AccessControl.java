@@ -3,11 +3,9 @@ package controller;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import DAO.CredentialsDAO;
 import DAO.EventDAO;
 import DAO.SessionDAO;
 import DAO.UserDAO;
-import model.users.Credentials;
 import model.users.Event;
 import model.users.Session;
 import model.users.User;
@@ -15,21 +13,20 @@ import utility.HashHandler;
 import utility.TimeUtility;
 
 public class AccessControl {
-	public static ArrayList<String> login(String username, String password, CredentialsDAO credentialsDAO,
+	public static ArrayList<String> login(String username, String password,
 			UserDAO userDAO, SessionDAO sessionDAO, EventDAO eventDAO) throws Exception {
-		boolean retVal = credentialsDAO.exists(username);
+		boolean retVal = !userDAO.checkUniqueUserame(username);
 		boolean loginCheck = false;
 		boolean alredyLoggedIn = false;
 		ArrayList<String> reply = new ArrayList<>();
 		if (retVal) {
 			// postoje kredencijali sa datim username-om
-			Credentials credentials = credentialsDAO.select(username);
-			loginCheck = HashHandler.verifyPassword(password, credentials.getHash());
-			alredyLoggedIn = ActiveUsersWatch.isAlredyLoggedIn(credentials.getID_user());
+			User user = userDAO.select(username);
+			loginCheck = HashHandler.verifyPassword(password, user.getHash());
+			alredyLoggedIn = ActiveUsersWatch.isAlredyLoggedIn(user.getID_user());
 			if (loginCheck) {
 				if (!alredyLoggedIn) {
 					// uspjesan login
-					User user = userDAO.select(credentials.getID_user());
 					reply.add("LOGIN OK");
 					reply.add(String.valueOf(user.getID_user()));
 					reply.add(user.getName());
@@ -68,7 +65,7 @@ public class AccessControl {
 		return reply;
 	}
 
-	public static void logout(int user_ID, EventDAO eventDAO, CredentialsDAO credentialsDAO, SessionDAO sessionDAO)
+	public static void logout(int user_ID, EventDAO eventDAO, SessionDAO sessionDAO)
 			throws Exception {
 		if (ActiveUsersWatch.userHasSession(user_ID)) {
 			int sessionID = ActiveUsersWatch.getUserSession(user_ID);

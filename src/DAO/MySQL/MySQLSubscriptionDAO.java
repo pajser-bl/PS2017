@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import DAO.SubscriptionDAO;
+import model.client.Subscription;
 import utility.DataSourceFactory;
 import utility.TimeUtility;
-import model.users.Subscription;
 
 public class MySQLSubscriptionDAO implements SubscriptionDAO {
 	private static final String SQL_SELECT = "SELECT * FROM subscription WHERE ID_subscription=?";

@@ -2,7 +2,7 @@ package DAO;
 
 import java.util.List;
 
-import model.users.Subscription;
+import model.client.Subscription;
 
 public interface SubscriptionDAO {
 	public Subscription select(int userID);

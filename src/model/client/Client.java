@@ -1,4 +1,4 @@
-package model.users;
+package model.client;
 
 public class Client {
 	private int ID_client;

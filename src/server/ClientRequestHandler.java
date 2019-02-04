@@ -2,8 +2,8 @@ package server;
 
 import java.util.ArrayList;
 import model.Vehicle;
+import model.client.Client;
 import model.interventions.Intervention;
-import model.users.Client;
 import server.Request;
 import utility.TimeUtility;
 
@@ -23,26 +23,19 @@ public class ClientRequestHandler {
 			clientControllerFacade.connectionLost(Integer.parseInt(request.getRequest().get(0)));
 			return null;
 		}
-		case "NEW CREDENTIALS": {
-			return clientControllerFacade.newCredentials(Integer.parseInt(request.getRequest().get(0)),
-					request.getRequest().get(1), request.getRequest().get(2));
-		}
-		case "UPDATE PASSWORD": {
-			return clientControllerFacade.updatePassword(Integer.parseInt(request.getRequest().get(0)),
-					request.getRequest().get(1), request.getRequest().get(2));
-		}
-		case "DELETE CREDENTIALS": {
-			return clientControllerFacade.deleteCredentials(Integer.parseInt(request.getRequest().get(0)));
-		}
+		/**
+		 * int ID_user, String name, String surname, String date_of_birth, String type,
+		 * String qualification, String drivers_license
+		 */
 		case "NEW USER": {
 			return clientControllerFacade.addUser(request.getRequest().get(0), request.getRequest().get(1),
 					request.getRequest().get(2), request.getRequest().get(3), request.getRequest().get(4),
-					request.getRequest().get(5), request.getRequest().get(6));
+					request.getRequest().get(5), request.getRequest().get(6),request.getRequest().get(7));
 		}
 		case "UPDATE USER": {
 			return clientControllerFacade.updateUser(Integer.parseInt(request.getRequest().get(0)),
 					request.getRequest().get(1), request.getRequest().get(2), request.getRequest().get(3),
-					request.getRequest().get(4), request.getRequest().get(5));
+					request.getRequest().get(4), request.getRequest().get(5),request.getRequest().get(6));
 		}
 		case "DELETE USER": {
 			return clientControllerFacade.deleteUser(Integer.parseInt(request.getRequest().get(0)));
@@ -73,7 +66,6 @@ public class ClientRequestHandler {
 		case "VIEW FIELD TECHNICIAN STATE ": {
 			return clientControllerFacade.viewFieldTechnicianState(Integer.parseInt(request.getRequest().get(0)));
 		}
-		// pregledaj stanja svih onlajn terenskih radnika
 		case "VIEW FIELD TECHNICIANS": {
 			return clientControllerFacade.viewFieldTechnicians();
 		}
@@ -146,9 +138,17 @@ public class ClientRequestHandler {
 		}
 
 		case "NEW INTERVENTION": {
-			// opened_ID,timestamp,client_name,client_surname,client_phonenumber,registration,model,manufacturer,year,field_technician_ID
-			// new Intervention(int iD_user_opened, int iD_field_technician, LocalDateTime
-			// opened_on,String state)
+			/**
+			 * 
+			 * opened_ID,timestamp,
+			 * client_name,client_surname,client_phonenumber,
+			 * registration,model,manufacturer,year,
+			 * field_technician_ID
+			 * 
+			 * new Intervention(int iD_user_opened, int iD_field_technician, LocalDateTime
+			 * opened_on,String state)
+			 * 
+			 */
 			return clientControllerFacade.newIntervention(
 					new Intervention(Integer.parseInt(request.getRequest().get(0)),
 							Integer.parseInt(request.getRequest().get(9)),

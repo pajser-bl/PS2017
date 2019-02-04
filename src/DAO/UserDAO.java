@@ -11,4 +11,7 @@ public interface UserDAO {
 	public int update(User user);
 	public int delete(int userID);
 	public boolean administrator_exists();
+	public boolean checkUniqueUserame(String username);
+	public User select(String username);
+	public int changePassword(int ID_credentials,String hashedPassword);	
 }

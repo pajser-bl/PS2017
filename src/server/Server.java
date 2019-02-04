@@ -8,15 +8,10 @@ import java.time.LocalDate;
 import java.util.Properties;
 import java.util.Scanner;
 
-import DAO.CredentialsDAO;
 import DAO.UserDAO;
-import DAO.MySQL.MySQLCredentialsDAO;
 import DAO.MySQL.MySQLUserDAO;
-import model.users.Credentials;
 import model.users.User;
 import utility.HashHandler;
-//import javax.net.ServerSocketFactory;
-//import javax.net.ssl.SSLServerSocketFactory;
 import utility.TimeUtility;
 
 public class Server {
@@ -76,12 +71,9 @@ public class Server {
 	public static void administrator_check() {
 		System.out.println("Checking database for administrator account.");
 		UserDAO userDAO=new MySQLUserDAO();
-		CredentialsDAO credentialsDAO=new MySQLCredentialsDAO();
 		if(!userDAO.administrator_exists()) {
-			User admin=new User("temp", "temp", LocalDate.now(), "Administrator", "temp");
-			int admin_id=userDAO.insert(admin);
-			Credentials admin_credentials=new Credentials(admin_id, admin_id, "admin", HashHandler.createHash("admin"));
-			credentialsDAO.insert(admin_credentials);
+			User admin=new User("temp", "temp", LocalDate.now(), "Administrator", "VSS", "", "admin", HashHandler.createHash("admin"));
+			userDAO.insert(admin);
 			System.out.println("Administrator is missing, creating temporary administrator account...");
 		}else {
 			System.out.println("Administrator is present.");
