@@ -16,6 +16,7 @@ import model.users.Subscription;
 public class MySQLSubscriptionDAO implements SubscriptionDAO {
 	private static final String SQL_SELECT = "SELECT * FROM subscription WHERE ID_subscription=?";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM subscription";
+	private static final String SQL_SELECT_ALL_BY_CLIENT="SELECT * FROM subscription WHERE ID_client=?";
 	private static final String SQL_INSERT = "INSERT INTO subscription (ID_subscription, ID_client, start_date, end_date) VALUES (?,?, ?, ?)";
 	private static final String SQL_UPDATE = "UPDATE subscription SET ID_client=?, start_date=? , end_date=?  WHERE ID_subscription=?";
 	private static final String SQL_DELETE = "DELETE FROM subscription WHERE ID_subscription=?";
@@ -55,6 +56,29 @@ public class MySQLSubscriptionDAO implements SubscriptionDAO {
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps = c.prepareStatement(SQL_SELECT_ALL);
+			rs = ps.executeQuery();
+			while (rs.next())
+				returnValue.add(new Subscription(rs.getInt("ID_subscription"), rs.getInt("ID_client"),
+						TimeUtility.stringToLocalDate(rs.getString("start_date")),
+						TimeUtility.stringToLocalDate( rs.getString("end_date"))));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {rs.close();ps.close();	c.close();}catch(SQLException e) {}
+		}
+		return returnValue;
+	}
+	
+	@Override
+	public List<Subscription> selectAllByClient(int ID_client) {
+		List<Subscription> returnValue = new ArrayList<>();
+
+		Connection c = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			c = DataSourceFactory.getMySQLDataSource().getConnection();
+			ps = c.prepareStatement(SQL_SELECT_ALL_BY_CLIENT);
 			rs = ps.executeQuery();
 			while (rs.next())
 				returnValue.add(new Subscription(rs.getInt("ID_subscription"), rs.getInt("ID_client"),
@@ -133,4 +157,6 @@ public class MySQLSubscriptionDAO implements SubscriptionDAO {
 		}
 		return retVal;
 	}
+
+	
 }

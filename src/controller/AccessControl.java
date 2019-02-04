@@ -16,7 +16,7 @@ import utility.TimeUtility;
 
 public class AccessControl {
 	public static ArrayList<String> login(String username, String password, CredentialsDAO credentialsDAO,
-			UserDAO userDAO, SessionDAO sessionDAO, EventDAO eventDAO) {
+			UserDAO userDAO, SessionDAO sessionDAO, EventDAO eventDAO) throws Exception {
 		boolean retVal = credentialsDAO.exists(username);
 		boolean loginCheck = false;
 		boolean alredyLoggedIn = false;
@@ -36,7 +36,8 @@ public class AccessControl {
 					reply.add(user.getSurname());
 					reply.add(user.getType());
 					reply.add(username);
-					if (user.getType().toLowerCase().equals("terenski radnik") || user.getType().toLowerCase().equals("operater")) {
+					if (user.getType().toLowerCase().equals("terenski radnik")
+							|| user.getType().toLowerCase().equals("operater")) {
 						int ID_session = sessionDAO.insert(new Session(user.getID_user(), LocalDateTime.now()));
 						ActiveUsersWatch.addUserSession(user.getID_user(), ID_session);
 						Event event = new Event(ID_session, LocalDateTime.now(),
@@ -67,7 +68,8 @@ public class AccessControl {
 		return reply;
 	}
 
-	public static void logout(int user_ID, EventDAO eventDAO, CredentialsDAO credentialsDAO, SessionDAO sessionDAO) {
+	public static void logout(int user_ID, EventDAO eventDAO, CredentialsDAO credentialsDAO, SessionDAO sessionDAO)
+			throws Exception {
 		if (ActiveUsersWatch.userHasSession(user_ID)) {
 			int sessionID = ActiveUsersWatch.getUserSession(user_ID);
 			Event event = new Event(sessionID, LocalDateTime.now(), "Korisnik se odjavio.");
@@ -80,9 +82,9 @@ public class AccessControl {
 		ActiveUsersWatch.removeActiveUser(user_ID);
 	}
 
-	public static void connectionLost(int iD_user, EventDAO eventDAO,SessionDAO sessionDAO) {
+	public static void connectionLost(int iD_user, EventDAO eventDAO, SessionDAO sessionDAO) throws Exception {
 		if (ActiveUsersWatch.userHasSession(iD_user)) {
-			int iD_session=ActiveUsersWatch.getUserSession(iD_user);
+			int iD_session = ActiveUsersWatch.getUserSession(iD_user);
 			Event event = new Event(iD_session, LocalDateTime.now(), "Konekcija izgubljena.");
 			eventDAO.insert(event);
 			Session session = sessionDAO.select(iD_session);

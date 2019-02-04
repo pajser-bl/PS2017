@@ -28,7 +28,7 @@ CREATE TABLE credentials (
     username VARCHAR(32) UNIQUE NOT NULL,
     hash VARCHAR(255) NOT NULL,
     PRIMARY KEY (ID_credentials),
-    CONSTRAINT FK_credentials_user FOREIGN KEY (ID_user)REFERENCES user (ID_user)on delete no action on update no action
+    CONSTRAINT FK_credentials_user FOREIGN KEY (ID_user)REFERENCES user (ID_user)on delete cascade on action cascade
 );
 create table client(
 	ID_client int(11)not null auto_increment,
@@ -43,7 +43,7 @@ create table subscription(
     start_date date not null,
     end_date date not null,
     primary key(ID_subscription),
-    constraint FK_subscription_client foreign key(ID_client)references client(ID_client)on delete no action on update no action
+    constraint FK_subscription_client foreign key(ID_client)references client(ID_client)on delete cascade on action cascade
 );
 create table vehicle(
 	ID_vehicle int(11)not null auto_increment,
@@ -59,7 +59,7 @@ create table session(
     start datetime not null,
     end datetime default null,
     primary key(ID_session),
-    constraint FK_session_user foreign key(ID_user) references user(ID_user)on delete no action on update no action
+    constraint FK_session_user foreign key(ID_user) references user(ID_user)on delete cascade on action cascade
 );
 create table event(
 	ID_event int(11)not null auto_increment,
@@ -67,7 +67,7 @@ create table event(
     time datetime not null,
     action varchar(50)not null,
     primary key(ID_event,ID_session),
-    constraint FK_event_session foreign key(ID_session)references session(ID_session)on delete no action on update no action
+    constraint FK_event_session foreign key(ID_session)references session(ID_session)on delete cascade on action cascade
 );
 create table intervention(
 	ID_intervention int(11) not null auto_increment,
@@ -91,10 +91,10 @@ create table intervention(
     report_made datetime,
     
     primary key(ID_intervention),
-    constraint FK_intervention_user_opened foreign key(ID_user_opened)references user(ID_user)on delete no action on update no action,
-    constraint FK_intervention_user_closed foreign key(ID_user_closed)references user(ID_user)on delete no action on update no action,
-	constraint FK_intervention_user_field_technician foreign key(ID_field_technician)references user(ID_user)on delete no action on update no action,
-	constraint FK_intervention_user_supervisor foreign key(ID_supervisor)references user(ID_user)on delete no action on update no action
+    constraint FK_intervention_user_opened foreign key(ID_user_opened)references user(ID_user)on delete cascade on action cascade,
+    constraint FK_intervention_user_closed foreign key(ID_user_closed)references user(ID_user)on delete cascade on action cascade,
+	constraint FK_intervention_user_field_technician foreign key(ID_field_technician)references user(ID_user)on delete cascade on action cascade,
+	constraint FK_intervention_user_supervisor foreign key(ID_supervisor)references user(ID_user)on delete cascade on action cascade
 );
 create table coordinate(
 	ID_coordinate int(11) not null,
@@ -102,5 +102,5 @@ create table coordinate(
     latitude decimal(12,9)not null,
     longitude decimal(12,9)not null,
     primary key(ID_coordinate),
-    constraint FK_coordinate_intervention foreign key(ID_intervention) references intervention(ID_intervention)on delete no action on update no action
+    constraint FK_coordinate_intervention foreign key(ID_intervention) references intervention(ID_intervention)on delete cascade on action cascade
 );

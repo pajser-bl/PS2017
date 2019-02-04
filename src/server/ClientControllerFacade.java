@@ -50,15 +50,15 @@ public class ClientControllerFacade {
 
 	}
 
-	public ArrayList<String> login(String username, String password) {
+	public ArrayList<String> login(String username, String password) throws Exception {
 		return AccessControl.login(username, password, credentialsDAO, userDAO, sessionDAO, eventDAO);
 	}
 
-	public void logout(int user_ID) {
+	public void logout(int user_ID) throws Exception {
 		AccessControl.logout(user_ID, eventDAO, credentialsDAO, sessionDAO);
 	}
 
-	public void connectionLost(int ID_user) {
+	public void connectionLost(int ID_user) throws Exception {
 		AccessControl.connectionLost(ID_user, eventDAO, sessionDAO);
 	}
 
@@ -109,54 +109,49 @@ public class ClientControllerFacade {
 		return SessionControl.viewUserSessions(ID_user, sessionDAO);
 	}
 
-	public ArrayList<String> viewClient(int clientID) {
-
-		ArrayList<String> reply = new ArrayList<>();
-		Client client = clientDAO.select(clientID);
-
-		if (client != null) {
-			reply.add("VIEW USER OK");
-			reply.add("" + client.getID_client());
-			reply.add(client.getName());
-			reply.add(client.getSurname());
-			reply.add(client.getPhone_number());
-		} else {
-			reply.add("VIEW USER FAILED");
-		}
-		return reply;
-
+	public ArrayList<String> viewClient(int clientID) throws Exception {
+		return ClientControl.viewClient(clientID,clientDAO);
 	}
 
-	public ArrayList<String> newClient(String name, String surname, String phone_number) {
+	public ArrayList<String> newClient(String name, String surname, String phone_number) throws Exception {
 		return ClientControl.newClient(name, surname, phone_number, clientDAO);
 	}
 
-	public ArrayList<String> updateClient(String client_ID, String name, String surname, String phone_number) {
+	public ArrayList<String> updateClient(String client_ID, String name, String surname, String phone_number) throws Exception {
 		return ClientControl.updateClient(client_ID, name, surname, phone_number, clientDAO);
 	}
 
-	public ArrayList<String> deleteClient(String client_ID) {
+	public ArrayList<String> deleteClient(String client_ID) throws Exception {
 		return ClientControl.deleteClient(client_ID, clientDAO);
 	}
 
-	// public void viewClients(String param){}
+	public ArrayList<String> viewClients() throws Exception{
+		return ClientControl.viewClients(clientDAO);
+	}
 
-	public ArrayList<String> viewSubscription(int subscription_ID) {
+	public ArrayList<String> viewSubscription(int subscription_ID) throws Exception{
 		return SubscriptionControl.viewSubscription(subscription_ID, subscriptionDAO);
 	}
-	// public void viewSubscriptions(String param){}
+	
+	public ArrayList<String> viewSubscriptionsByUser(int client) throws Exception{
+		return SubscriptionControl.viewSubscriptionsByUser(client, subscriptionDAO);
+	}
+	
+	public ArrayList<String> viewSubscriptions() throws Exception{
+		return SubscriptionControl.viewSubscriptions(subscriptionDAO);
+	}
 
-	public ArrayList<String> newSubscription(String client_ID, String start_date, String end_date) {
+	public ArrayList<String> newSubscription(String client_ID, String start_date, String end_date) throws Exception {
 		return SubscriptionControl.newSubscription(client_ID, start_date, end_date, subscriptionDAO);
 	}
 
 	public ArrayList<String> updateSubscription(String subscription_ID, String client_ID, String start_date,
-			String end_date) {
+			String end_date) throws Exception {
 		return SubscriptionControl.updateSubscription(subscription_ID, client_ID, start_date, end_date,
 				subscriptionDAO);
 	}
 
-	public ArrayList<String> deleteSubscription(String subscription_ID) {
+	public ArrayList<String> deleteSubscription(String subscription_ID) throws Exception {
 		return SubscriptionControl.deleteSubscription(subscription_ID, subscriptionDAO);
 	}
 
@@ -203,19 +198,6 @@ public class ClientControllerFacade {
 		return reply;
 	}
 
-	// public ArrayList<String> viewReport(int report_ID) {
-	// return ReportControl.viewReport(report_ID,interventionDAO, roadReportDAO,
-	// reportDAO, clientDAO, userDAO, vehicleDAO);
-	// }
-	//
-	// public ArrayList<String> newReport(int ID_report, int ID_intervention, int
-	// ID_user, String remark, LocalDateTime closed_on) {
-	// return
-	// ReportControl.newReport(ID_report,ID_intervention,ID_user,remark,closed_on,reportDAO);
-	// }
-
-	// public void viewReports(String param){}
-
 	// public void accessMapFieldTechnician(int intervention ID){}
 	// public void accessMapOperator(){}
 	public ArrayList<String> viewOnlineUsers() {
@@ -241,15 +223,6 @@ public class ClientControllerFacade {
 	public ArrayList<String> checkFieldTechnicianIntervention(int user_ID) {
 		return InterventionControl.checkFieldTechnicianIntervention(user_ID, interventionDAO, clientDAO, vehicleDAO,
 				userDAO);
-	}
-
-	public ArrayList<String> viewSubscriptions() {
-		return SubscriptionControl.viewSubscriptions(subscriptionDAO); // treba testirati
-	}
-
-	public ArrayList<String> viewClients() {
-		return ClientControl.viewClients(clientDAO);
-
 	}
 
 	public ArrayList<String> viewOpenedInterventions() throws Exception {
