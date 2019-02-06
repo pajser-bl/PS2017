@@ -21,7 +21,7 @@ public class MySQLInterventionDAO implements InterventionDAO {
 	private static final String SQL_SELECT_ALL_CLOSED = "SELECT * FROM intervention where state=\"zatvorena\"";
 	private static final String SQL_SELECT_ALL_REPORTS = "SELECT * FROM intervention where state=\"izvjestaj\"";
 	private static final String SQL_INSERT = "INSERT INTO intervention (ID_intervention,ID_client,ID_vehicle,ID_user_opened,ID_field_technician,opened_on,state,assistance,time_of_assistance,remark_field_technician,ID_user_closed,closed_on,remark_operator,ID_supervisor, remark_supervisor,report_made) VALUES (null,?,?,?,?,?,?,null,null,null,null,null,null,null,null,null)";
-	private static final String SQL_UPDATE = "UPDATE intervention SET (ID_client,ID_vehicle,ID_user_opened,ID_field_technician,opened_on,state,assistance,time_of_assistance,remark_field_technician,ID_user_closed,closed_on,remark_operator,ID_supervisor, remark_supervisor,report_made) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) WHERE ID_intervention=?";
+	private static final String SQL_UPDATE = "UPDATE intervention SET ID_client = ?, ID_vehicle = ?,ID_user_opened = ?,ID_field_technician = ?, opened_on = ?, state = ?, assistance = ?, time_of_assistance = ?, remark_field_technician = ?, ID_user_closed = ?, closed_on = ?, remark_operator = ?, ID_supervisor = ?,  remark_supervisor = ?, report_made = ? WHERE ID_intervention=?";
 	private static final String SQL_DELETE = "DELETE FROM intervention WHERE ID_intervention=?";
 	private static final String SQL_GET_INTERVENTION_BY_FIELD_TECHNICIAN = "SELECT ID_intervention FROM intervention where ID_field_technician=? and state=\"otvorena\"";
 
