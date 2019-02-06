@@ -17,14 +17,19 @@ public class MySQLInterventionDAO implements InterventionDAO {
 
 	private static final String SQL_SELECT = "SELECT * FROM intervention WHERE ID_intervention=?";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM intervention";
-	private static final String SQL_SELECT_ALL_OPENED = "SELECT * FROM intervention where state=\"otvorena\"";
+	private static final String SQL_SELECT_ALL_OPENED = "SELECT * FROM intervention where state=\"otvorena\" or state=\"terenski izvjestaj\"";
 	private static final String SQL_SELECT_ALL_CLOSED = "SELECT * FROM intervention where state=\"zatvorena\"";
 	private static final String SQL_SELECT_ALL_REPORTS = "SELECT * FROM intervention where state=\"izvjestaj\"";
 	private static final String SQL_INSERT = "INSERT INTO intervention (ID_intervention,ID_client,ID_vehicle,ID_user_opened,ID_field_technician,opened_on,state,assistance,time_of_assistance,remark_field_technician,ID_user_closed,closed_on,remark_operator,ID_supervisor, remark_supervisor,report_made) VALUES (null,?,?,?,?,?,?,null,null,null,null,null,null,null,null,null)";
-	private static final String SQL_UPDATE = "UPDATE intervention SET ID_client = ?, ID_vehicle = ?,ID_user_opened = ?,ID_field_technician = ?, opened_on = ?, state = ?, assistance = ?, time_of_assistance = ?, remark_field_technician = ?, ID_user_closed = ?, closed_on = ?, remark_operator = ?, ID_supervisor = ?,  remark_supervisor = ?, report_made = ? WHERE ID_intervention=?";
+	private static final String SQL_UPDATE = "UPDATE intervention SET ID_client =?,ID_vehicle =?,ID_user_opened=?,ID_field_technician=?,opened_on=?,state=?,assistance=?,time_of_assistance=?,remark_field_technician=?,ID_user_closed=?,closed_on=?,remark_operator=?,ID_supervisor = ?,remark_supervisor=?,report_made=? WHERE ID_intervention=?";
 	private static final String SQL_DELETE = "DELETE FROM intervention WHERE ID_intervention=?";
 	private static final String SQL_GET_INTERVENTION_BY_FIELD_TECHNICIAN = "SELECT ID_intervention FROM intervention where ID_field_technician=? and state=\"otvorena\"";
-
+	private static final String SQL_NEW_ROAD_REPORT = "UPDATE intervention SET state=?,assistance=?,time_of_assistance=?,remark_field_technician=? WHERE ID_intervention=?";
+	private static final String SQL_CLOSE_INTERVENTION = "UPDATE intervention SET state=?,ID_user_closed=?,closed_on=?,remark_operator=? WHERE ID_intervention=?";
+	private static final String SQL_NEW_REPORT = "UPDATE intervention SET state=?ID_supervisor = ?,remark_supervisor=?,report_made=? WHERE ID_intervention=?";
+	
+	
+	
 	@Override
 	public int getInterventionByFieldTechnician(int user_ID) {
 		int returnValue = 0;
@@ -259,7 +264,6 @@ public class MySQLInterventionDAO implements InterventionDAO {
 		int retVal = 0;
 		Connection c = null;
 		PreparedStatement ps = null;
-
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps = c.prepareStatement(SQL_UPDATE, Statement.NO_GENERATED_KEYS);
@@ -302,6 +306,84 @@ public class MySQLInterventionDAO implements InterventionDAO {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps = c.prepareStatement(SQL_DELETE, Statement.NO_GENERATED_KEYS);
 			ps.setObject(1, ID_intervention);
+			retVal = ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				ps.close();
+				c.close();
+			} catch (SQLException e) {
+			}
+		}
+		return retVal;
+	}
+
+	@Override
+	public int newRoadReport(Intervention intervention) {
+		int retVal = 0;
+		Connection c = null;
+		PreparedStatement ps = null;
+		try {
+			c = DataSourceFactory.getMySQLDataSource().getConnection();
+			ps = c.prepareStatement(SQL_NEW_ROAD_REPORT, Statement.NO_GENERATED_KEYS);
+			ps.setObject(1, intervention.getState());
+			ps.setObject(2, intervention.getAssistance());
+			ps.setObject(3, intervention.getTime_of_assistance());
+			ps.setObject(4, intervention.getRemark_field_technician());
+			ps.setObject(5, intervention.getID_intervention());
+			retVal = ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				ps.close();
+				c.close();
+			} catch (SQLException e) {
+			}
+		}
+		return retVal;
+	}
+
+	@Override
+	public int closeIntervention(Intervention intervention) {
+		int retVal = 0;
+		Connection c = null;
+		PreparedStatement ps = null;
+		try {
+			c = DataSourceFactory.getMySQLDataSource().getConnection();
+			ps = c.prepareStatement(SQL_CLOSE_INTERVENTION, Statement.NO_GENERATED_KEYS);
+			ps.setObject(1, intervention.getState());
+			ps.setObject(2, intervention.getID_user_closed());
+			ps.setObject(3, intervention.getClosed_on());
+			ps.setObject(4, intervention.getRemark_operator());
+			ps.setObject(5, intervention.getID_intervention());
+			retVal = ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				ps.close();
+				c.close();
+			} catch (SQLException e) {
+			}
+		}
+		return retVal;
+	}
+
+	@Override
+	public int newReport(Intervention intervention) {
+		int retVal = 0;
+		Connection c = null;
+		PreparedStatement ps = null;
+		try {
+			c = DataSourceFactory.getMySQLDataSource().getConnection();
+			ps = c.prepareStatement(SQL_NEW_REPORT, Statement.NO_GENERATED_KEYS);
+			ps.setObject(1, intervention.getState());
+			ps.setObject(2, intervention.getID_supervisor());
+			ps.setObject(3, intervention.getRemark_supervisor());
+			ps.setObject(4, intervention.getReport_made());
+			ps.setObject(5, intervention.getID_intervention());
 			retVal = ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

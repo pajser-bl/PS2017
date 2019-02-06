@@ -65,12 +65,12 @@ public class InterventionControl {
 		intervention.setTime_of_assistance(time_of_assistance);
 		intervention.setRemark_field_technician(remark);
 		intervention.setState("terenski izvjestaj");
-		if (interventionDAO.update(intervention) != 0) {
-			event = new Event(ActiveUsersWatch.getUserSession(intervention.getID_user_opened()), LocalDateTime.now(),
-					"Pristigao terenski izvjestaj za intervenciju ID: " + intervention.getID_intervention() + " .");
-			eventDAO.insert(event);
+		if (interventionDAO.newRoadReport(intervention) != 0) {
+//			event = new Event(ActiveUsersWatch.getUserSession(intervention.getID_user_opened()), LocalDateTime.now(),
+//					"Pristigao terenski izvjestaj za intervenciju ID: " + intervention.getID_intervention() + " .");
+//			eventDAO.insert(event);
 			event = new Event(ActiveUsersWatch.getUserSession(intervention.getID_field_technician()),
-					LocalDateTime.now(), "Napravlen i poslat terenski izvjestaj za intervenciju ID: "
+					LocalDateTime.now(), "Napravljen i poslat terenski izvjestaj za intervenciju ID: "
 							+ intervention.getID_intervention() + " .");
 			eventDAO.insert(event);
 
@@ -94,7 +94,7 @@ public class InterventionControl {
 		intervention.setID_user_closed(operater_ID);
 		intervention.setClosed_on(closed_on);
 		intervention.setRemark_operator(remark);
-		if (interventionDAO.update(intervention) != 0) {
+		if (interventionDAO.closeIntervention(intervention) != 0) {
 			event = new Event(operater_ID, ActiveUsersWatch.getUserSession(operater_ID), LocalDateTime.now(),
 					"Uspjesno zatvorena intervencija ID: " + intervention_ID + " .");
 			reply.add("CLOSE INTERVENTION OK");
@@ -115,7 +115,7 @@ public class InterventionControl {
 		intervention.setID_supervisor(supervisor_ID);
 		intervention.setReport_made(report_made);
 		intervention.setRemark_supervisor(remark);
-		if (interventionDAO.update(intervention) != 0) {
+		if (interventionDAO.newReport(intervention) != 0) {
 			reply.add("NEW REPORT OK");
 		} else {
 			reply.add("NEW REPORT NOT OK");

@@ -60,7 +60,7 @@ create table event(
 	ID_event int(11)not null auto_increment,
     ID_session int(11)not null,
     time datetime not null,
-    action varchar(50)not null,
+    action varchar(255)not null,
     primary key(ID_event,ID_session),
     constraint FK_event_session foreign key(ID_session)references session(ID_session)on delete cascade on update no action
 );

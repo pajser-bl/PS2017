@@ -15,5 +15,7 @@ public interface InterventionDAO {
 	public int update(Intervention intervention);
 	public int delete(int ID_intervention);
 	public int getInterventionByFieldTechnician(int user_ID);
-	
+	public int newRoadReport(Intervention intervention);
+	public int closeIntervention(Intervention intervention);
+	public int newReport(Intervention intervention);
 }
