@@ -1,0 +1,1 @@
+INSERT INTO user (ID_user,name,surname,date_of_birth,type,qualification,drivers_license,username,hash) VALUES (null,"Milan","Tarot",1966-05-01,"Administrator","VSS","metla",milan,?);
