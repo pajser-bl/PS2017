@@ -114,6 +114,7 @@ public class UserControl {
 			reply.add(user.getType());
 			reply.add(TimeUtility.localDateToString(user.getDate_of_birth()));
 			reply.add(user.getQualification());
+			reply.add(user.getDrivers_license());
 			reply.add(user.getUsername());
 		} catch (Exception e) {
 			e.printStackTrace();

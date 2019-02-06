@@ -24,8 +24,8 @@ public class ClientRequestHandler {
 			return null;
 		}
 		/**
-		 * int ID_user, String name, String surname, String date_of_birth, String type,
-		 * String qualification, String drivers_license
+		 * String name, String surname, String date_of_birth, String type,
+		 * String qualification, String drivers_license, String username,String password
 		 */
 		case "NEW USER": {
 			return clientControllerFacade.addUser(request.getRequest().get(0), request.getRequest().get(1),
@@ -157,11 +157,11 @@ public class ClientRequestHandler {
 					new Vehicle(request.getRequest().get(5), request.getRequest().get(6), request.getRequest().get(7),
 							Integer.parseInt(request.getRequest().get(8))));
 		}
-		case "NEW  ROADREPORT": {
+		case "NEW ROAD REPORT": {
 			// intervention_ID,assistance,time_of_assistance,remark_field_technician
 			return clientControllerFacade.newRoadReport(Integer.parseInt(request.getRequest().get(0)),
-					request.getRequest().get(1), TimeUtility.stringToLocalDateTime(request.getRequest().get(1)),
-					request.getRequest().get(2));
+					request.getRequest().get(1), TimeUtility.stringToLocalDateTime(request.getRequest().get(2)),
+					request.getRequest().get(3));
 		}
 		case "CLOSE INTERVENTION": {
 			// intervention_ID,iD_operater,closed_on,remark
