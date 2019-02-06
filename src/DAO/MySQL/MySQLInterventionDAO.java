@@ -37,7 +37,7 @@ public class MySQLInterventionDAO implements InterventionDAO {
 			ps.setInt(1, user_ID);
 			rs = ps.executeQuery();
 			while (rs.next())
-				returnValue = rs.getInt("ID_field_technician");
+				returnValue = rs.getInt("ID_intervention");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
