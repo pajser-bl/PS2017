@@ -34,7 +34,7 @@ public class InterventionControl {
 		} else {
 			intervention.setID_vehicle(vehicleDAO.insert(vehicle));
 		}
-		if ((intervention_ID=interventionDAO.insert(intervention)) != 0) {
+		if ((intervention_ID = interventionDAO.insert(intervention)) != 0) {
 			// dodaj event za tehnicara
 			event = new Event(ActiveUsersWatch.getUserSession(intervention.getID_user_opened()), LocalDateTime.now(),
 					"Uspjesno otvorena nova intervencija ID: " + intervention.getID_intervention() + " .");
@@ -45,8 +45,7 @@ public class InterventionControl {
 			eventDAO.insert(event);
 
 			reply.add("NEW INTERVENTION OK");
-			reply.add(""+intervention_ID);
-			ActiveUsersWatch.changeFieldTechnicianState(intervention.getID_field_technician(), "zauzet");
+			reply.add("" + intervention_ID);
 		} else {
 			event = new Event(intervention.getID_user_opened(),
 					ActiveUsersWatch.getUserSession(intervention.getID_user_opened()), LocalDateTime.now(),
@@ -69,7 +68,7 @@ public class InterventionControl {
 		intervention.setRemark_field_technician(remark);
 		intervention.setState("terenski izvjestaj");
 		if (interventionDAO.newRoadReport(intervention) != 0) {
-			ActiveUsersWatch.changeFieldTechnicianState(intervention.getID_field_technician(),"neaktivan");
+			ActiveUsersWatch.changeFieldTechnicianState(intervention.getID_field_technician(), "neaktivan");
 			event = new Event(ActiveUsersWatch.getUserSession(intervention.getID_field_technician()),
 					LocalDateTime.now(), "Napravljen i poslat terenski izvjestaj za intervenciju ID: "
 							+ intervention.getID_intervention() + " .");
@@ -110,8 +109,9 @@ public class InterventionControl {
 		}
 		return reply;
 	}
+
 	public static ArrayList<String> newReport(int intervention_ID, int supervisor_ID, String remark,
-			LocalDateTime report_made, InterventionDAO interventionDAO)throws Exception {
+			LocalDateTime report_made, InterventionDAO interventionDAO) throws Exception {
 		ArrayList<String> reply = new ArrayList<>();
 		Intervention intervention = interventionDAO.select(intervention_ID);
 		intervention.setID_supervisor(supervisor_ID);
@@ -126,6 +126,7 @@ public class InterventionControl {
 		}
 		return reply;
 	}
+
 	public static ArrayList<String> viewOpenedInterventions(InterventionDAO interventionDAO, UserDAO userDAO,
 			ClientDAO clientDAO) throws Exception {
 		ArrayList<String> reply = new ArrayList<>();
@@ -158,8 +159,8 @@ public class InterventionControl {
 		Vehicle vehicle = vehicleDAO.select(intervention.getID_vehicle());
 		User opened = userDAO.select(intervention.getID_user_opened());
 		User fieldTechnician = userDAO.select(intervention.getID_field_technician());
-		String state=intervention.getState();
-		
+		String state = intervention.getState();
+
 		reply.add("VIEW INTERVENTION OK");
 		reply.add("" + intervention.getID_intervention());
 		reply.add(client.getName() + " " + client.getSurname());
@@ -200,7 +201,7 @@ public class InterventionControl {
 		if (ID_intervention != 0) {
 			Intervention intervention = interventionDAO.select(ID_intervention);
 			User opened = userDAO.select(intervention.getID_user_opened());
-			User fieldTechnician=userDAO.select(user_ID);
+			User fieldTechnician = userDAO.select(user_ID);
 			Client client = clientDAO.select(intervention.getID_client());
 			Vehicle vehicle = vehicleDAO.select(intervention.getID_vehicle());
 			reply.add("CHECK FIELD TECHNICIAN INTERVENTION OK");
@@ -215,13 +216,12 @@ public class InterventionControl {
 			reply.add(fieldTechnician.getName() + " " + fieldTechnician.getSurname());
 			reply.add(TimeUtility.localDateTimeToString(intervention.getOpened_on()));
 			reply.add(intervention.getState());
+			ActiveUsersWatch.changeFieldTechnicianState(intervention.getID_field_technician(), "zauzet");
 		} else {
 			reply.add("CHECK FIELD TECHNICIAN INTERVENTION NOT OK");
 			reply.add("Terenski radnik nema zaduzenja.");
 		}
 		return reply;
 	}
-
-	
 
 }

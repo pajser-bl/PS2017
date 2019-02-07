@@ -18,7 +18,7 @@ public class ClientControl {
 		} else if (clientDAO.insert(client) != 0) {
 			reply.add("NEW CLIENT OK");
 		} else {
-			reply.add("NEW CLIENT FAILED");
+			reply.add("NEW CLIENT NOT OK");
 			reply.add("Dodavanje klijenta nije uspjelo.");
 		}
 		return reply;
@@ -31,7 +31,7 @@ public class ClientControl {
 		if (clientDAO.update(client) != 0) {
 			reply.add("UPDATE CLIENT OK");
 		} else {
-			reply.add("UPDATE CLIENT FAILED");
+			reply.add("UPDATE CLIENT NOT OK");
 			reply.add("Prepravljanje klijenta nije uspjelo.");
 		}
 		return reply;
@@ -42,7 +42,7 @@ public class ClientControl {
 		if (clientDAO.delete(Integer.parseInt(client_ID)) != 0) {
 			reply.add("DELETE CLIENT OK");
 		} else {
-			reply.add("DELETE CLIENT FAILED");
+			reply.add("DELETE CLIENT NOT OK");
 			reply.add("Brisanje klijenta nije uspjelo.");
 		}
 		return reply;
@@ -73,7 +73,7 @@ public class ClientControl {
 			reply.add(client.getSurname());
 			reply.add(client.getPhone_number());
 		} else {
-			reply.add("VIEW USER FAILED");
+			reply.add("VIEW USER NOT OK");
 		}
 		return reply;
 	}
