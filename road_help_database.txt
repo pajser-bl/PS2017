@@ -90,7 +90,8 @@ create table intervention(
     constraint FK_intervention_user_closed foreign key(ID_user_closed)references user(ID_user)on delete cascade on update no action,
 	constraint FK_intervention_user_field_technician foreign key(ID_field_technician)references user(ID_user)on delete cascade on update no action,
 	constraint FK_intervention_user_supervisor foreign key(ID_supervisor)references user(ID_user)on delete cascade on update no action,
-	constraint FK_intervention_client foreign key(ID_client)references client(ID_client)on delete cascade on update no action
+	constraint FK_intervention_client foreign key(ID_client)references client(ID_client)on delete cascade on update no action,
+	constraint FK_intervention_vehicle foreign key(ID_vehicle)references vehicle(ID_vehicle)on delete cascade on update no action
 );
 create table coordinate(
 	ID_coordinate int(11) not null,
