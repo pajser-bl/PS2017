@@ -21,6 +21,7 @@ public class InterventionControl {
 			throws Exception {
 		ArrayList<String> reply = new ArrayList<>();
 		Event event;
+		int intervention_ID;
 		int client_ID = clientDAO.exist(client);
 		int vehicle_ID = vehicleDAO.exist(vehicle);
 		if (client_ID != 0) {
@@ -33,7 +34,7 @@ public class InterventionControl {
 		} else {
 			intervention.setID_vehicle(vehicleDAO.insert(vehicle));
 		}
-		if ((interventionDAO.insert(intervention)) != 0) {
+		if ((intervention_ID=interventionDAO.insert(intervention)) != 0) {
 			// dodaj event za tehnicara
 			event = new Event(ActiveUsersWatch.getUserSession(intervention.getID_user_opened()), LocalDateTime.now(),
 					"Uspjesno otvorena nova intervencija ID: " + intervention.getID_intervention() + " .");
@@ -44,6 +45,7 @@ public class InterventionControl {
 			eventDAO.insert(event);
 
 			reply.add("NEW INTERVENTION OK");
+			reply.add(""+intervention_ID);
 		} else {
 			event = new Event(intervention.getID_user_opened(),
 					ActiveUsersWatch.getUserSession(intervention.getID_user_opened()), LocalDateTime.now(),
@@ -66,9 +68,6 @@ public class InterventionControl {
 		intervention.setRemark_field_technician(remark);
 		intervention.setState("terenski izvjestaj");
 		if (interventionDAO.newRoadReport(intervention) != 0) {
-//			event = new Event(ActiveUsersWatch.getUserSession(intervention.getID_user_opened()), LocalDateTime.now(),
-//					"Pristigao terenski izvjestaj za intervenciju ID: " + intervention.getID_intervention() + " .");
-//			eventDAO.insert(event);
 			event = new Event(ActiveUsersWatch.getUserSession(intervention.getID_field_technician()),
 					LocalDateTime.now(), "Napravljen i poslat terenski izvjestaj za intervenciju ID: "
 							+ intervention.getID_intervention() + " .");
@@ -94,6 +93,7 @@ public class InterventionControl {
 		intervention.setID_user_closed(operater_ID);
 		intervention.setClosed_on(closed_on);
 		intervention.setRemark_operator(remark);
+		intervention.setState("zatvorena");
 		if (interventionDAO.closeIntervention(intervention) != 0) {
 			event = new Event(operater_ID, ActiveUsersWatch.getUserSession(operater_ID), LocalDateTime.now(),
 					"Uspjesno zatvorena intervencija ID: " + intervention_ID + " .");
@@ -115,6 +115,7 @@ public class InterventionControl {
 		intervention.setID_supervisor(supervisor_ID);
 		intervention.setReport_made(report_made);
 		intervention.setRemark_supervisor(remark);
+		intervention.setState("izvjestaj");
 		if (interventionDAO.newReport(intervention) != 0) {
 			reply.add("NEW REPORT OK");
 		} else {
