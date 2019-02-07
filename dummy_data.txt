@@ -1,1 +1,5 @@
-INSERT INTO user (ID_user,name,surname,date_of_birth,type,qualification,drivers_license,username,hash) VALUES (null,"Milan","Tarot",1966-05-01,"Administrator","VSS","metla",milan,?);
+INSERT INTO user (ID_user,name,surname,date_of_birth,type,qualification,drivers_license,username,hash) VALUES
+(null,'Milan','Tarot',1966-05-01,'Administrator','VSS','metla','admin','sha1:64000:18:dUjC8l0FQCRt8d19SVRdJbcasVpGy/55:FCgLJeP/IZw0hmgLV0vTeAR2'),
+(null,'Zeljka','Cvijanovic',1966-05-01,'Terenski radnik','SSS','C','vozac1','sha1:64000:18:zXIuJJTLw0f9T47qpDPTyAF9YJgB0IzI:c3twXq+/UAN1gMGTkby7vRAn'),
+(null,'Milorad','Dodik',1966-05-01,'Terenski radnik','SSS','B','vozac2','sha1:64000:18:/Qd0pQXcAIAVNeO1OEzt0URDKnl5e8tZ:mufuZa2DZ7IpWCUt8a0n+LCW'),
+(null,'Kim','Jong Un',1966-05-01,'Supervizor','SSS','mig-21','supervizor','sha1:64000:18:kMQkQ62TNJt/iPUIjw+KBsOPAQ251ukZ:2cD80DH5aOpalbaoLm+eQ1Yt');

@@ -232,7 +232,7 @@ public class ClientControllerFacade {
 	public ArrayList<String> unexistingRequest(String string) {
 		ArrayList<String> reply = new ArrayList<>();
 		reply.add("UNEXISTING FUNCTION REQUEST");
-		reply.add(string);
+		reply.add(string+" je nepostojeci zahtjev.");
 		return reply;
 	}
 }

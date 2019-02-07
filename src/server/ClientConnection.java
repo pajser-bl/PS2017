@@ -10,6 +10,7 @@ import utility.TimeUtility;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -41,7 +42,7 @@ public class ClientConnection extends Thread {
 			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 			reply = new ArrayList<>();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			System.out.println("Unsuccessfull opening of input/output stream!");
 			e.printStackTrace();
 		}
@@ -86,6 +87,10 @@ public class ClientConnection extends Thread {
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("Exception happened durig communication with user: "+this.username+" ("+this.userName+" "+this.userSurname+")["+this.userType+"].");
+				reply.clear();
+				reply.add("INTERNAL SERVER ERROR");
+				reply.add("Doslo je do interne serverske greske.");
+				sendReply(new Gson().toJson(reply));
 			}
 		}
 	}
