@@ -48,9 +48,10 @@ public class UserControl {
 	}
 
 	public static ArrayList<String> updateUser(int ID_user, String name, String surname, String date_of_birth,
-			String type, String qualification,String drivers_license, UserDAO userDAO) {
+			String type, String qualification, String drivers_license, UserDAO userDAO) {
 		ArrayList<String> reply = new ArrayList<>();
-		User user = new User(ID_user, name, surname, TimeUtility.stringToLocalDate(date_of_birth), type, qualification, drivers_license);
+		User user = new User(ID_user, name, surname, TimeUtility.stringToLocalDate(date_of_birth), type, qualification,
+				drivers_license);
 		if (userDAO.update(user) != 0) {
 			reply.add("UPDATE USER OK");
 		} else {
@@ -88,11 +89,17 @@ public class UserControl {
 
 	public static ArrayList<String> changeStateFieldTechnician(int user_ID, String state, EventDAO eventDAO) {
 		ArrayList<String> reply = new ArrayList<>();
-		reply.add("CHANGE STATE OK");
-		ActiveUsersWatch.changeFieldTechnicianState(user_ID, state);
-		Event event = new Event(ActiveUsersWatch.getUserSession(user_ID), LocalDateTime.now(),
-				"Korisnik je promjenio stanje u " + state);
-		eventDAO.insert(event);
+		String current_state = ActiveUsersWatch.getFieldTechnicianState(user_ID);
+		if (current_state.equals("zauzet")) {
+			reply.add("CHANGE STATE NOT OK");
+			reply.add("Trenutno ste zauzeti.");
+		} else {
+			reply.add("CHANGE STATE OK");
+			ActiveUsersWatch.changeFieldTechnicianState(user_ID, state);
+			Event event = new Event(ActiveUsersWatch.getUserSession(user_ID), LocalDateTime.now(),
+					"Korisnik je promjenio stanje u " + state);
+			eventDAO.insert(event);
+		}
 		return reply;
 	}
 

@@ -46,6 +46,7 @@ public class InterventionControl {
 
 			reply.add("NEW INTERVENTION OK");
 			reply.add(""+intervention_ID);
+			ActiveUsersWatch.changeFieldTechnicianState(intervention.getID_field_technician(), "zauzet");
 		} else {
 			event = new Event(intervention.getID_user_opened(),
 					ActiveUsersWatch.getUserSession(intervention.getID_user_opened()), LocalDateTime.now(),
@@ -68,6 +69,7 @@ public class InterventionControl {
 		intervention.setRemark_field_technician(remark);
 		intervention.setState("terenski izvjestaj");
 		if (interventionDAO.newRoadReport(intervention) != 0) {
+			ActiveUsersWatch.changeFieldTechnicianState(intervention.getID_field_technician(),"neaktivan");
 			event = new Event(ActiveUsersWatch.getUserSession(intervention.getID_field_technician()),
 					LocalDateTime.now(), "Napravljen i poslat terenski izvjestaj za intervenciju ID: "
 							+ intervention.getID_intervention() + " .");
