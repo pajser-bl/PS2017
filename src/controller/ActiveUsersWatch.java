@@ -60,7 +60,7 @@ public class ActiveUsersWatch {
 		reply.add("VIEW ACTIVE USERS OK");
 		reply.add("" + activeUsersList.size());
 		for (User u : activeUsersList) {
-			tempUserString = u.getID_user() + ":" + u.getName() + ":" + u.getSurname() + ":" + u.getType();
+			tempUserString = u.getID_user() + ":" + u.getName() + ":" + u.getSurname() + ":" + u.getType()+":"+u.getUsername();
 			reply.add(tempUserString);
 		}
 		return reply;

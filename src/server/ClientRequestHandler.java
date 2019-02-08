@@ -75,6 +75,9 @@ public class ClientRequestHandler {
 		case "VIEW ONLINE USERS": {
 			return clientControllerFacade.viewOnlineUsers();
 		}
+		case "VIEW SESSIONS":{
+			return clientControllerFacade.viewSessions();
+		}
 		case "VIEW USER SESSION": {// terenski radnik ili operater poziva ili posebno supervizor
 			return clientControllerFacade.viewUserSession(Integer.parseInt(request.getRequest().get(0)));
 		}

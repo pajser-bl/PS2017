@@ -68,27 +68,33 @@ public class ClientControllerFacade {
 
 	public ArrayList<String> addUser(String name, String surname, String date_of_birth, String type,
 			String qualification, String drivers_license, String username, String password) {
-		return UserControl.addUser(name, surname, date_of_birth, type, qualification,drivers_license, username, password, userDAO);
+		return UserControl.addUser(name, surname, date_of_birth, type, qualification, drivers_license, username,
+				password, userDAO);
 	}
 
 	public ArrayList<String> changePassword(int ID_user, String password) {
-		return UserControl.changePassword(ID_user, password,userDAO);
+		return UserControl.changePassword(ID_user, password, userDAO);
 	}
 
 	public ArrayList<String> updateUser(int ID_user, String name, String surname, String date_of_birth, String type,
 			String qualification, String drivers_license) {
-		return UserControl.updateUser(ID_user, name, surname, date_of_birth, type, qualification, drivers_license, userDAO);
+		return UserControl.updateUser(ID_user, name, surname, date_of_birth, type, qualification, drivers_license,
+				userDAO);
 	}
 
 	public ArrayList<String> deleteUser(int userID) {
 		return UserControl.deleteUser(userID, userDAO);
 	}
 
-	public ArrayList<String> viewUserSession(int ID_session) {
+	public ArrayList<String> viewSessions() throws Exception {
+		return SessionControl.viewSessions(sessionDAO, userDAO);
+	}
+
+	public ArrayList<String> viewUserSession(int ID_session) throws Exception {
 		return SessionControl.viewUserSession(ID_session, sessionDAO, eventDAO);
 	}
 
-	public ArrayList<String> viewUserSessions(int ID_user) {
+	public ArrayList<String> viewUserSessions(int ID_user) throws Exception {
 		return SessionControl.viewUserSessions(ID_user, sessionDAO);
 	}
 
@@ -232,7 +238,8 @@ public class ClientControllerFacade {
 	public ArrayList<String> unexistingRequest(String string) {
 		ArrayList<String> reply = new ArrayList<>();
 		reply.add("UNEXISTING FUNCTION REQUEST");
-		reply.add(string+" je nepostojeci zahtjev.");
+		reply.add(string + " je nepostojeci zahtjev.");
 		return reply;
 	}
+
 }

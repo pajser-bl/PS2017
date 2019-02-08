@@ -6,8 +6,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.LocalDate;
 import java.util.Properties;
-import java.util.Scanner;
-
 import DAO.UserDAO;
 import DAO.MySQL.MySQLUserDAO;
 import model.users.User;
