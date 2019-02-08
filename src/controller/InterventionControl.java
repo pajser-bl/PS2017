@@ -151,6 +151,51 @@ public class InterventionControl {
 		return reply;
 	}
 
+	public static ArrayList<String> viewClosedInterventions(InterventionDAO interventionDAO, UserDAO userDAO)
+			throws Exception {
+		ArrayList<String> reply = new ArrayList<>();
+		ArrayList<Intervention> interventions = (ArrayList<Intervention>) interventionDAO.selectAllClosed();
+		User operator_opened;
+		User operator_closed;
+		User fieldTechnician;
+		String tempString;
+		reply.add("VIEW CLOSED INTERVENTIONS OK");
+		reply.add("" + interventions.size());
+		for (Intervention i : interventions) {
+			operator_opened = userDAO.select(i.getID_user_opened());
+			operator_closed = userDAO.select(i.getID_user_closed());
+			fieldTechnician = userDAO.select(i.getID_field_technician());
+			tempString = "" + i.getID_intervention();
+			tempString += ":" + operator_opened.getName() + " " + operator_opened.getSurname();
+			tempString += ":" + fieldTechnician.getName() + " " + fieldTechnician.getSurname();
+			tempString += ":" + operator_closed.getName() + " " + operator_closed.getSurname();
+			tempString += ":" + TimeUtility.localDateTimeToString(i.getClosed_on()).replace(":", ";");
+			reply.add(tempString);
+		}
+		return reply;
+	}
+
+	public static ArrayList<String> viewReports(InterventionDAO interventionDAO, UserDAO userDAO, ClientDAO clientDAO)
+			throws Exception {
+		ArrayList<String> reply = new ArrayList<>();
+		ArrayList<Intervention> interventions = (ArrayList<Intervention>) interventionDAO.selectAllClosed();
+		User supervisor;
+		Client client;
+		String tempString;
+		reply.add("VIEW CLOSED INTERVENTIONS OK");
+		reply.add("" + interventions.size());
+		for (Intervention i : interventions) {
+			client = clientDAO.select(i.getID_client());
+			supervisor = userDAO.select(i.getID_supervisor());
+			tempString = "" + i.getID_intervention();
+			tempString += ":" + client.getName() + " " + client.getSurname();
+			tempString += ":" + supervisor.getName() + " " + supervisor.getSurname();
+			tempString += ":" + TimeUtility.localDateTimeToString(i.getClosed_on()).replace(":", ";");
+			reply.add(tempString);
+		}
+		return reply;
+	}
+
 	public static ArrayList<String> viewIntervention(int ID_intervention, InterventionDAO interventionDAO,
 			UserDAO userDAO, ClientDAO clientDAO, VehicleDAO vehicleDAO) throws Exception {
 		ArrayList<String> reply = new ArrayList<>();

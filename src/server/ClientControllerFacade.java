@@ -219,6 +219,10 @@ public class ClientControllerFacade {
 		return InterventionControl.viewOpenedInterventions(interventionDAO, userDAO, clientDAO);
 	}
 
+	public ArrayList<String> viewClosedInterventions() throws Exception {
+		return InterventionControl.viewClosedInterventions(interventionDAO, userDAO);
+	}
+	
 	public ArrayList<String> viewOpenIntervention(int ID_intervention) throws Exception {
 		return InterventionControl.viewIntervention(ID_intervention, interventionDAO, userDAO, clientDAO, vehicleDAO);
 	}
@@ -240,6 +244,10 @@ public class ClientControllerFacade {
 		reply.add("UNEXISTING FUNCTION REQUEST");
 		reply.add(string + " je nepostojeci zahtjev.");
 		return reply;
+	}
+
+	public ArrayList<String> viewReports() throws Exception{
+		return InterventionControl.viewReports(interventionDAO, userDAO, clientDAO);
 	}
 
 }

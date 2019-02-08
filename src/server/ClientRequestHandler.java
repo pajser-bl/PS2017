@@ -139,6 +139,14 @@ public class ClientRequestHandler {
 		case "VIEW OPENED INTERVENTIONS": {
 			return clientControllerFacade.viewOpenedInterventions();
 		}
+		
+		case "VIEW CLOSED INTERVENTIONS":{
+			return clientControllerFacade.viewClosedInterventions();
+		}
+		
+		case "VIEW REPORTS":{
+			return clientControllerFacade.viewReports();
+		}
 
 		case "NEW INTERVENTION": {
 			/**
