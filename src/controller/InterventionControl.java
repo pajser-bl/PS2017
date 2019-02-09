@@ -178,11 +178,11 @@ public class InterventionControl {
 	public static ArrayList<String> viewReports(InterventionDAO interventionDAO, UserDAO userDAO, ClientDAO clientDAO)
 			throws Exception {
 		ArrayList<String> reply = new ArrayList<>();
-		ArrayList<Intervention> interventions = (ArrayList<Intervention>) interventionDAO.selectAllClosed();
+		ArrayList<Intervention> interventions = (ArrayList<Intervention>) interventionDAO.selectAllReports();
 		User supervisor;
 		Client client;
 		String tempString;
-		reply.add("VIEW CLOSED INTERVENTIONS OK");
+		reply.add("VIEW REPORTS OK");
 		reply.add("" + interventions.size());
 		for (Intervention i : interventions) {
 			client = clientDAO.select(i.getID_client());

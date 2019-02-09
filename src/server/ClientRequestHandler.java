@@ -119,7 +119,9 @@ public class ClientRequestHandler {
 			return clientControllerFacade.updateSubscription(request.getRequest().get(0), request.getRequest().get(1),
 					request.getRequest().get(2), request.getRequest().get(3));
 		}
-
+		case "SUBSCRIBE CLIENT":{
+			return clientControllerFacade.subscribeClient(Integer.parseInt(request.getRequest().get(0)));
+		}
 		case "VIEW OPEN INTERVENTION": {
 			return clientControllerFacade.viewOpenIntervention(Integer.parseInt(request.getRequest().get(0)));
 		}
@@ -182,7 +184,7 @@ public class ClientRequestHandler {
 		}
 
 		case "NEW REPORT": {
-			// ID_supervisor,remark_supervisor,report_made
+			// ID_intervention,ID_supervisor,remark_supervisor,report_made
 			return clientControllerFacade.newReport(Integer.parseInt(request.getRequest().get(0)),
 					Integer.parseInt(request.getRequest().get(1)), request.getRequest().get(2),
 					TimeUtility.stringToLocalDateTime(request.getRequest().get(3)));

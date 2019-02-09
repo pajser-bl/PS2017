@@ -79,6 +79,7 @@ public class MySQLSubscriptionDAO implements SubscriptionDAO {
 		try {
 			c = DataSourceFactory.getMySQLDataSource().getConnection();
 			ps = c.prepareStatement(SQL_SELECT_ALL_BY_CLIENT);
+			ps.setInt(1, ID_client);
 			rs = ps.executeQuery();
 			while (rs.next())
 				returnValue.add(new Subscription(rs.getInt("ID_subscription"), rs.getInt("ID_client"),

@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Properties;
 import java.util.Scanner;
-
 import DAO.UserDAO;
 import DAO.MySQL.MySQLUserDAO;
 import model.users.User;
@@ -123,31 +122,24 @@ public class Server {
 			while (true) {
 				switch (consoleInput = scan.nextLine()) {
 				case "shutdown": {
-					try {
 						System.out.println("Server is shutting down...");
-						serverSocket.close();
 						System.out.println("Godbye.");
 						System.exit(0);
-					} catch (IOException e) {
-						e.printStackTrace();
-						System.out.println("Error while shutting down server!");
-						System.exit(1);
-					}
 				}
 				case "time": {
-					System.out.println(TimeUtility.localDateTimeToString(LocalDateTime.now()));
+					System.out.println("Server time: "+TimeUtility.localDateTimeToString(LocalDateTime.now()));
 					break;
 				}
 				case "limit": {
-					System.out.println(SERVER_CONNECTION_LIMIT);
+					System.out.println("Server connection limit: "+SERVER_CONNECTION_LIMIT);
 					break;
 				}
 				case "ip": {
-					System.out.println(SERVER_IP_ADDRESS + ":" + SERVER_PORT);
+					System.out.println("Server ip address: "+SERVER_IP_ADDRESS);
 					break;
 				}
 				case "port": {
-					System.out.println(SERVER_IP_ADDRESS + ":" + SERVER_PORT);
+					System.out.println("Server port: "+SERVER_PORT);
 					break;
 				}
 				case "help": {
@@ -157,7 +149,7 @@ public class Server {
 					System.out.println("   port - Get server port.");
 					System.out.println("   limit - Get server connection limit.");
 					System.out.println("   shutdown - Shutdown server.");
-					System.out.println("   help - Get you this:)");
+					System.out.println("   help - Gets you this:)");
 					System.out.println();
 					break;
 				}

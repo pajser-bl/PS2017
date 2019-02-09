@@ -91,7 +91,7 @@ public class ClientControllerFacade {
 	}
 
 	public ArrayList<String> viewUserSession(int ID_session) throws Exception {
-		return SessionControl.viewUserSession(ID_session, sessionDAO, eventDAO);
+		return SessionControl.viewUserSession(ID_session, sessionDAO, eventDAO, userDAO);
 	}
 
 	public ArrayList<String> viewUserSessions(int ID_user) throws Exception {
@@ -116,7 +116,7 @@ public class ClientControllerFacade {
 	}
 
 	public ArrayList<String> viewClients() throws Exception {
-		return ClientControl.viewClients(clientDAO);
+		return ClientControl.viewClients(clientDAO, subscriptionDAO);
 	}
 
 	public ArrayList<String> viewSubscription(int subscription_ID) throws Exception {
@@ -222,7 +222,7 @@ public class ClientControllerFacade {
 	public ArrayList<String> viewClosedInterventions() throws Exception {
 		return InterventionControl.viewClosedInterventions(interventionDAO, userDAO);
 	}
-	
+
 	public ArrayList<String> viewOpenIntervention(int ID_intervention) throws Exception {
 		return InterventionControl.viewIntervention(ID_intervention, interventionDAO, userDAO, clientDAO, vehicleDAO);
 	}
@@ -246,8 +246,12 @@ public class ClientControllerFacade {
 		return reply;
 	}
 
-	public ArrayList<String> viewReports() throws Exception{
+	public ArrayList<String> viewReports() throws Exception {
 		return InterventionControl.viewReports(interventionDAO, userDAO, clientDAO);
+	}
+
+	public ArrayList<String> subscribeClient(int ID_client) throws Exception {
+		return SubscriptionControl.subscribeClient(ID_client, subscriptionDAO);
 	}
 
 }

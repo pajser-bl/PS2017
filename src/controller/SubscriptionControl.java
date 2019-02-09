@@ -1,5 +1,6 @@
 package controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import DAO.ClientDAO;
@@ -106,5 +107,18 @@ public class SubscriptionControl {
 		}
 		return reply;
 	}
-
+	public static boolean isSubscribed(int client_ID,SubscriptionDAO subscriptionDAO) {
+		List<Subscription> subscriptions = subscriptionDAO.selectAllByClient(client_ID);
+		if(subscriptions.size()>0)
+			for(Subscription s:subscriptions)
+				if(s.isValid())
+					return true;
+		return false;
+	}
+	public static ArrayList<String> subscribeClient(int ID_client, SubscriptionDAO subscriptionDAO) throws Exception{
+		String start=TimeUtility.localDateToString(LocalDate.now());
+		String end=TimeUtility.localDateToString(LocalDate.now().plusYears(1));		
+		return newSubscription(""+ID_client, start, end, subscriptionDAO);
+	}
+	
 }

@@ -2,8 +2,8 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import DAO.ClientDAO;
+import DAO.SubscriptionDAO;
 import model.client.Client;
 
 public class ClientControl {
@@ -12,11 +12,13 @@ public class ClientControl {
 			throws Exception {
 		ArrayList<String> reply = new ArrayList<>();
 		Client client = new Client(name, surname, phone_number);
+		int client_ID;
 		if (clientDAO.exist(client) != 0) {
 			reply.add("NEW CLIENT FAILED");
 			reply.add("Klijent vec postoji.");
-		} else if (clientDAO.insert(client) != 0) {
+		} else if ((client_ID=clientDAO.insert(client)) != 0) {
 			reply.add("NEW CLIENT OK");
+			reply.add(""+client_ID);
 		} else {
 			reply.add("NEW CLIENT NOT OK");
 			reply.add("Dodavanje klijenta nije uspjelo.");
@@ -48,7 +50,7 @@ public class ClientControl {
 		return reply;
 	}
 
-	public static ArrayList<String> viewClients(ClientDAO clientDAO) throws Exception {
+	public static ArrayList<String> viewClients(ClientDAO clientDAO,SubscriptionDAO subscriptionDAO) throws Exception {
 		List<Client> clients = clientDAO.selectAll();
 		ArrayList<String> reply = new ArrayList<>();
 		reply.add("VIEW CLIENTS OK");
@@ -58,7 +60,8 @@ public class ClientControl {
 			String name = c.getName();
 			String surname = c.getSurname();
 			String phone_number = c.getPhone_number();
-			reply.add("" + ID_client + ":" + name + ":" + surname + ":" + phone_number);
+			String subscription = SubscriptionControl.isSubscribed(ID_client, subscriptionDAO)?"da":"ne";
+			reply.add("" + ID_client + ":" + name + ":" + surname + ":" + phone_number+":"+subscription);
 		}
 		return reply;
 	}

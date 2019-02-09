@@ -53,6 +53,7 @@ public class ClientConnection extends Thread {
 					System.out.println("["+TimeUtility.getStringTimeNow()+"]Connection lost to "+this.username+"("+this.userName+" "+this.userSurname+")["+this.userType+"].");
 					ArrayList<String> temp=new ArrayList<String>();temp.add(""+ID_user);
 					ClientRequestHandler.handle(new Request("CONNECTION LOST",temp));
+					logoutCheck=true;
 				}
 				if (input.ready()) {
 					Request request = new Gson().fromJson(input.readLine(), new TypeToken<Request>() {

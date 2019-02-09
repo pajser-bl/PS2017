@@ -26,7 +26,7 @@ public class MySQLInterventionDAO implements InterventionDAO {
 	private static final String SQL_GET_INTERVENTION_BY_FIELD_TECHNICIAN = "SELECT ID_intervention FROM intervention where ID_field_technician=? and state=\"otvorena\"";
 	private static final String SQL_NEW_ROAD_REPORT = "UPDATE intervention SET state=?,assistance=?,time_of_assistance=?,remark_field_technician=? WHERE ID_intervention=?";
 	private static final String SQL_CLOSE_INTERVENTION = "UPDATE intervention SET state=?,ID_user_closed=?,closed_on=?,remark_operator=? WHERE ID_intervention=?";
-	private static final String SQL_NEW_REPORT = "UPDATE intervention SET state=?ID_supervisor = ?,remark_supervisor=?,report_made=? WHERE ID_intervention=?";
+	private static final String SQL_NEW_REPORT = "UPDATE intervention SET state=?,ID_supervisor = ?,remark_supervisor=?,report_made=? WHERE ID_intervention=?";
 	
 	
 	

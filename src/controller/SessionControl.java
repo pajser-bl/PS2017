@@ -13,23 +13,27 @@ import utility.TimeUtility;
 
 public class SessionControl {
 
-	public static ArrayList<String> viewUserSession(int ID_session, SessionDAO sessionDAO, EventDAO eventDAO)
+	public static ArrayList<String> viewUserSession(int ID_session, SessionDAO sessionDAO, EventDAO eventDAO,UserDAO userDAO)
 			throws Exception {
 		// ID_session,ID_user,start,end
 		ArrayList<String> reply = new ArrayList<>();
 		Session session = sessionDAO.select(ID_session);
 		int ID_user = session.getUserID();
+		User user=userDAO.select(ID_user);
 		String start = TimeUtility.localDateTimeToString(session.getStart());
-		String end = TimeUtility.localDateTimeToString(session.getEnd());
+		String end = session.getEnd()!=null?TimeUtility.localDateTimeToString(session.getEnd()).replace(":", ";"):"aktivna";
+		String events="";
 		reply.add("VIEW USER SESSION OK");
 		reply.add("" + ID_session);
-		reply.add("" + ID_user);
+		reply.add(user.getName()+" "+user.getSurname());
 		reply.add(start);
 		reply.add(end);
 		ArrayList<Event> eventList = (ArrayList<Event>) eventDAO.selectBySession(ID_session);
-		reply.add("" + eventList.size());
-		for (Event e : eventList)
-			reply.add(e.toString());
+		for (Event e : eventList) {
+			events+="["+TimeUtility.localDateTimeToString(e.getTimeStamp());
+			events+="]"+e.getAction()+"\n";
+		}
+		reply.add(events);
 		return reply;
 	}
 
@@ -39,7 +43,7 @@ public class SessionControl {
 		for (Session s : sessions) {
 			int ID_session = s.getSessionID();
 			String start = TimeUtility.localDateTimeToString(s.getStart());
-			String end = TimeUtility.localDateTimeToString(s.getEnd());
+			String end = s.getEnd()!=null?TimeUtility.localDateTimeToString(s.getEnd()).replace(":", ";"):"aktivna";
 			reply.add("" + ID_session);
 			reply.add("" + ID_user);
 			reply.add(start);
